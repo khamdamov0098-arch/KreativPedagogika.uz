@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+  <title>Fan sillabusi — KreativPedagogika.uz</title>
+  <link rel="icon" href="logo.png"/>
+  <link rel="stylesheet" href="shared.css"/>
+</head>
+<body>
+<div class="toast" id="toast"></div>
+<header>
+  <div class="header-inner">
+    <a class="logo" href="index.html"><img src="logo.png" alt="KreativPedagogika"><div><div class="logo-text">Kreativ<span>Pedagogika</span></div><span class="logo-sub">Ijodiy yondashuv, samarali ta'lim</span></div></a>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    <nav class="header-nav">
+      <a href="index.html">Bosh sahifa</a>
+      <div class="dropdown"><button class="dd-btn">O'quv materiallari</button><div class="dropdown-menu">
+        <a href="fan-dasturi.html"><span class="dm-icon">📋</span>Fan dasturi</a>
+        <a href="sillabusi.html" class="active"><span class="dm-icon">📋</span>Fan sillabusi</a>
+        <a href="maruzalar.html"><span class="dm-icon">📚</span>Ma'ruza matnlari</a>
+        <a href="amaliy.html"><span class="dm-icon">✍️</span>Amaliy mashg'ulotlar</a>
+        <a href="adabiyotlar.html"><span class="dm-icon">📖</span>Adabiyotlar</a>
+        <a href="taqdimotlar.html"><span class="dm-icon">📊</span>Taqdimotlar</a>
+      </div></div>
+      <div class="dropdown"><button class="dd-btn">Topshiriqlar</button><div class="dropdown-menu">
+        <a href="innovatsion-test.html"><span class="dm-icon">🎯</span>Innovatsion test</a>
+        <a href="test.html"><span class="dm-icon">🎯</span>Test topshiriqlari</a>
+        <a href="mustaqil-ish.html"><span class="dm-icon">📝</span>Mustaqil ish mavzulari</a>
+        <a href="topshiriqlar.html"><span class="dm-icon">📝</span>Topshiriqlar</a>
+        <a href="krossvord.html"><span class="dm-icon">🎲</span>Krossvordlar</a>
+      </div></div>
+      <a href="videodarslar.html">📹 Videodarslar</a>
+      <a href="muallif.html">👤 Muallif</a>
+    </nav>
+    <div id="navUserBlock"></div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">🏠 Bosh sahifa</a>
+    <div class="mobile-section-label">O'quv materiallari</div>
+    <a href="fan-dasturi.html">📋 Fan dasturi</a>
+    <a href="sillabusi.html" class="active">📋 Fan sillabusi</a>
+    <a href="maruzalar.html">📚 Ma'ruza matnlari</a>
+    <a href="amaliy.html">✍️ Amaliy mashg'ulotlar</a>
+    <a href="adabiyotlar.html">📖 Adabiyotlar</a>
+    <a href="taqdimotlar.html">📊 Taqdimotlar</a>
+    <div class="mobile-section-label">Topshiriqlar</div>
+    <a href="innovatsion-test.html">🎯 Innovatsion test</a>
+    <a href="test.html">🎯 Test topshiriqlari</a>
+    <a href="mustaqil-ish.html">📝 Mustaqil ish mavzulari</a>
+    <a href="topshiriqlar.html">📝 Topshiriqlar</a>
+    <a href="krossvord.html">🎲 Krossvordlar</a>
+    <div class="mobile-section-label">Boshqa</div>
+    <a href="videodarslar.html">📹 Videodarslar</a>
+    <a href="muallif.html">👤 Muallif haqida</a>
+    <div id="mobileUserBlock"></div>
+  </div>
+</header>
+
+<div class="page-header">
+  <h1>📋 Fan sillabusi</h1>
+  <p>Fanning sillabusi</p>
+</div>
+
+<main class="main" style="padding-top:2rem;padding-bottom:3rem;max-width:960px;">
+  <div class="file-item" style="margin-bottom:1rem;">
+    <div class="file-num">📋</div>
+    <div class="file-info">
+      <h4>Fan sillabusi</h4>
+      <p>Fanning to'liq o'quv dasturi</p>
+      <span class="file-badge">PDF</span>
+      <div class="file-actions">
+        <button class="btn-view" onclick="openPDF('pdfs/sillabusi.pdf','Fan sillabusi')">👁 Ko'rish</button>
+        <a class="btn-dl" href="pdfs/sillabusi.pdf" download>⬇ Yuklab olish</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="single-pdf-wrap" id="pdfWrap" style="display:none;">
+    <iframe src="pdfs/sillabusi.pdf" title="Fan sillabusi"></iframe>
+  </div>
+</main>
+
+<footer><div class="footer-logo"><img src="logo.png" alt="">KreativPedagogika</div><p class="footer-text">© 2026 KreativPedagogika.uz</p></footer>
+<div class="modal-overlay" id="modalOverlay" onclick="closePDF(event)"><div class="modal"><div class="modal-head"><span id="modalTitle">Hujjat</span><div class="modal-head-actions"><a class="modal-dl-btn" id="modalDlBtn" href="#" download>⬇ Yuklab olish</a><button class="modal-close" onclick="closePDF(event)">✕</button></div></div><iframe id="modalFrame" src=""></iframe></div></div>
+<script src="icons.js"></script>
+<script src="nav.js"></script>
+</body>
+</html>

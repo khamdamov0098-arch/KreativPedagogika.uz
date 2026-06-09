@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+  <title>Innovatsion test — KreativPedagogika.uz</title>
+  <link rel="icon" href="logo.png"/>
+  <link rel="stylesheet" href="shared.css"/>
+  <style>
+    .innov-wrap { max-width: 820px; margin: 0 auto; }
+    .innov-start-card {
+      background: white; border-radius: var(--radius-lg); padding: 2.5rem 2rem;
+      box-shadow: var(--shadow); border: 1px solid var(--border2); text-align: center;
+    }
+    .innov-start-card h2 {
+      font-family: 'Nunito', sans-serif; font-size: 1.6rem; font-weight: 900;
+      color: var(--navy); margin-bottom: 0.75rem;
+    }
+    /* Test screen */
+    .innov-q-card {
+      background: white; border-radius: var(--radius-lg); padding: 2rem;
+      box-shadow: var(--shadow); border: 1px solid var(--border2); margin-bottom: 1.5rem;
+    }
+    .innov-q-num { font-size: 0.9rem; color: var(--gray); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem; }
+    .innov-q-text { font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: 1.5rem; line-height: 1.6; }
+    .innov-options { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .innov-option {
+      border: 2px solid var(--border2); border-radius: 12px; overflow: hidden;
+      cursor: pointer; transition: all 0.18s; background: white;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .innov-option:hover { border-color: var(--teal); box-shadow: 0 4px 16px rgba(42,191,171,0.15); }
+    .innov-option.selected { border-color: var(--teal); box-shadow: 0 4px 16px rgba(42,191,171,0.2); }
+    .innov-option.correct { border-color: var(--success); background: rgba(34,197,94,0.04); }
+    .innov-option.wrong   { border-color: var(--danger);  background: rgba(239,68,68,0.04); }
+    .innov-opt-img { width: 100%; aspect-ratio: 4/3; object-fit: contain; display: block; background: var(--bg2); padding: 4px; }
+    .innov-opt-img-placeholder { width: 100%; aspect-ratio: 4/3; background: var(--bg2); display: flex; align-items: center; justify-content: center; color: var(--gray); font-size: 0.85rem; }
+    .innov-opt-label {
+      display: flex; align-items: center; gap: 0.6rem;
+      padding: 0.7rem 0.9rem; font-weight: 700; color: var(--navy);
+      font-size: 0.95rem;
+    }
+    .innov-opt-letter {
+      width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0;
+      background: rgba(27,43,107,0.07); display: flex; align-items: center; justify-content: center;
+      font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 0.92rem; color: var(--navy);
+    }
+    .innov-option.selected .innov-opt-letter { background: var(--teal); color: white; }
+    /* Result */
+    .innov-result { background: white; border-radius: var(--radius-lg); padding: 3rem 2rem; text-align: center; box-shadow: var(--shadow); border: 1px solid var(--border2); }
+    .innov-score { font-family: 'Nunito', sans-serif; font-size: 4rem; font-weight: 900; color: var(--teal-dark); }
+    /* Loading */
+    .innov-spinner { width: 40px; height: 40px; border: 3px solid var(--border2); border-top-color: var(--teal); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 2rem auto; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @media (max-width: 600px) { .innov-options { grid-template-columns: 1fr 1fr; gap: 0.75rem; } }
+    @media (max-width: 400px) { .innov-options { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+<div class="toast" id="toast"></div>
+<header>
+  <div class="header-inner">
+    <a class="logo" href="index.html">
+      <img src="logo.png" alt="KreativPedagogika">
+      <div>
+        <div class="logo-text">Kreativ<span>Pedagogika</span></div>
+        <span class="logo-sub">Ijodiy yondashuv, samarali ta'lim</span>
+      </div>
+    </a>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    <nav class="header-nav">
+      <a href="index.html">Bosh sahifa</a>
+      <div class="dropdown"><button class="dd-btn" onclick="toggleDropdown(this,event)">Topshiriqlar</button><div class="dropdown-menu">
+        <a href="innovatsion-test.html" class="active"><span class="dm-icon">🎯</span>Innovatsion test</a>
+        <a href="test.html"><span class="dm-icon">🎯</span>Test topshiriqlari</a>
+        <a href="mustaqil-ish.html"><span class="dm-icon">📝</span>Mustaqil ish mavzulari</a>
+        <a href="topshiriqlar.html"><span class="dm-icon">📝</span>Topshiriqlar</a>
+        <a href="krossvord.html"><span class="dm-icon">🎲</span>Krossvordlar</a>
+      </div></div>
+      <a href="videodarslar.html">📹 Videodarslar</a>
+      <a href="muallif.html">👤 Muallif</a>
+    </nav>
+    <div id="navUserBlock"></div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">🏠 Bosh sahifa</a>
+    <div class="mobile-section-label">Topshiriqlar</div>
+    <a href="innovatsion-test.html" class="active">🎯 Innovatsion test</a>
+    <a href="test.html">🎯 Test topshiriqlari</a>
+    <div id="mobileUserBlock"></div>
+  </div>
+</header>
+
+<div class="page-header">
+  <h1>🎯 Innovatsion test</h1>
+  <p>Rasmli ABCD variantli test</p>
+</div>
+
+<main class="main" style="padding-top:2rem;padding-bottom:3rem;">
+  <div class="innov-wrap">
+
+    <!-- START -->
+    <div id="innovStart">
+      <div class="innov-start-card">
+        <div style="font-size:3rem;margin-bottom:1rem;">🎯</div>
+        <h2>Innovatsion test haqida</h2>
+        <p style="color:var(--text-2);margin-bottom:1.5rem;font-size:1rem;line-height:1.7;">
+          Har bir savolda 4 ta rasm ko'rsatiladi. To'g'ri rasmni tanlang.<br>
+          Natijalar Telegram guruhiga va Google Sheet ga yuboriladi.
+        </p>
+        <div id="innovUserInfo" style="display:none;margin-bottom:1.5rem;padding:1rem;background:rgba(42,191,171,0.06);border-radius:12px;border:1px solid rgba(42,191,171,0.2);">
+          <strong style="color:var(--navy);">Talaba:</strong> <span id="innovUserName">—</span>
+        </div>
+        <button class="btn-primary" id="innovStartBtn" onclick="startInnov()" style="width:100%;max-width:300px;font-size:1.1rem;min-height:52px;">
+          Testni boshlash →
+        </button>
+        <div id="innovLoadMsg" style="display:none;margin-top:1rem;color:var(--gray);">
+          <div class="innov-spinner"></div>
+          <p>Savollar yuklanmoqda...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TEST -->
+    <div id="innovTest" style="display:none;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:1rem;">
+        <div style="font-size:0.9rem;color:var(--gray);font-weight:700;">
+          Savol: <span id="innovCur">1</span> / <span id="innovTot">7</span>
+        </div>
+        <div class="test-timer" id="innovTimer">⏱ 20:00</div>
+      </div>
+      <div class="test-progress" style="margin-bottom:1.5rem;">
+        <div class="test-progress-bar" id="innovProgress" style="width:0%"></div>
+      </div>
+      <div class="innov-q-card">
+        <div class="innov-q-num" id="innovQNum">1-savol</div>
+        <div class="innov-q-text" id="innovQText"></div>
+        <div class="innov-options" id="innovOptions"></div>
+      </div>
+      <div style="display:flex;gap:1rem;justify-content:flex-end;">
+        <button class="btn-primary" onclick="innovNext()" id="innovNextBtn" style="min-height:48px;padding:0.75rem 2rem;">
+          Keyingi →
+        </button>
+      </div>
+    </div>
+
+    <!-- RESULT -->
+    <div id="innovResult" style="display:none;">
+      <div class="innov-result">
+        <div style="font-size:3rem;margin-bottom:0.5rem;">🎉</div>
+        <div class="innov-score" id="innovScore">0</div>
+        <div style="color:var(--text-2);font-size:1.15rem;margin:0.5rem 0 2rem;">ball / 100</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;max-width:400px;margin:0 auto 2rem;">
+          <div class="test-result-item"><div class="test-result-item-num" id="innovOk">0</div><div class="test-result-item-label">To'g'ri</div></div>
+          <div class="test-result-item"><div class="test-result-item-num" id="innovErr">0</div><div class="test-result-item-label">Noto'g'ri</div></div>
+          <div class="test-result-item"><div class="test-result-item-num" id="innovTotR">0</div><div class="test-result-item-label">Jami</div></div>
+        </div>
+        <div id="innovTgStatus" class="info-box" style="text-align:left;max-width:500px;margin:0 auto 1.5rem;">
+          📤 Natija yuborilmoqda...
+        </div>
+        <div style="display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;">
+          <a href="index.html" class="btn-secondary">Bosh sahifaga</a>
+          <button class="btn-primary" onclick="location.reload()">Qayta urinish</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <div class="footer-logo"><img src="logo.png" alt="">KreativPedagogika</div>
+  <p class="footer-text">© 2026 KreativPedagogika.uz</p>
+</footer>
+<script src="icons.js"></script>
+<script src="nav.js"></script>
+<script>
+
+function loadViaScriptInnov(url) {
+  return new Promise((resolve) => {
+    fetch(url)
+      .then(r => r.json())
+      .then(d => resolve(d.tests || []))
+      .catch(() => {
+        // Script tag usuli
+        const cb = 'innov_cb_' + Date.now();
+        window[cb] = (data) => { delete window[cb]; resolve(data.tests || []); };
+        const s = document.createElement('script');
+        s.src = url + '&callback=' + cb;
+        s.onerror = () => { delete window[cb]; resolve([]); };
+        setTimeout(() => { if(window[cb]){delete window[cb]; resolve([]);} }, 8000);
+        document.head.appendChild(s);
+      });
+  });
+}
+
+const SHEET_URL   = 'https://script.google.com/macros/s/AKfycbxk4yDLmR2jPx6vF54o1fZ0CQkeDknJpd4X_7tiP5Hr3dQGMNbcx_ywdpSWj1YLS7LMrw/exec';
+const TG_TOKEN    = '8868132773:AAHTHaqNYeIwPBKSNV9O2O-T6RBa6qY3CZI';
+const TG_CHAT     = '-1003970151424';
+const TIME_MIN    = 20;
+
+let tests = [], cur = 0, answers = [], timerInt = null, secLeft = TIME_MIN * 60;
+let currentUser = null;
+
+document.addEventListener('DOMContentLoaded', () => {
+  const raw = localStorage.getItem('kp_user');
+  if (raw) {
+    currentUser = JSON.parse(raw);
+    document.getElementById('innovUserInfo').style.display = 'block';
+    document.getElementById('innovUserName').textContent = currentUser.name;
+  }
+});
+
+async function startInnov() {
+  if (!currentUser) {
+    showToast("Avval tizimga kiring!", 'error');
+    setTimeout(() => { window.location.href = 'login.html?next=innovatsion-test.html'; }, 1500);
+    return;
+  }
+  document.getElementById('innovStartBtn').disabled = true;
+  document.getElementById('innovLoadMsg').style.display = 'block';
+
+  try {
+    tests = await loadViaScriptInnov(SHEET_URL + '?action=getInnovTests');
+  } catch(e) {
+    console.log('Sheet xatosi:', e);
+    tests = [];
+  }
+
+  if (tests.length === 0) {
+    document.getElementById('innovLoadMsg').innerHTML = '<div class="warn-box" style="margin-top:1rem;">⚠️ Innovatsion test rasmlari hali qo\'shilmagan. Rasmlarni Google Sheet ga kiriting.</div>';
+    document.getElementById('innovStartBtn').disabled = false;
+    return;
+  }
+
+  answers = new Array(tests.length).fill(null);
+  cur = 0; secLeft = TIME_MIN * 60;
+
+  document.getElementById('innovTot').textContent = tests.length;
+  document.getElementById('innovStart').style.display = 'none';
+  document.getElementById('innovTest').style.display  = 'block';
+
+  renderQ();
+  startTimer();
+}
+
+// Google Drive URL ni ko'rish formatiga o'tkazish
+function driveUrl(url) {
+  if (!url) return '';
+  const m = url.match(/[?&/]d[/=]([-\w]{25,})/);
+  if (m) return 'https://lh3.googleusercontent.com/d/' + m[1];
+  if (url.includes('uc?export') || url.includes('lh3.google')) return url;
+  return url;
+}
+
+function renderQ() {
+  const t = tests[cur];
+  document.getElementById('innovCur').textContent    = cur + 1;
+  document.getElementById('innovQNum').textContent   = (cur+1) + '-savol';
+  document.getElementById('innovQText').textContent  = t.question;
+  document.getElementById('innovProgress').style.width = ((cur+1)/tests.length*100) + '%';
+  document.getElementById('innovNextBtn').textContent = cur === tests.length-1 ? 'Yakunlash ✓' : 'Keyingi →';
+
+  const letters = ['A','B','C','D'];
+  const imgs    = [t.imgA, t.imgB, t.imgC, t.imgD].map(driveUrl);
+  let html = '';
+  imgs.forEach((imgUrl, i) => {
+    const sel = answers[cur] === i ? 'selected' : '';
+    html += `<div class="innov-option ${sel}" onclick="selectInnov(${i})">`;
+    if (imgUrl) {
+      html += `<img class="innov-opt-img" src="${imgUrl}" alt="${letters[i]} variant" loading="lazy"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <div class="innov-opt-img-placeholder" style="display:none;">Rasm yuklanmadi</div>`;
+    } else {
+      html += `<div class="innov-opt-img-placeholder">Rasm yo'q</div>`;
+    }
+    html += `<div class="innov-opt-label"><span class="innov-opt-letter">${letters[i]}</span><span>${letters[i]}) variant</span></div>`;
+    html += `</div>`;
+  });
+  document.getElementById('innovOptions').innerHTML = html;
+}
+
+function selectInnov(idx) {
+  answers[cur] = idx;
+  document.querySelectorAll('.innov-option').forEach((el,i) => {
+    el.classList.toggle('selected', i === idx);
+    el.querySelector('.innov-opt-letter').style.background = i===idx ? 'var(--teal)' : '';
+    el.querySelector('.innov-opt-letter').style.color = i===idx ? 'white' : '';
+  });
+}
+
+function innovNext() {
+  if (answers[cur] === null) { showToast('Iltimos, javob tanlang!', 'error'); return; }
+  if (cur < tests.length - 1) { cur++; renderQ(); }
+  else finishInnov();
+}
+
+function startTimer() {
+  timerInt = setInterval(() => {
+    secLeft--;
+    const m = Math.floor(secLeft/60), s = secLeft%60;
+    const el = document.getElementById('innovTimer');
+    el.textContent = '⏱ ' + m + ':' + String(s).padStart(2,'0');
+    if (secLeft <= 60) el.classList.add('urgent');
+    if (secLeft <= 0) finishInnov();
+  }, 1000);
+}
+
+function finishInnov() {
+  clearInterval(timerInt);
+  let correct = 0;
+  tests.forEach((t,i) => { if (answers[i] === t.correct) correct++; });
+  const total = tests.length;
+  const score = Math.round(correct/total*100);
+
+  document.getElementById('innovTest').style.display   = 'none';
+  document.getElementById('innovResult').style.display = 'block';
+  document.getElementById('innovScore').textContent    = score;
+  document.getElementById('innovOk').textContent       = correct;
+  document.getElementById('innovErr').textContent      = total - correct;
+  document.getElementById('innovTotR').textContent     = total;
+
+  sendResult(score, correct, total);
+}
+
+async function sendResult(score, correct, total) {
+  const name  = currentUser?.name    || "Noma'lum";
+  const phone = currentUser?.telefon || '—';
+  const date  = new Date().toLocaleString('uz-UZ');
+  const statusEl = document.getElementById('innovTgStatus');
+
+  const msg = `🎯 *Innovatsion test natijasi*\n\n👤 *Talaba:* ${name}\n📱 *Telefon:* ${phone}\n\n✅ To'g'ri: ${correct}/${total}\n🏆 *Ball: ${score}/100*\n📅 Sana: ${date}`;
+
+  // Telegram
+  try {
+    const r = await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({chat_id:TG_CHAT, text:msg, parse_mode:'Markdown'})
+    });
+    const d = await r.json();
+    if (d.ok) {
+      statusEl.innerHTML = '✅ Natija Telegram guruhiga muvaffaqiyatli yuborildi!';
+      statusEl.style.background = 'rgba(34,197,94,0.08)';
+    }
+  } catch(e) { statusEl.innerHTML = '⚠️ Telegram bilan bog\'lanishda muammo.'; }
+
+  // Sheet
+  try {
+    await fetch(`${SHEET_URL}?action=saveResult&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}&correct=${correct}&total=${total}&score=${score}&time=—&tur=Rasmli+test`, {redirect:'follow'});
+  } catch(e) {}
+}
+</script>
+</body>
+</html>

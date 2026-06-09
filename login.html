@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+  <title>Kirish — KreativPedagogika.uz</title>
+  <link rel="icon" href="logo.png"/>
+  <link rel="stylesheet" href="shared.css"/>
+</head>
+<body>
+<div class="toast" id="toast"></div>
+<header>
+  <div class="header-inner">
+    <a class="logo" href="index.html">
+      <img src="logo.png" alt="KreativPedagogika">
+      <div>
+        <div class="logo-text">Kreativ<span>Pedagogika</span></div>
+        <span class="logo-sub">Ijodiy yondashuv, samarali ta'lim</span>
+      </div>
+    </a>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    <nav class="header-nav"><a href="index.html">Bosh sahifa</a></nav>
+    <div id="navUserBlock"></div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">🏠 Bosh sahifa</a>
+    <div id="mobileUserBlock"></div>
+  </div>
+</header>
+
+<main class="auth-wrap">
+  <div class="auth-card">
+    <h2>Kirish</h2>
+    <p>Telefon raqamingizni kiriting. Avval ro'yxatdan o'tgan bo'lishingiz kerak.</p>
+
+    <div class="field" id="fldPhone">
+      <label for="inp-phone">Telefon raqam</label>
+      <input type="tel" id="inp-phone" placeholder="+998 90 123 45 67" autocomplete="tel"/>
+      <div class="hint">Ro'yxatdan o'tishda ishlatgan raqam</div>
+      <div class="error" id="err-phone">Telefon raqam topilmadi</div>
+    </div>
+
+    <button class="btn-submit" id="loginBtn" onclick="doLogin()">Kirish →</span>
+    <div class="auth-link">Ro'yxatdan o'tmaganmisiz? <a href="register.html">Ro'yxatdan o'tish →</a></div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-logo"><img src="logo.png" alt="">KreativPedagogika</div>
+  <p class="footer-text">© 2026 KreativPedagogika.uz</p>
+</footer>
+
+<script src="icons.js"></script>
+<script src="nav.js"></script>
+<script>
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxk4yDLmR2jPx6vF54o1fZ0CQkeDknJpd4X_7tiP5Hr3dQGMNbcx_ywdpSWj1YLS7LMrw/exec';
+
+async function doLogin() {
+  const phoneEl = document.getElementById('inp-phone');
+  const btn     = document.getElementById('loginBtn');
+  const phone   = normalizePhone(phoneEl.value.trim());
+
+  document.getElementById('fldPhone').classList.remove('has-error');
+
+  if (!/^\+998\d{9}$/.test(phone)) {
+    document.getElementById('fldPhone').classList.add('has-error');
+    document.getElementById('err-phone').textContent = "To'g'ri telefon raqam kiriting";
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = "Tekshirilmoqda...";
+
+  // Local check first
+  const localUser = findLocalUser(phone);
+  if (localUser) {
+    localStorage.setItem('kp_user', JSON.stringify(localUser));
+    showToast("Xush kelibsiz, " + localUser.name + "!", 'success');
+    const next = new URLSearchParams(window.location.search).get('next');
+    setTimeout(() => { window.location.href = next || 'index.html'; }, 1000);
+    return;
+  }
+
+  try {
+    const res = await fetch(SCRIPT_URL + '?action=login&phone=' + encodeURIComponent(phone));
+    const data = await res.json();
+    if (data.success && data.user) {
+      const user = { name: data.user.name, telefon: phone };
+      localStorage.setItem('kp_user', JSON.stringify(user));
+      saveLocalUser(phone, user.name);
+      showToast("Xush kelibsiz, " + user.name + "!", 'success');
+      const next = new URLSearchParams(window.location.search).get('next');
+      setTimeout(() => { window.location.href = next || 'index.html'; }, 1000);
+    } else {
+      document.getElementById('fldPhone').classList.add('has-error');
+      document.getElementById('err-phone').textContent = "Bu raqam ro'yxatdan o'tmagan";
+      btn.disabled = false;
+      btn.textContent = "Kirish →";
+    }
+  } catch(e) {
+    document.getElementById('fldPhone').classList.add('has-error');
+    document.getElementById('err-phone').textContent = "Server bilan bog'lanishda xatolik";
+    btn.disabled = false;
+    btn.textContent = "Kirish →";
+  }
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+</script>
+</body>
+</html>

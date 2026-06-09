@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+  <title>Taqdimotlar — KreativPedagogika.uz</title>
+  <link rel="icon" href="logo.png"/>
+  <link rel="stylesheet" href="shared.css"/>
+  <style>
+    .taqd-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1.5rem;
+    }
+    .taqd-card {
+      background: white;
+      border-radius: 18px;
+      border: 1.5px solid var(--border2);
+      box-shadow: 0 3px 16px rgba(27,43,107,0.08);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: transform 0.22s, box-shadow 0.22s;
+    }
+    .taqd-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 32px rgba(27,43,107,0.13);
+    }
+    .taqd-card-head {
+      background: linear-gradient(135deg, #b45309 0%, #d97706 100%);
+      padding: 1.25rem 1.35rem 1rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.85rem;
+    }
+    .taqd-num {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.18);
+      border: 1.5px solid rgba(255,255,255,0.28);
+      color: white;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .taqd-title {
+      color: white;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 800;
+      line-height: 1.4;
+      padding-top: 2px;
+    }
+    .taqd-card-body {
+      padding: 1.1rem 1.35rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .taqd-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .taqd-meta-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      font-size: 0.97rem;
+      color: var(--text-2);
+      line-height: 1.6;
+      flex-wrap: wrap;
+    }
+    .taqd-meta-label {
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: var(--navy);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+      padding-top: 2px;
+      min-width: 75px;
+    }
+    .taqd-reja {
+      font-size: 0.95rem;
+      color: var(--text-2);
+      line-height: 1.75;
+    }
+    .taqd-reja strong {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: var(--navy);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.3rem;
+    }
+    .taqd-reja ol {
+      padding-left: 1.1rem;
+      margin: 0;
+    }
+    .taqd-reja ol li { margin-bottom: 2px; }
+    .taqd-card-foot {
+      padding: 0.9rem 1.35rem 1.1rem;
+      border-top: 1px solid var(--border2);
+      display: flex;
+      gap: 0.6rem;
+    }
+    .btn-taqd-view {
+      flex: 1;
+      background: linear-gradient(135deg, #b45309, #d97706);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 0.7rem 1rem;
+      font-size: 0.95rem;
+      font-weight: 800;
+      font-family: 'Outfit', sans-serif;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: opacity 0.18s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn-taqd-view:hover { opacity: 0.88; }
+    .btn-taqd-dl {
+      background: rgba(245,166,35,0.1);
+      color: #b45309;
+      border: 1.5px solid rgba(245,166,35,0.3);
+      border-radius: 10px;
+      padding: 0.65rem 0.9rem;
+      font-size: 0.95rem;
+      font-weight: 800;
+      font-family: 'Outfit', sans-serif;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      text-decoration: none;
+      transition: all 0.18s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn-taqd-dl:hover { background: #d97706; color: white; border-color: #d97706; }
+    @media (max-width: 768px) { .taqd-grid { grid-template-columns: 1fr; gap: 1rem; } }
+    @media (max-width: 480px) {
+      .taqd-card-head { padding: 1rem 1.1rem 0.85rem; gap: 0.7rem; }
+      .taqd-card-body { padding: 0.9rem 1.1rem; }
+      .taqd-card-foot { padding: 0.75rem 1.1rem 0.9rem; }
+      .taqd-num { width: 38px; height: 38px; font-size: 1rem; border-radius: 10px; }
+      .taqd-title { font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="toast" id="toast"></div>
+<header>
+  <div class="header-inner">
+    <a class="logo" href="index.html">
+      <img src="logo.png" alt="KreativPedagogika">
+      <div>
+        <div class="logo-text">Kreativ<span>Pedagogika</span></div>
+        <span class="logo-sub">Ijodiy yondashuv, samarali ta'lim</span>
+      </div>
+    </a>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    <nav class="header-nav">
+      <a href="index.html">Bosh sahifa</a>
+      <div class="dropdown"><span class="dd-btn">O'quv materiallari</span><div class="dropdown-menu">
+        <a href="fan-dasturi.html"><span class="dm-icon">📋</span>Fan dasturi</a>
+        <a href="sillabusi.html"><span class="dm-icon">📋</span>Fan sillabusi</a>
+        <a href="maruzalar.html"><span class="dm-icon">📚</span>Ma'ruza matnlari</a>
+        <a href="amaliy.html"><span class="dm-icon">✍️</span>Amaliy mashg'ulotlar</a>
+        <a href="adabiyotlar.html"><span class="dm-icon">📖</span>Adabiyotlar</a>
+        <a href="taqdimotlar.html" class="active"><span class="dm-icon">📊</span>Taqdimotlar</a>
+      </div></div>
+      <div class="dropdown"><span class="dd-btn">Topshiriqlar</span><div class="dropdown-menu">
+        <a href="innovatsion-test.html"><span class="dm-icon">🎯</span>Innovatsion test</a>
+        <a href="test.html"><span class="dm-icon">🎯</span>Test topshiriqlari</a>
+        <a href="mustaqil-ish.html"><span class="dm-icon">📝</span>Mustaqil ish mavzulari</a>
+        <a href="topshiriqlar.html"><span class="dm-icon">📝</span>Topshiriqlar</a>
+        <a href="krossvord.html"><span class="dm-icon">🎲</span>Krossvordlar</a>
+      </div></div>
+      <a href="videodarslar.html">📹 Videodarslar</a>
+      <a href="muallif.html">👤 Muallif</a>
+    </nav>
+    <div id="navUserBlock"></div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">🏠 Bosh sahifa</a>
+    <div class="mobile-section-label">O'quv materiallari</div>
+    <a href="fan-dasturi.html">📋 Fan dasturi</a>
+    <a href="sillabusi.html">📋 Fan sillabusi</a>
+    <a href="maruzalar.html">📚 Ma'ruza matnlari</a>
+    <a href="amaliy.html">✍️ Amaliy mashg'ulotlar</a>
+    <a href="adabiyotlar.html">📖 Adabiyotlar</a>
+    <a href="taqdimotlar.html" class="active">📊 Taqdimotlar</a>
+    <div class="mobile-section-label">Topshiriqlar</div>
+    <a href="innovatsion-test.html">🎯 Innovatsion test</a>
+    <a href="test.html">🎯 Test topshiriqlari</a>
+    <a href="mustaqil-ish.html">📝 Mustaqil ish mavzulari</a>
+    <a href="topshiriqlar.html">📝 Topshiriqlar</a>
+    <a href="krossvord.html">🎲 Krossvordlar</a>
+    <div class="mobile-section-label">Boshqa</div>
+    <a href="videodarslar.html">📹 Videodarslar</a>
+    <a href="muallif.html">👤 Muallif haqida</a>
+    <div id="mobileUserBlock"></div>
+  </div>
+</header>
+
+<div class="page-header">
+  <h1>📊 Mavzular yuzasidan taqdimotlar</h1>
+  <p>7 ta mavzu bo'yicha taqdimotlar</p>
+</div>
+
+<main class="main" style="padding-top:2rem; padding-bottom:3rem;">
+  <div class="info-box" style="margin-bottom:1.75rem;">
+    📌 Taqdimotlar PDF formatda. Ko'rish yoki yuklab olish uchun tugmani bosing.
+  </div>
+  <div class="taqd-grid" id="taqdGrid"></div>
+</main>
+
+<footer>
+  <div class="footer-logo"><img src="logo.png" alt="">KreativPedagogika</div>
+  <p class="footer-text">© 2026 KreativPedagogika.uz</p>
+</footer>
+
+<div class="modal-overlay" id="modalOverlay" onclick="closePDF(event)">
+  <div class="modal">
+    <div class="modal-head">
+      <span id="modalTitle">Taqdimot</span>
+      <div class="modal-head-actions">
+        <a class="modal-dl-btn" id="modalDlBtn" href="#" download>⬇ Yuklab olish</a>
+        <button class="modal-close" onclick="closePDF(event)">✕</span>
+      </div>
+    </div>
+    <iframe id="modalFrame" src=""></iframe>
+  </div>
+</div>
+
+<script src="icons.js"></script>
+<script src="nav.js"></script>
+<script>
+const TAQDIMOTLAR = [
+  {
+    num: 1,
+    title: "Kreativ pedagogika fan sifatida",
+    muallif: "Sariboyev Nurali Abdunazarovich",
+    muassasa: "Guliston davlat pedagogika instituti, Pedagogika va psixologiya kafedrasi",
+    reja: [
+      "Kreativ pedagogikaning asosiy tushunchalari.",
+      "Kreativ pedagogika fan va akademik fan sifatida.",
+      "Kreativ pedagogika fanining boshqa fanlar bilan aloqasi.",
+      "Kreativ pedagogika fanining ilmiy-tadqiqot metodlari."
+    ],
+    file: "pdfs/taqdimotlar/taqdimot-1.pdf"
+  },
+  {
+    num: 2,
+    title: "Kreativ ta'lim muhiti: mohiyati, xususiyatlari",
+    muallif: "Sariboyev Nurali Abdunazarovich",
+    muassasa: "Guliston davlat pedagogika instituti, Pedagogika va psixologiya kafedrasi",
+    reja: [
+      "\"Atrof-muhit\", \"Kreativ muhit\", \"Ta'lim muhiti\", \"Kreativ ta'lim muhiti\" tushunchalarining mohiyati.",
+      "Kreativ ta'lim muhitining asosiy talablari.",
+      "Kreativ muhitni shakllantirishning pedagogik shartlari."
+    ],
+    file: "pdfs/taqdimotlar/taqdimot-2.pdf"
+  },
+  {
+    num: 3,
+    title: "Didaktik ta'minotni yaratishga kreativ yondashuv",
+    muallif: "Sariboyev Nurali Abdunazarovich",
+    muassasa: "Guliston davlat pedagogika instituti, Pedagogika va psixologiya kafedrasi",
+    reja: [
+      "O'quv dasturlarini yaratishga kreativ yondashuv.",
+      "Nazariy va amaliy mashg'ulotlar uchun materiallar to'plash va saralashda kreativ yondashuvning ahamiyati.",
+      "O'quv axborotlarni samarali izlash — pedagogning kreativlik sifatlariga egaligini ko'rsatuvchi muhim holat."
+    ],
+    file: "pdfs/taqdimotlar/taqdimot-3.pdf"
+  },
+  {
+    num: 4,
+    title: "Bo'lajak o'qituvchilarda kreativ tasavvurini rivojlanishi va pedagogikada ilmiy ijodkorlik",
+    muallif: "Sariboyev Nurali Abdunazarovich",
+    muassasa: "Guliston davlat pedagogika instituti, Pedagogika va psixologiya kafedrasi",
+    reja: [
+      "Kreativ tasavvur tushunchasi.",
+      "Kreativ pedagogika fanining o'qitishning asosiy shakllari.",
+      "Ixtirochilik masalalarini yechish nazariyasi.",
+      "Kreativ tasavvurni rivojlantirish va yangi yechimlarni topish usullari.",
+      "Ilmiy ijod tushunchasi va usullari.",
+      "Bo'lajak o'qituvchilarda ilmiy ijodkorlik qobiliyatini shakllantirish mazmuni."
+    ],
+    file: "pdfs/taqdimotlar/taqdimot-4.pdf"
+  },
+  {
+    num: 5,
+    title: "Kreativ kompetensiya modelining shakllanishi",
+    muallif: "Sariboyev Nurali Abdunazarovich",
+    muassasa: "Guliston davlat pedagogika instituti, Pedagogika va psixologiya kafedrasi",
+    reja: [
+      "O'qituvchi modelining umumiy tavsifi.",
+      "O'qituvchining kreativ kompetensiyasini shakllantirishning modeli.",
+      "Kreativ tayyorgarlik — ijodiy yetuklikning tarkibiy qismi."
+    ],
+    file: "pdfs/taqdimotlar/taqdimot-5.pdf"
+  },
+  {
+    num: 6,
+    title: "O'qituvchining ta'lim jarayoniga kreativ yondashuvi",
+    muallif: "Sariboyev Nurali Abdunazarovich",
+    muassasa: "Guliston davlat pedagogika instituti, Pedagogika va psixologiya kafedrasi",
+    reja: [
+      "Hozirgi zamon o'qituvchisining kreativ pedagogik faoliyati.",
+      "O'qituvchining ta'lim jarayonida kasbiy omilkorligi.",
+      "O'qituvchining ta'lim jarayonida faoliyati va darsga tayyorgarligi."
+    ],
+    file: "pdfs/taqdimotlar/taqdimot-6.pdf"
+  },
+  {
+    num: 7,
+    title: "Kreativ topshiriqlar tizimi. Kreativ darsning innovatsion tuzilishi",
+    muallif: "Sariboyev Nurali Abdunazarovich",
+    muassasa: "Guliston davlat pedagogika instituti, Pedagogika va psixologiya kafedrasi",
+    reja: [
+      "Kreativ shaxsni rivojlantirish modeli.",
+      "Maktab o'quvchilarining kreativ tafakkurini uzluksiz shakllantirish va kreativ qobiliyatlarini rivojlantirishning pedagogik tizimi.",
+      "Kreativ darsning tuzilishi bo'yicha ko'rsatmalar."
+    ],
+    file: "pdfs/taqdimotlar/taqdimot-7.pdf"
+  }
+];
+
+document.getElementById('taqdGrid').innerHTML = TAQDIMOTLAR.map(t => `
+  <div class="taqd-card">
+    <div class="taqd-card-head">
+      <div class="taqd-num">${t.num}</div>
+      <div class="taqd-title">${t.num}-Mavzu: ${t.title}</div>
+    </div>
+    <div class="taqd-card-body">
+      <div class="taqd-meta">
+        <div class="taqd-meta-row">
+          <span class="taqd-meta-label">Muallif</span>
+          <span>${t.muallif}</span>
+        </div>
+        <div class="taqd-meta-row">
+          <span class="taqd-meta-label">Muassasa</span>
+          <span>${t.muassasa}</span>
+        </div>
+      </div>
+      <div class="taqd-reja">
+        <strong>📋 Reja</strong>
+        <ol>${t.reja.map(r => `<li>${r}</li>`).join('')}</ol>
+      </div>
+    </div>
+    <div class="taqd-card-foot">
+      <button class="btn-taqd-view" onclick="openPDF('${t.file}','${t.num}-Mavzu: ${t.title.replace(/'/g,"\\'")}')">
+        👁 Ko'rish
+      </span>
+      <a class="btn-taqd-dl" href="${t.file}" download="taqdimot-${t.num}.pdf">
+        ⬇
+      </a>
+    </div>
+  </div>
+`).join('');
+</script>
+</body>
+</html>

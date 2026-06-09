@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+  <title>Ro'yxatdan o'tish — KreativPedagogika.uz</title>
+  <link rel="icon" href="logo.png"/>
+  <link rel="stylesheet" href="shared.css"/>
+</head>
+<body>
+<div class="toast" id="toast"></div>
+<header>
+  <div class="header-inner">
+    <a class="logo" href="index.html">
+      <img src="logo.png" alt="KreativPedagogika">
+      <div>
+        <div class="logo-text">Kreativ<span>Pedagogika</span></div>
+        <span class="logo-sub">Ijodiy yondashuv, samarali ta'lim</span>
+      </div>
+    </a>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    <nav class="header-nav">
+      <a href="index.html">Bosh sahifa</a>
+    </nav>
+    <div id="navUserBlock"></div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">🏠 Bosh sahifa</a>
+    <div id="mobileUserBlock"></div>
+  </div>
+</header>
+
+<main class="auth-wrap">
+  <div class="auth-card">
+    <h2>Ro'yxatdan o'tish</h2>
+    <p>Platformadan foydalanish uchun ro'yxatdan o'ting. Telefon raqami unikal bo'lishi kerak.</p>
+
+    <div class="field" id="fldName">
+      <label for="inp-name">Ism va Familiya</label>
+      <input type="text" id="inp-name" placeholder="Misol: Aliyev Jasur" autocomplete="name"/>
+      <div class="error" id="err-name">Ism va familiyani kiriting</div>
+    </div>
+
+    <div class="field" id="fldPhone">
+      <label for="inp-phone">Telefon raqam</label>
+      <input type="tel" id="inp-phone" placeholder="+998 90 123 45 67" autocomplete="tel"/>
+      <div class="hint">Format: +998 XX XXX XX XX</div>
+      <div class="error" id="err-phone">To'g'ri telefon raqam kiriting</div>
+    </div>
+
+    <button class="btn-submit" id="regBtn" onclick="doRegister()">Ro'yxatdan o'tish</span>
+    <div class="auth-link">Allaqachon ro'yxatdan o'tganmisiz? <a href="login.html">Kirish →</a></div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-logo"><img src="logo.png" alt="">KreativPedagogika</div>
+  <p class="footer-text">© 2026 KreativPedagogika.uz</p>
+</footer>
+
+<script src="icons.js"></script>
+<script src="nav.js"></script>
+<script>
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxk4yDLmR2jPx6vF54o1fZ0CQkeDknJpd4X_7tiP5Hr3dQGMNbcx_ywdpSWj1YLS7LMrw/exec';
+
+async function doRegister() {
+  const nameEl  = document.getElementById('inp-name');
+  const phoneEl = document.getElementById('inp-phone');
+  const btn     = document.getElementById('regBtn');
+
+  const name  = nameEl.value.trim();
+  const phone = normalizePhone(phoneEl.value.trim());
+
+  // Validate
+  let valid = true;
+  document.getElementById('fldName').classList.remove('has-error');
+  document.getElementById('fldPhone').classList.remove('has-error');
+
+  if (name.length < 3) {
+    document.getElementById('fldName').classList.add('has-error');
+    valid = false;
+  }
+  if (!/^\+998\d{9}$/.test(phone)) {
+    document.getElementById('fldPhone').classList.add('has-error');
+    document.getElementById('err-phone').textContent = "To'g'ri telefon raqam kiriting (+998XXXXXXXXX)";
+    valid = false;
+  }
+  if (!valid) return;
+
+  btn.disabled = true;
+  btn.textContent = "Tekshirilmoqda...";
+
+  try {
+    // Check phone uniqueness via Google Apps Script
+    const checkRes = await fetch(SCRIPT_URL + '?action=checkPhone&phone=' + encodeURIComponent(phone));
+    const checkData = await checkRes.json();
+
+    if (checkData.exists) {
+      document.getElementById('fldPhone').classList.add('has-error');
+      document.getElementById('err-phone').textContent = "Bu telefon raqam allaqachon ro'yxatdan o'tgan";
+      btn.disabled = false;
+      btn.textContent = "Ro'yxatdan o'tish";
+      return;
+    }
+
+    // Register
+    btn.textContent = "Saqlanmoqda...";
+    const regRes = await fetch(SCRIPT_URL + '?action=register&name=' + encodeURIComponent(name) + '&phone=' + encodeURIComponent(phone));
+    const regData = await regRes.json();
+
+    if (regData.success) {
+      const user = { name, telefon: phone };
+      localStorage.setItem('kp_user', JSON.stringify(user));
+      saveLocalUser(phone, name);
+      showToast("Muvaffaqiyatli ro'yxatdan o'tdingiz!", 'success');
+      setTimeout(() => { window.location.href = 'index.html'; }, 1200);
+    } else {
+      throw new Error(regData.message || "Xatolik yuz berdi");
+    }
+  } catch(e) {
+    // Fallback: offline mode
+    const localCheck = findLocalUser(phone);
+    if (localCheck) {
+      document.getElementById('fldPhone').classList.add('has-error');
+      document.getElementById('err-phone').textContent = "Bu telefon raqam allaqachon ro'yxatdan o'tgan";
+      btn.disabled = false;
+      btn.textContent = "Ro'yxatdan o'tish";
+      return;
+    }
+    const user = { name, telefon: phone };
+    localStorage.setItem('kp_user', JSON.stringify(user));
+    saveLocalUser(phone, name);
+    showToast("Ro'yxatdan o'tdingiz (offline rejim)", 'success');
+    setTimeout(() => { window.location.href = 'index.html'; }, 1200);
+  }
+}
+
+// Enter key
+document.addEventListener('keydown', e => { if (e.key === 'Enter') doRegister(); });
+</script>
+</body>
+</html>

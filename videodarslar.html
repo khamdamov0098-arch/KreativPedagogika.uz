@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+  <title>Videodarslar — KreativPedagogika.uz</title>
+  <link rel="icon" href="logo.png"/>
+  <link rel="stylesheet" href="shared.css"/>
+  <style>
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1.5rem;
+    }
+    .video-card {
+      background: white;
+      border-radius: 18px;
+      border: 1.5px solid var(--border2);
+      box-shadow: 0 3px 16px rgba(27,43,107,0.08);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: transform 0.22s, box-shadow 0.22s;
+    }
+    .video-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 32px rgba(27,43,107,0.13);
+    }
+    .video-thumb {
+      position: relative;
+      padding-top: 56.25%;
+      background: #0f1d4d;
+      overflow: hidden;
+    }
+    .video-thumb iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    .video-num-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: linear-gradient(135deg, var(--navy), var(--teal));
+      color: white;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 900;
+      padding: 3px 10px;
+      border-radius: 20px;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .video-info {
+      padding: 1rem 1.25rem 1.25rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .video-title {
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 900;
+      color: var(--navy);
+      line-height: 1.4;
+    }
+    .video-author {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.9rem;
+      color: var(--teal-dark);
+      font-weight: 700;
+    }
+    .video-author::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--teal);
+      flex-shrink: 0;
+    }
+    .video-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.87rem;
+      font-weight: 700;
+      color: var(--gray);
+      text-decoration: none;
+      margin-top: auto;
+      padding-top: 0.5rem;
+      transition: color 0.15s;
+    }
+    .video-link:hover { color: var(--teal-dark); }
+
+    @media (max-width: 768px) {
+      .video-grid { grid-template-columns: 1fr; gap: 1rem; }
+    }
+    @media (max-width: 480px) {
+      .video-info { padding: 0.85rem 1rem 1rem; }
+      .video-title { font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="toast" id="toast"></div>
+<header>
+  <div class="header-inner">
+    <a class="logo" href="index.html">
+      <img src="logo.png" alt="KreativPedagogika">
+      <div>
+        <div class="logo-text">Kreativ<span>Pedagogika</span></div>
+        <span class="logo-sub">Ijodiy yondashuv, samarali ta'lim</span>
+      </div>
+    </a>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    <nav class="header-nav">
+      <a href="index.html">Bosh sahifa</a>
+      <div class="dropdown"><button class="dd-btn">O'quv materiallari</button><div class="dropdown-menu">
+        <a href="fan-dasturi.html"><span class="dm-icon">📋</span>Fan dasturi</a>
+        <a href="sillabusi.html"><span class="dm-icon">📋</span>Fan sillabusi</a>
+        <a href="maruzalar.html"><span class="dm-icon">📚</span>Ma'ruza matnlari</a>
+        <a href="amaliy.html"><span class="dm-icon">✍️</span>Amaliy mashg'ulotlar</a>
+        <a href="adabiyotlar.html"><span class="dm-icon">📖</span>Adabiyotlar</a>
+        <a href="taqdimotlar.html"><span class="dm-icon">📊</span>Taqdimotlar</a>
+      </div></div>
+      <div class="dropdown"><button class="dd-btn">Topshiriqlar</button><div class="dropdown-menu">
+        <a href="innovatsion-test.html"><span class="dm-icon">🎯</span>Innovatsion test</a>
+        <a href="test.html"><span class="dm-icon">🎯</span>Test topshiriqlari</a>
+        <a href="mustaqil-ish.html"><span class="dm-icon">📝</span>Mustaqil ish mavzulari</a>
+        <a href="topshiriqlar.html"><span class="dm-icon">📝</span>Topshiriqlar</a>
+        <a href="krossvord.html"><span class="dm-icon">🎲</span>Krossvordlar</a>
+      </div></div>
+      <a href="videodarslar.html" class="active">📹 Videodarslar</a>
+      <a href="muallif.html">👤 Muallif</a>
+    </nav>
+    <div id="navUserBlock"></div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">🏠 Bosh sahifa</a>
+    <div class="mobile-section-label">O'quv materiallari</div>
+    <a href="fan-dasturi.html">📋 Fan dasturi</a>
+    <a href="sillabusi.html">📋 Fan sillabusi</a>
+    <a href="maruzalar.html">📚 Ma'ruza matnlari</a>
+    <a href="amaliy.html">✍️ Amaliy mashg'ulotlar</a>
+    <a href="adabiyotlar.html">📖 Adabiyotlar</a>
+    <a href="taqdimotlar.html">📊 Taqdimotlar</a>
+    <div class="mobile-section-label">Topshiriqlar</div>
+    <a href="innovatsion-test.html">🎯 Innovatsion test</a>
+    <a href="test.html">🎯 Test topshiriqlari</a>
+    <a href="mustaqil-ish.html">📝 Mustaqil ish mavzulari</a>
+    <a href="topshiriqlar.html">📝 Topshiriqlar</a>
+    <a href="krossvord.html">🎲 Krossvordlar</a>
+    <div class="mobile-section-label">Boshqa</div>
+    <a href="videodarslar.html" class="active">📹 Videodarslar</a>
+    <a href="muallif.html">👤 Muallif haqida</a>
+    <div id="mobileUserBlock"></div>
+  </div>
+</header>
+
+<div class="page-header">
+  <h1>📹 Videodarslar</h1>
+  <p>7 ta YouTube videodars — kreativ pedagogika bo'yicha</p>
+</div>
+
+<main class="main" style="padding-top:2rem; padding-bottom:3rem;">
+  <div class="info-box" style="margin-bottom:1.75rem;">
+    📌 Videolar YouTube platformasida joylashgan. Internetga ulanganingizda to'liq tomosha qilishingiz mumkin.
+  </div>
+  <div class="video-grid" id="videoGrid"></div>
+</main>
+
+<footer>
+  <div class="footer-logo"><img src="logo.png" alt="">KreativPedagogika</div>
+  <p class="footer-text">© 2026 KreativPedagogika.uz</p>
+</footer>
+
+<script src="icons.js"></script>
+<script src="nav.js"></script>
+<script>
+const VIDEOS = [
+  {
+    num: 1,
+    id: '3ONGW1f1hvk',
+    title: "Kreativ pedagogikaning nazariy asoslari",
+    author: "Nargis Saydullayeva — Maktabgacha ta'lim fakulteti"
+  },
+  {
+    num: 2,
+    id: 'S_bVH6qcdFQ',
+    title: "Pedagogik kreativlik va uning o'ziga xos jihatlari",
+    author: ""
+  },
+  {
+    num: 3,
+    id: 'm4MaA5r3jnU',
+    title: "O'quvchilarning kreativ fikrlashini rivojlantirish va uni baholash",
+    author: ""
+  },
+  {
+    num: 4,
+    id: 'bfhQG6pVjFk',
+    title: "Pedagogika: shaxs tarbiyasi va rivojlanishi to'g'risidagi fan",
+    author: "Ibodulla Uzoqov"
+  },
+  {
+    num: 5,
+    id: '6AYLcE25cIo',
+    title: "O'qituvchining kreativlik kompetentligini oshirish yo'llari (1-dars)",
+    author: ""
+  },
+  {
+    num: 6,
+    id: 'GPld7BHaNxI',
+    title: "O'qituvchining kreativlik kompetentligini oshirish yo'llari (2-dars)",
+    author: ""
+  },
+  {
+    num: 7,
+    id: 'CeQk4QHGY-I',
+    title: "O'quvchilarni kreativ fikrlashlarini rivojlantirish metodi",
+    author: ""
+  }
+];
+
+document.getElementById('videoGrid').innerHTML = VIDEOS.map(v => `
+  <div class="video-card">
+    <div class="video-thumb">
+      <span class="video-num-badge">${v.num}-video</span>
+      <iframe
+        src="https://www.youtube.com/embed/${v.id}"
+        title="${v.title}"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+        loading="lazy">
+      </iframe>
+    </div>
+    <div class="video-info">
+      <div class="video-title">${v.title}</div>
+      ${v.author ? `<div class="video-author">${v.author}</div>` : ''}
+      <a class="video-link" href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener">
+        ↗ YouTube da ochish
+      </a>
+    </div>
+  </div>
+`).join('');
+</script>
+</body>
+</html>

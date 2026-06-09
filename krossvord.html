@@ -1,0 +1,824 @@
+﻿<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+  <title>Krossvordlar — KreativPedagogika.uz</title>
+  <link rel="icon" href="logo.png"/>
+  <link rel="stylesheet" href="shared.css"/>
+  <style>
+    .kross-tabs { display:flex; flex-wrap:wrap; gap:0.45rem; margin-bottom:1.5rem; }
+    .kross-tab {
+      padding:0.5rem 1rem; border-radius:10px; border:1.5px solid var(--border2);
+      background:white; font-size:0.9rem; font-weight:700; color:var(--navy);
+      cursor:pointer; transition:all 0.18s; font-family:'Outfit',sans-serif;
+      min-width:42px; text-align:center;
+    }
+    .kross-tab:hover { border-color:var(--teal); color:var(--teal-dark); }
+    .kross-tab.active {
+      background:linear-gradient(135deg,var(--navy),var(--teal));
+      color:white; border-color:transparent;
+    }
+    .kross-wrap { display:none; }
+    .kross-wrap.active { display:block; }
+    .kross-card {
+      background:white; border-radius:18px; padding:1.5rem;
+      box-shadow:var(--shadow); border:1.5px solid var(--border2); margin-bottom:1.5rem;
+    }
+    .kross-title { font-family:'Nunito',sans-serif; font-size:1.15rem; font-weight:900; color:var(--navy); margin-bottom:0.25rem; }
+    .kross-subtitle { font-size:0.93rem; color:var(--gray); margin-bottom:1.25rem; }
+    .cw-outer { overflow-x:auto; -webkit-overflow-scrolling:touch; padding-bottom:0.5rem; }
+    .cw-grid { display:inline-grid; gap:2px; }
+    .cw-cell {
+      width:34px; height:34px; position:relative;
+      border:1.5px solid #b0bcd0; border-radius:4px;
+      background:white; display:flex; align-items:center; justify-content:center;
+    }
+    .cw-cell.blocked { background:var(--navy); border-color:var(--navy); pointer-events:none; }
+    .cw-cell.empty   { background:transparent; border-color:transparent; pointer-events:none; }
+    .cw-cell input {
+      width:100%; height:100%; border:none; outline:none; text-align:center;
+      font-family:'Nunito',sans-serif; font-size:0.9rem; font-weight:900;
+      color:var(--navy); background:transparent; text-transform:uppercase;
+      caret-color:var(--teal); padding:0; -webkit-appearance:none;
+    }
+    .cw-cell.hi  { background:rgba(42,191,171,0.14); border-color:var(--teal); }
+    .cw-cell.ok  { background:rgba(34,197,94,0.14);  border-color:#22c55e; }
+    .cw-cell.err { background:rgba(239,68,68,0.1);   border-color:#ef4444; }
+    .cw-num {
+      position:absolute; top:1px; left:2px;
+      font-size:0.5rem; font-weight:900; color:var(--navy);
+      line-height:1; pointer-events:none; z-index:1;
+    }
+    .clues-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; margin-top:1.25rem; }
+    .clues-section h4 {
+      font-family:'Nunito',sans-serif; font-size:0.97rem; font-weight:900;
+      color:var(--navy); margin-bottom:0.6rem; padding-bottom:0.3rem;
+      border-bottom:2px solid var(--teal); display:inline-block;
+    }
+    .clue-row {
+      display:flex; gap:0.45rem; margin-bottom:0.4rem; font-size:0.95rem;
+      color:var(--text-2); line-height:1.5; cursor:pointer;
+      padding:3px 5px; border-radius:6px; transition:background 0.15s;
+    }
+    .clue-row:hover { background:rgba(42,191,171,0.08); }
+    .clue-row.active { background:rgba(42,191,171,0.12); color:var(--teal-dark); font-weight:600; }
+    .clue-num { font-weight:900; color:var(--navy); min-width:22px; flex-shrink:0; }
+    .kross-result {
+      display:none; padding:0.9rem 1.1rem; border-radius:12px;
+      margin-top:1rem; font-size:0.95rem; font-weight:600;
+    }
+    .kross-result.show { display:block; }
+    .kross-result.ok  { background:rgba(34,197,94,0.08);  border:1px solid rgba(34,197,94,0.3);  color:#16a34a; }
+    .kross-result.bad { background:rgba(245,166,35,0.08); border:1px solid rgba(245,166,35,0.3); color:#b45309; }
+    @media(max-width:768px){
+      .clues-grid{grid-template-columns:1fr;}
+      .cw-cell{width:29px;height:29px;}
+      .cw-cell input{font-size:0.82rem;}
+    }
+    @media(max-width:480px){
+      .cw-cell{width:25px;height:25px;}
+      .cw-cell input{font-size:0.75rem;}
+      .cw-num{font-size:0.45rem;}
+    }
+  </style>
+</head>
+<body>
+<div class="toast" id="toast"></div>
+<header>
+  <div class="header-inner">
+    <a class="logo" href="index.html">
+      <img src="logo.png" alt="KreativPedagogika">
+      <div>
+        <div class="logo-text">Kreativ<span>Pedagogika</span></div>
+        <span class="logo-sub">Ijodiy yondashuv, samarali ta'lim</span>
+      </div>
+    </a>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    <nav class="header-nav">
+      <a href="index.html">Bosh sahifa</a>
+      <div class="dropdown"><button class="dd-btn" onclick="toggleDropdown(this,event)">O'quv materiallari</button><div class="dropdown-menu">
+        <a href="fan-dasturi.html"><span class="dm-icon">📋</span>Fan dasturi</a>
+        <a href="sillabusi.html"><span class="dm-icon">📋</span>Fan sillabusi</a>
+        <a href="maruzalar.html"><span class="dm-icon">📚</span>Ma'ruza matnlari</a>
+        <a href="amaliy.html"><span class="dm-icon">✍️</span>Amaliy mashg'ulotlar</a>
+        <a href="adabiyotlar.html"><span class="dm-icon">📖</span>Adabiyotlar</a>
+        <a href="taqdimotlar.html"><span class="dm-icon">📊</span>Taqdimotlar</a>
+      </div></div>
+      <div class="dropdown"><button class="dd-btn" onclick="toggleDropdown(this,event)">Topshiriqlar</button><div class="dropdown-menu">
+        <a href="innovatsion-test.html"><span class="dm-icon">🎯</span>Innovatsion test</a>
+        <a href="test.html"><span class="dm-icon">🎯</span>Test topshiriqlari</a>
+        <a href="mustaqil-ish.html"><span class="dm-icon">📝</span>Mustaqil ish mavzulari</a>
+        <a href="topshiriqlar.html"><span class="dm-icon">📝</span>Topshiriqlar</a>
+        <a href="krossvord.html" class="active"><span class="dm-icon">🎲</span>Krossvordlar</a>
+      </div></div>
+      <a href="videodarslar.html">📹 Videodarslar</a>
+      <a href="muallif.html">👤 Muallif</a>
+    </nav>
+    <div id="navUserBlock"></div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">🏠 Bosh sahifa</a>
+    <div class="mobile-section-label">Topshiriqlar</div>
+    <a href="krossvord.html" class="active">🎲 Krossvordlar</a>
+    <a href="test.html">🎯 Test topshiriqlari</a>
+    <div id="mobileUserBlock"></div>
+  </div>
+</header>
+
+<div class="page-header">
+  <h1>🎲 Krossvordlar</h1>
+  <p>14 ta interaktiv krossvord — bilimlarni sinab ko'ring</p>
+</div>
+
+<main class="main" style="padding-top:2rem;padding-bottom:3rem;">
+  <div class="info-box" style="margin-bottom:1.5rem;">
+    📌 Krossvord raqamini tanlang. Savolni bosganingizda tegishli katak ajralib turadi. To'ldirib "Tekshirish" bosing.
+  </div>
+  <div class="kross-tabs" id="krossTabs"></div>
+  <div id="krossContainer"></div>
+</main>
+
+<footer>
+  <div class="footer-logo"><img src="logo.png" alt="">KreativPedagogika</div>
+  <p class="footer-text">© 2026 KreativPedagogika.uz</p>
+</footer>
+<script src="icons.js"></script>
+<script src="nav.js"></script>
+<script>
+const TG_TOKEN = '8868132773:AAHTHaqNYeIwPBKSNV9O2O-T6RBa6qY3CZI';
+const TG_CHAT  = '-1003970151424';
+const SHEET_URL= 'https://script.google.com/macros/s/AKfycbxk4yDLmR2jPx6vF54o1fZ0CQkeDknJpd4X_7tiP5Hr3dQGMNbcx_ywdpSWj1YLS7LMrw/exec';
+
+// ============================================================
+// 14 ta krossvord — rasmlardan o'qilgan haqiqiy ma'lumotlar
+// dir:'H'=gorizontal, dir:'V'=vertikal
+// row,col — 0 dan boshlanadi
+// ============================================================
+const CWS = [
+  { id:1, title:"Kreativ pedagogika fan sifatida", sub:"Ijod – bilimni amaliyotga aylantiruvchi kuch!",
+    words:[
+      {n:1, w:'KREATIVLIK', r:11, c:9, d:'H', q:"Yangi va original g'oyalarni yaratish qobiliyati."},
+      {n:20, w:'POTENSIAL', r:9, c:13, d:'V', q:"Shaxsning rivojlanish imkoniyati."},
+      {n:19, w:'PEDAGOG', r:10, c:11, d:'V', q:"O'quvchi faoliyatini boshqaruvchi shaxs."},
+      {n:18, w:'KREATIVTAFAKKUR', r:11, c:9, d:'V', q:"Yangilik yaratishga yo'naltirilgan fikrlash turi."},
+      {n:17, w:'MUTAXASSISLIK', r:8, c:12, d:'V', q:"Kasb egasining faoliyat sohasi."},
+      {n:16, w:'TALIM', r:9, c:16, d:'V', q:"Bilimlarni egallash jarayoni."},
+      {n:15, w:'MAHORAT', r:7, c:10, d:'V', q:"O'qituvchining kasbiy faoliyati natijasi."},
+      {n:14, w:'YETUKLIK', r:7, c:18, d:'V', q:"Mutaxassisning kasbiy rivojlanish bosqichi."},
+      {n:13, w:'GLOBALLASHUV', r:0, c:15, d:'V', q:"Dunyo miqyosidagi integratsiya jarayoni."},
+      {n:12, w:'METODOLOGIYA', r:2, c:14, d:'V', q:"Ilmiy izlanish usullarini o'rganuvchi soha."},
+      {n:11, w:'IJODKORLIK', r:11, c:17, d:'V', q:"Kreativ pedagogika o'rganadigan asosiy sifat."},
+      {n:10, w:'KOMPETENSIYA', r:22, c:9, d:'H', q:"Bilimlarni amalda qo'llash qobiliyati."},
+      {n:9, w:'NAZARIYA', r:21, c:8, d:'H', q:"Nazariy qarashlar tizimi."},
+      {n:8, w:'KASBIYLIK', r:23, c:9, d:'H', q:"Kasbga oid faoliyat."},
+      {n:7, w:'TAFAKKUR', r:20, c:7, d:'H', q:"Fikr yuritish jarayoni."},
+      {n:6, w:'METOD', r:8, c:17, d:'H', q:"Muayyan faoliyatni bajarish usuli."},
+      {n:5, w:'INNOVATSIYA', r:19, c:4, d:'H', q:"Yangilik yaratish va joriy etish jarayoni."},
+      {n:4, w:'SALOHIYAT', r:15, c:1, d:'H', q:"Shaxsning ichki imkoniyatlari majmui."},
+      {n:3, w:'TADQIQOT', r:4, c:14, d:'H', q:"Ilmiy izlanish olib borish jarayoni."},
+      {n:2, w:'PEDAGOGIKA', r:14, c:0, d:'H', q:"Ta'lim va tarbiya haqidagi fan."}
+    ]},
+
+  { id:2, title:"Kreativ ta'lim muhiti", sub:"Bilim – tafakkurda, ijod – yondashuvda!",
+    words:[
+      {n:1, w:'MUHIT', r:6, c:10, d:'H', q:"Insonni o'rab turgan sharoitlar majmui."},
+      {n:20, w:'FAOLLIK', r:1, c:13, d:'V', q:"O'quv faoliyatini rag'batlantirish vositasi."},
+      {n:19, w:'MUSTAQILLIK', r:6, c:10, d:'V', q:"Mustaqil fikr yuritish qobiliyati."},
+      {n:18, w:'MOTIVATSIYA', r:4, c:14, d:'V', q:"O'quvchining ichki qiziqishi."},
+      {n:17, w:'KASHFIYOT', r:3, c:12, d:'V', q:"Yangi bilim yaratish faoliyati."},
+      {n:13, w:'BERUNIY', r:3, c:11, d:'V', q:"Qomusiy olim."},
+      {n:10, w:'KLASTER', r:2, c:11, d:'H', q:"Fikrlar xaritasi usuli."},
+      {n:9, w:'SHAROIT', r:10, c:8, d:'H', q:"O'quv jarayonini tashkil etuvchi omil."},
+      {n:8, w:'EVRISTIKA', r:15, c:7, d:'H', q:"Muammoni hal qilishning samarali usuli."},
+      {n:7, w:'IJODKORLIK', r:16, c:6, d:'H', q:"Yangi g'oya yaratish qobiliyati."},
+      {n:6, w:'BILIM', r:13, c:8, d:'H', q:"O'quvchi faoliyatining asosiy natijasi."},
+      {n:5, w:'DAVRIYLIK', r:14, c:4, d:'H', q:"Muayyan davrlar bo'yicha rivojlanish."},
+      {n:4, w:'TABAQALANISH', r:12, c:1, d:'H', q:"Guruhlarga ajratish jarayoni."},
+      {n:3, w:'KREATIVMUHIT', r:6, c:3, d:'H', q:"Ijodiy faoliyatga undovchi muhit turi."},
+      {n:16, w:'IZLANISH', r:9, c:2, d:'V', q:"Yangilik izlashga asoslangan usul."},
+      {n:15, w:'TRANSFORMATSIYA', r:2, c:1, d:'V', q:"Bilimlarni yangi vaziyatda qo'llash darajasi."},
+      {n:14, w:'IBNSINO', r:2, c:8, d:'V', q:"Tib qonunlari asari muallifi."},
+      {n:12, w:'FARGONIY', r:0, c:17, d:'V', q:"Buyuk astronom olim."},
+      {n:11, w:'XORAZMIY', r:3, c:6, d:'V', q:"Algebra fanining asoschilaridan biri."},
+      {n:2, w:'TALIM', r:11, c:0, d:'H', q:"Bilim berish jarayoni."}
+    ]},
+
+  { id:3, title:"Didaktik ta'minotni yaratishga kreativ yondashuv", sub:"Kreativ yondashuv – ta'limning yuragi!",
+    words:[
+      {n:1, w:'DIDAKTIKA', r:5, c:4, d:'H', q:"Ta'lim nazariyasi va amaliyoti fani."},
+      {n:20, w:'INNOVATSIYA', r:5, c:5, d:'V', q:"Pedagogik yangilik."},
+      {n:19, w:'MASHGULOT', r:4, c:7, d:'V', q:"O'quv faoliyatining shakli."},
+      {n:18, w:'STANDART', r:4, c:9, d:'V', q:"O'quv maqsadini belgilovchi hujjat."},
+      {n:17, w:'SAMARADORLIK', r:4, c:12, d:'V', q:"O'qituvchi faoliyatining natijasi."},
+      {n:16, w:'TOPSHIRIQ', r:0, c:10, d:'V', q:"O'quvchiga beriladigan vazifa."},
+      {n:13, w:'YONDASHUV', r:2, c:4, d:'V', q:"Yangi usul bilan ishlash jarayoni."},
+      {n:10, w:'RESURS', r:12, c:0, d:'H', q:"O'quv faoliyatini tashkil etuvchi vosita."},
+      {n:9, w:'MUALLIFLIKDASTURI', r:15, c:3, d:'H', q:"Pedagogning ijodiy mahsuli."},
+      {n:8, w:'TOPLASH', r:11, c:11, d:'H', q:"Axborotlarni yig'ish jarayoni."},
+      {n:7, w:'FAN', r:6, c:3, d:'H', q:"O'quv rejasining tarkibiy qismi."},
+      {n:6, w:'SARALASH', r:4, c:12, d:'H', q:"O'quv materiallarini tanlash jarayoni."},
+      {n:5, w:'QOLLANMA', r:13, c:10, d:'H', q:"O'quvchiga yordam beruvchi adabiyot."},
+      {n:4, w:'DARSLIK', r:13, c:0, d:'H', q:"Asosiy o'quv manbasi."},
+      {n:3, w:'DTS', r:10, c:12, d:'H', q:"Davlat ta'lim standartining qisqartmasi."},
+      {n:2, w:'DASTUR', r:9, c:11, d:'H', q:"O'quv jarayonini tartibga soluvchi hujjat."},
+      {n:15, w:'NAZORAT', r:3, c:17, d:'V', q:"Bilimlarni baholash vositasi."},
+      {n:14, w:'MAVZU', r:3, c:13, d:'V', q:"O'quv materialining mazmuniy qismi."},
+      {n:12, w:'AXBOROT', r:0, c:14, d:'V', q:"Ma'lumotlar majmui."},
+      {n:11, w:'OQUVREJA', r:11, c:18, d:'V', q:"O'quv jarayonini rejalashtirish hujjati."}
+    ]},
+
+  { id:4, title:"Bo'lajak o'qituvchilarda kreativ tasavvur va ilmiy ijodkorlik", sub:"Ijodkor o'qituvchi – zamonaviy ta'lim poydevori!",
+    words:[
+      {n:1, w:'TASAVVUR', r:6, c:5, d:'H', q:"Ongda yangi obrazlar yaratish qobiliyati."},
+      {n:20, w:'MAQOLA', r:5, c:6, d:'V', q:"Ilmiy faoliyat mahsuli."},
+      {n:18, w:'METOD', r:4, c:5, d:'V', q:"Muammo yechishga qaratilgan usul."},
+      {n:17, w:'SALOHIYAT', r:6, c:7, d:'V', q:"Bilim va tajriba majmui."},
+      {n:16, w:'ORIGINALLIK', r:5, c:12, d:'V', q:"O'ziga xos yondashuv."},
+      {n:15, w:'FANTAZIYA', r:5, c:8, d:'V', q:"Tasavvurga asoslangan fikrlash turi."},
+      {n:14, w:'TAFAKKUR', r:0, c:11, d:'V', q:"Fikr yuritish qobiliyati."},
+      {n:10, w:'GOYA', r:8, c:12, d:'H', q:"Ijodiy fikr mahsuli."},
+      {n:9, w:'KOMPETENTLIK', r:14, c:2, d:'H', q:"Bilimlarni amalda qo'llash qobiliyati."},
+      {n:8, w:'INNOVATSIYA', r:9, c:12, d:'H', q:"Yangilik joriy qilish faoliyati."},
+      {n:7, w:'MUTAXASSIS', r:0, c:9, d:'H', q:"Kasbiy tayyorgarlikka ega shaxs."},
+      {n:6, w:'TADQIQOTCHI', r:11, c:11, d:'H', q:"Ilmiy izlanish olib boruvchi shaxs."},
+      {n:5, w:'YECHIM', r:4, c:0, d:'H', q:"Muammoni hal qilishning yakuniy natijasi."},
+      {n:4, w:'KREATIVLIK', r:15, c:12, d:'H', q:"Yangilik yaratishga oid sifat."},
+      {n:2, w:'ILMIYIJOD', r:12, c:11, d:'H', q:"Yangi ilmiy g'oyalar yaratish faoliyati."},
+      {n:19, w:'BILIM', r:3, c:4, d:'V', q:"O'quvchi faoliyatining natijasi."},
+      {n:13, w:'KASHFIYOT', r:7, c:3, d:'V', q:"Yangi bilim yaratish jarayoni."},
+      {n:12, w:'TEXNOLOGIYA', r:3, c:1, d:'V', q:"O'qitishning zamonaviy vositasi."},
+      {n:11, w:'TADQIQOT', r:8, c:22, d:'V', q:"Muammoni hal qilishga qaratilgan faoliyat."},
+      {n:3, w:'IXTIRO', r:15, c:1, d:'H', q:"Yangi qurilma yoki usul yaratish jarayoni."}
+    ]},
+
+  { id:5, title:"Kreativ kompetensiya modelining shakllanishi", sub:"Bilim, ijod, mahorat – muvaffaqiyat kaliti!",
+    words:[
+      {n:1, w:'KOMPETENSIYA', r:6, c:9, d:'H', q:"Bilim va ko'nikmalar majmui."},
+      {n:20, w:'OZRIVOJLANTIRISH', r:6, c:10, d:'V', q:"O'z ustida ishlash faoliyati."},
+      {n:19, w:'TALIM', r:6, c:14, d:'V', q:"Bilimlarni egallash jarayoni."},
+      {n:18, w:'INDIVIDUALLIK', r:6, c:18, d:'V', q:"Shaxsning individual uslubi."},
+      {n:17, w:'YETUKLIK', r:6, c:19, d:'V', q:"Kasbiy rivojlanish bosqichi."},
+      {n:16, w:'MULOQOT', r:6, c:11, d:'V', q:"O'quvchilar bilan aloqa o'rnatish qobiliyati."},
+      {n:15, w:'ETIKA', r:6, c:13, d:'V', q:"Pedagogik madaniyatning tarkibiy qismi."},
+      {n:14, w:'TAYYORGARLIK', r:5, c:20, d:'V', q:"Kasbiy bilimlar yig'indisi."},
+      {n:13, w:'FAOLLIK', r:0, c:9, d:'V', q:"Ijodiy tashabbus ko'rsatish holati."},
+      {n:10, w:'INSONPARVARLIK', r:19, c:10, d:'H', q:"Inson manfaatlarini ustun qo'yuvchi yondashuv."},
+      {n:9, w:'FAOLIYAT', r:14, c:17, d:'H', q:"Maqsadli harakatlar tizimi."},
+      {n:8, w:'GNOSTIK', r:15, c:9, d:'H', q:"Bilish faoliyatiga oid qobiliyat."},
+      {n:7, w:'PROFESSIOGRAMMA', r:20, c:5, d:'H', q:"O'qituvchi faoliyatiga qo'yilgan talablar tavsifi."},
+      {n:6, w:'MALAKA', r:16, c:16, d:'H', q:"Kasbiy tayyorgarlik darajasi."},
+      {n:5, w:'KOMMUNIKATIVLIK', r:17, c:0, d:'H', q:"Muloqotga kirishish qobiliyati."},
+      {n:4, w:'IJODKORLIK', r:18, c:4, d:'H', q:"Yangi g'oyalar yaratish qobiliyati."},
+      {n:3, w:'MADANIYAT', r:14, c:7, d:'H', q:"Jamiyat taraqqiyotini ifodalovchi qadriyatlar tizimi."},
+      {n:2, w:'MODEL', r:13, c:6, d:'H', q:"Namuna yoki andoza."},
+      {n:12, w:'OQITUVCHI', r:6, c:21, d:'V', q:"O'quv jarayonini tashkil etuvchi shaxs."},
+      {n:11, w:'MAHORAT', r:8, c:24, d:'V', q:"Pedagogning kasbiy ustaligi."}
+    ]},
+
+  { id:6, title:"O'qituvchining ta'lim jarayoniga kreativ yondashuvi", sub:"Ijodkor o'qituvchi – zamonaviy ta'lim poydevori!",
+    words:[
+      {n:1, w:'INNOVATSIYA', r:10, c:7, d:'H', q:"Yangilik joriy qilish jarayoni."},
+      {n:20, w:'SAMARADORLIK', r:10, c:14, d:'V', q:"Ta'lim sifati ko'rsatkichi."},
+      {n:19, w:'PLATFORMA', r:8, c:12, d:'V', q:"Zamonaviy pedagogik vosita."},
+      {n:18, w:'RAGBATLANTIRISH', r:9, c:17, d:'V', q:"Mustaqil fikrlashga undash."},
+      {n:17, w:'REJALASHTIRISH', r:2, c:13, d:'V', q:"O'quv maqsadini aniqlash."},
+      {n:16, w:'MALAKAOSHIRISH', r:4, c:10, d:'V', q:"Kasbiy mahoratni rivojlantirish."},
+      {n:15, w:'TASHKILOT', r:5, c:7, d:'V', q:"O'quv faoliyatini boshqarish."},
+      {n:14, w:'RAQAMLASHTIRISH', r:0, c:15, d:'V', q:"Axborot texnologiyalaridan foydalanish."},
+      {n:11, w:'NATIJA', r:10, c:8, d:'V', q:"Pedagog faoliyatining samaradorligi."},
+      {n:10, w:'DARS', r:7, c:12, d:'H', q:"Ta'limning asosiy shakli."},
+      {n:9, w:'TEXNOLOGIYA', r:19, c:9, d:'H', q:"Darsni tashkil etish usullari majmui."},
+      {n:8, w:'LABORATORIYA', r:15, c:17, d:'H', q:"Tajriba asosida o'qitish shakli."},
+      {n:7, w:'SEMINAR', r:20, c:11, d:'H', q:"Muhokamaga asoslangan mashg'ulot turi."},
+      {n:6, w:'MAHORAT', r:16, c:16, d:'H', q:"Pedagogning kasbiy ustaligi."},
+      {n:5, w:'KOOPERATSIYA', r:3, c:9, d:'H', q:"Hamkorlikda ishlash jarayoni."},
+      {n:4, w:'TADQIQOT', r:12, c:1, d:'H', q:"Ilmiy izlanish faoliyati."},
+      {n:3, w:'MOTIVATSIYA', r:7, c:0, d:'H', q:"Faoliyatga undovchi ichki omil."},
+      {n:2, w:'INTERAKTIVLIK', r:18, c:10, d:'H', q:"Faol muloqotga asoslangan ta'lim."},
+      {n:13, w:'FAOLLASHTIRISH', r:10, c:28, d:'V', q:"O'quvchini faoliyatga jalb qilish."},
+      {n:12, w:'OQITISH', r:10, c:5, d:'V', q:"Bilim berish jarayoni."}
+    ]},
+
+  { id:7, title:"Kreativ topshiriqlar tizimi", sub:"Kalit so'z: KREATIVPEDAGOGIKA",
+    words:[
+      {n:1, w:'MOTIVLASHTIRISH', r:3, c:5, d:'H', q:"O'quvchini faoliyatga undash jarayoni."},
+      {n:20, w:'TAKRORLASH', r:3, c:7, d:'V', q:"Bilimlarni mustahkamlash bosqichi."},
+      {n:19, w:'LOYIHA', r:3, c:10, d:'V', q:"O'quv faoliyatining turi."},
+      {n:18, w:'KEYS', r:0, c:12, d:'V', q:"Muammoni yechishga qaratilgan topshiriq."},
+      {n:17, w:'MONITORING', r:3, c:5, d:'V', q:"O'quvchi faoliyatini baholash."},
+      {n:16, w:'KOMPETENSIYA', r:2, c:6, d:'V', q:"Darsning maqsadli natijasi."},
+      {n:15, w:'MUHOKAMA', r:1, c:13, d:'V', q:"Fikrlar almashinuvi jarayoni."},
+      {n:14, w:'IJODKORLIK', r:3, c:8, d:'V', q:"Yangi g'oyalarni yaratish faoliyati."},
+      {n:13, w:'IZLANISH', r:3, c:15, d:'V', q:"Muammoli vaziyatni hal qilish."},
+      {n:12, w:'MOTIVATOR', r:1, c:14, d:'V', q:"O'quvchini hayratga soluvchi usul."},
+      {n:11, w:'TOPSHIRIQ', r:0, c:18, d:'V', q:"Kreativ darsning asosiy elementi."},
+      {n:10, w:'YECHIM', r:10, c:12, d:'H', q:"Masalani hal qilish jarayoni."},
+      {n:9, w:'INDIVIDUALLIK', r:0, c:0, d:'H', q:"O'quvchining o'ziga xosligi."},
+      {n:8, w:'DIAGNOSTIKA', r:13, c:4, d:'H', q:"Muammoni aniqlash jarayoni."},
+      {n:7, w:'FANTAZIYA', r:0, c:15, d:'H', q:"Tasavvur mahsuli."},
+      {n:6, w:'REFLEKSIYA', r:2, c:1, d:'H', q:"O'z faoliyatini baholash."},
+      {n:5, w:'DIZAYN', r:5, c:17, d:'H', q:"Tasviriy loyihalash san'ati."},
+      {n:4, w:'KOLABORATSIYA', r:1, c:17, d:'H', q:"Jamoaviy hamkorlik faoliyati."},
+      {n:2, w:'SURPRIZ', r:15, c:5, d:'H', q:"Kutilmagan qiziqarli holat."},
+      {n:3, w:'ANALIZ', r:17, c:5, d:'H', q:"Tahlil qilish jarayoni."}
+    ]},
+
+  { id:8, title:"Pedagogik qobiliyatni shakllantirishda kreativ yondashuv", sub:"Ijod – bilimni amaliyotga aylantiruvchi kuch!",
+    words:[
+      {n:1, w:'QOBILIYAT', r:7, c:6, d:'H', q:"Faoliyatni muvaffaqiyatli bajarish imkoniyati."},
+      {n:20, w:'SAMARADORLIK', r:6, c:13, d:'V', q:"Pedagogik faoliyat natijasi."},
+      {n:19, w:'KREATIVFIKRLASH', r:3, c:14, d:'V', q:"Yangi g'oyalarni ishlab chiqish jarayoni."},
+      {n:18, w:'FAOLLASHTIRISH', r:5, c:7, d:'V', q:"O'quvchini rag'batlantirish usuli."},
+      {n:17, w:'OQITISH', r:6, c:6, d:'V', q:"Bilim berish faoliyati."},
+      {n:16, w:'OZUSTIDAISLASH', r:2, c:9, d:'V', q:"Pedagogning shaxsiy rivojlanishi."},
+      {n:15, w:'TEXNOLOGIYA', r:2, c:10, d:'V', q:"Zamonaviy o'qitish usullari tizimi."},
+      {n:14, w:'HAMKORLIK', r:0, c:11, d:'V', q:"Birgalikda faoliyat yuritish."},
+      {n:13, w:'LOYIHA', r:5, c:12, d:'V', q:"Mustaqil amaliy ish shakli."},
+      {n:10, w:'MAHORAT', r:18, c:5, d:'H', q:"O'qituvchining kasbiy ustaligi."},
+      {n:9, w:'METODIKA', r:16, c:2, d:'H', q:"Kasbiy faoliyatni tashkil etish usuli."},
+      {n:8, w:'MALAKA', r:15, c:11, d:'H', q:"Bilimlarni amalda qo'llash qobiliyati."},
+      {n:7, w:'INTERAKTIVLIK', r:1, c:6, d:'H', q:"O'qitishning zamonaviy usuli."},
+      {n:6, w:'MOTIVATSIYA', r:17, c:0, d:'H', q:"O'quvchini ruhlantirish jarayoni."},
+      {n:3, w:'RIVOJLANTIRISH', r:4, c:14, d:'H', q:"Takomillashtirish jarayoni."},
+      {n:12, w:'SEMINAR', r:10, c:16, d:'V', q:"Muhokamaga asoslangan dars turi."},
+      {n:11, w:'TRENING', r:4, c:22, d:'V', q:"Malaka oshirish mashg'uloti."},
+      {n:5, w:'PEDAGOG', r:6, c:21, d:'H', q:"Ta'lim beruvchi mutaxassis."},
+      {n:4, w:'INNOVATSIYA', r:13, c:16, d:'H', q:"Yangilik yaratish faoliyati."},
+      {n:2, w:'IJODKORLIK', r:8, c:22, d:'H', q:"Yangi g'oyalar yaratish sifati."}
+    ]},
+
+  { id:9, title:"Kasbiy kompetensiyalarni shakllantirishda kreativ yondashuv", sub:"Kreativ ta'lim – kelajak poydevori!",
+    words:[
+      {n:1, w:'KOMPETENTLIK', r:10, c:3, d:'H', q:"Bilim va tajribani amalda qo'llash qobiliyati."},
+      {n:20, w:'MONITORING', r:10, c:5, d:'V', q:"Bilimlarni baholash mezoni."},
+      {n:19, w:'PEDAGOG', r:10, c:6, d:'V', q:"O'quv faoliyatini tashkil etuvchi shaxs."},
+      {n:18, w:'MUSTAQILLIK', r:7, c:8, d:'V', q:"Qaror qabul qilish qobiliyati."},
+      {n:17, w:'MALAKAOSHIRISH', r:8, c:12, d:'V', q:"Kasbiy bilimlarni boyitish jarayoni."},
+      {n:16, w:'MOSLASHUVCHANLIK', r:9, c:4, d:'V', q:"O'zgaruvchan sharoitga moslashish qobiliyati."},
+      {n:15, w:'NATIJA', r:10, c:10, d:'V', q:"Faoliyat samaradorligini belgilovchi omil."},
+      {n:14, w:'ETIKA', r:10, c:7, d:'V', q:"Kasbiy odob normalari."},
+      {n:13, w:'RAHBARLIK', r:3, c:13, d:'V', q:"Boshqaruv qobiliyati."},
+      {n:12, w:'MASULIYAT', r:2, c:11, d:'V', q:"Javobgarlik hissi."},
+      {n:11, w:'SAVODXONLIK', r:0, c:3, d:'V', q:"Bilimlilik darajasi."},
+      {n:10, w:'HAMKORLIK', r:16, c:12, d:'H', q:"Jamoa bilan ishlash qobiliyati."},
+      {n:9, w:'LAYOQAT', r:22, c:4, d:'H', q:"Kasbiy vazifalarni bajarish qobiliyati."},
+      {n:8, w:'RIVOJLANISH', r:18, c:12, d:'H', q:"O'z ustida ishlash jarayoni."},
+      {n:7, w:'ETIKA', r:17, c:10, d:'H', q:"Pedagogning huquqiy va axloqiy madaniyati."},
+      {n:6, w:'KASBIYLIK', r:12, c:12, d:'H', q:"Kasbga oid bilimlar majmui."},
+      {n:5, w:'SIFAT', r:7, c:10, d:'H', q:"Shaxsga xos ijobiy xususiyat."},
+      {n:4, w:'BILIM', r:9, c:0, d:'H', q:"O'zlashtirilgan ma'lumotlar majmui."},
+      {n:3, w:'TAJRIBA', r:3, c:10, d:'H', q:"Faoliyat davomida orttirilgan bilimlar."},
+      {n:2, w:'MALAKA', r:20, c:3, d:'H', q:"Kasbiy tayyorgarlik darajasi."}
+    ]},
+
+  { id:10, title:"Kreativ kompetensiyaning mazmuni va tuzilishi", sub:"Kreativ yondashuv – zamonaviy ta'limning yuragi!",
+    words:[
+      {n:1, w:'ERUDITSIYA', r:4, c:9, d:'H', q:"Keng bilim va dunyoqarashga ega bo'lish."},
+      {n:20, w:'TUSHUNCHA', r:4, c:14, d:'V', q:"Bilimlarni chuqur o'zlashtirish darajasi."},
+      {n:19, w:'KREATIVLIK', r:3, c:10, d:'V', q:"Innovatsion fikrlash jarayoni."},
+      {n:18, w:'GOYA', r:2, c:17, d:'V', q:"Kreativ faoliyat mahsuli."},
+      {n:17, w:'YECHIM', r:3, c:9, d:'V', q:"Muammolarni hal etish usuli."},
+      {n:16, w:'AMALIYOT', r:4, c:18, d:'V', q:"Bilimlarni qo'llash qobiliyati."},
+      {n:15, w:'INTERAKTIV', r:4, c:13, d:'V', q:"Faol ishtirokka asoslangan ta'lim."},
+      {n:14, w:'TANQIDIYFIKRLASH', r:0, c:16, d:'V', q:"Tanqidiy baholash qobiliyati."},
+      {n:13, w:'MULOQOT', r:3, c:11, d:'V', q:"O'zaro fikr almashish."},
+      {n:10, w:'TAFAKKUR', r:11, c:18, d:'H', q:"Muammoni tahlil qilish usuli."},
+      {n:9, w:'KOMPETENSIYA', r:0, c:11, d:'H', q:"O'quv faoliyatining natijasi."},
+      {n:8, w:'IJODKORLIK', r:11, c:2, d:'H', q:"Yangi g'oyalarni yaratish faoliyati."},
+      {n:7, w:'ORIGINALLIK', r:12, c:0, d:'H', q:"Muammoga noodatiy yondashish."},
+      {n:6, w:'ANALITIKA', r:6, c:18, d:'H', q:"Bilimlar orasidagi bog'liqlikni topish qobiliyati."},
+      {n:4, w:'JARAYON', r:1, c:15, d:'H', q:"Muayyan faoliyatning davom etishi."},
+      {n:3, w:'KOGNITIV', r:13, c:6, d:'H', q:"Bilish jarayonlariga oid tushuncha."},
+      {n:2, w:'SALOHIYAT', r:14, c:16, d:'H', q:"Ichki imkoniyatlar majmui."},
+      {n:12, w:'ANALOGIYA', r:3, c:21, d:'V', q:"O'xshashlik asosida fikrlash usuli."},
+      {n:11, w:'TAFAKKUR', r:5, c:1, d:'V', q:"Fikr yuritish qobiliyati."},
+      {n:5, w:'MEZON', r:17, c:9, d:'H', q:"Baholash mezoni."}
+    ]},
+
+  { id:11, title:"Ma'naviy kompetensiyalarni shakllantirishda kreativ yondashuv", sub:"Ma'naviy kompetensiyalarni rivojlantirish yo'lida",
+    words:[
+      {n:1, w:'MANAVIYAT', r:6, c:11, d:'H', q:"Ruhiy va axloqiy qadriyatlar majmui."},
+      {n:20, w:'QADRIYATLAR', r:5, c:12, d:'V', q:"Shaxs rivojlanishining muhim omili."},
+      {n:18, w:'TARBIYALASH', r:6, c:19, d:'V', q:"Ijobiy his-tuyg'ularni rivojlantirish jarayoni."},
+      {n:17, w:'MULOQOT', r:6, c:11, d:'V', q:"O'quvchi va o'qituvchi o'rtasidagi aloqa."},
+      {n:16, w:'MANAVIYAT', r:5, c:14, d:'V', q:"Shaxsning ichki dunyosi bilan bog'liq tushuncha."},
+      {n:15, w:'MUAMMO', r:4, c:18, d:'V', q:"Yechim talab qiluvchi vaziyat."},
+      {n:14, w:'TANQIDIYFIKRLASH', r:4, c:13, d:'V', q:"Tahliliy fikrlash turi."},
+      {n:13, w:'MUSTAQILLIK', r:0, c:16, d:'V', q:"O'z kuchiga tayangan holda ish yuritish."},
+      {n:11, w:'EMPATIYA', r:0, c:17, d:'V', q:"Boshqalarning his-tuyg'ularini tushunish."},
+      {n:10, w:'OZLIKNIANGLASH', r:13, c:17, d:'H', q:"O'zini anglash jarayoni."},
+      {n:9, w:'MUAMMOYECHISH', r:12, c:17, d:'H', q:"Muammolarni hal qilish qobiliyati."},
+      {n:8, w:'MOTIVATSIYA', r:17, c:8, d:'H', q:"O'quvchini faollikka undash usuli."},
+      {n:7, w:'MUSTAQILLIK', r:3, c:13, d:'H', q:"Mustaqil qaror qabul qilish qobiliyati."},
+      {n:6, w:'OZINIIFODAETISH', r:18, c:0, d:'H', q:"O'z fikrini erkin bayon qilish qobiliyati."},
+      {n:5, w:'QADRIYAT', r:14, c:18, d:'H', q:"Jamiyat e'tirof etgan qadriyat."},
+      {n:4, w:'INTELLEKT', r:10, c:19, d:'H', q:"Aqliy salohiyat darajasi."},
+      {n:3, w:'EMOTSIONAL', r:15, c:15, d:'H', q:"Hissiyotlarga oid tushuncha."},
+      {n:2, w:'KREATIVLIK', r:16, c:6, d:'H', q:"Yangilik yaratish qobiliyati."},
+      {n:19, w:'ODOB', r:16, c:0, d:'V', q:"Axloqiy me'yorlarga amal qilish holati."},
+      {n:12, w:'FAOLLIK', r:4, c:26, d:'V', q:"Faollik ko'rsatish holati."}
+    ]},
+
+  { id:12, title:"O'qituvchining kreativ salohiyatini rivojlantirish usullari", sub:"Kreativ fikr – yangi kelajakning boshlanishidir!",
+    words:[
+      {n:1, w:'SALOHIYAT', r:10, c:10, d:'H', q:"Shaxsning ichki imkoniyatlari majmui."},
+      {n:20, w:'TAJRIBA', r:10, c:18, d:'V', q:"Kasbiy muvaffaqiyat omili."},
+      {n:19, w:'YANGILIK', r:10, c:16, d:'V', q:"O'qituvchining innovatsion faoliyati natijasi."},
+      {n:18, w:'ILMIYIJOD', r:10, c:15, d:'V', q:"Bilimlarni yaratish va qo'llash faoliyati."},
+      {n:17, w:'ANALIZ', r:10, c:11, d:'V', q:"Muammoni o'rganish usuli."},
+      {n:16, w:'TEXNOLOGIYA', r:6, c:13, d:'V', q:"O'quv jarayonini tashkil etuvchi vositalar majmui."},
+      {n:15, w:'MALAKAOSHIRISH', r:9, c:17, d:'V', q:"Kasbiy bilimlarni boyitish jarayoni."},
+      {n:14, w:'OZINIRIVOJLANTIRISH', r:0, c:12, d:'V', q:"O'z ustida ishlash jarayoni."},
+      {n:12, w:'RIVOJLANISH', r:1, c:10, d:'V', q:"Taraqqiyot va o'sish jarayoni."},
+      {n:10, w:'TAFAKKUR', r:19, c:10, d:'H', q:"Yangicha fikr yuritish qobiliyati."},
+      {n:9, w:'KOMPETENSIYA', r:9, c:15, d:'H', q:"Bilimlarni amalda qo'llash qobiliyati."},
+      {n:8, w:'MAHORAT', r:22, c:15, d:'H', q:"Pedagogning kasbiy rivojlanish darajasi."},
+      {n:7, w:'TADQIQOT', r:20, c:13, d:'H', q:"Ilmiy izlanish olib borish faoliyati."},
+      {n:5, w:'MODELLASHTIRISH', r:2, c:0, d:'H', q:"Model yaratish jarayoni."},
+      {n:4, w:'INNOVATSIYA', r:18, c:17, d:'H', q:"Yangilik yaratish va joriy etish jarayoni."},
+      {n:3, w:'TEXNOPARK', r:0, c:8, d:'H', q:"Innovatsion faoliyat markazi."},
+      {n:2, w:'STARTAP', r:21, c:17, d:'H', q:"Innovatsion biznes g'oyasi asosidagi loyiha."},
+      {n:13, w:'IJODKORLIK', r:18, c:25, d:'V', q:"Yangi g'oyalarni yaratish faoliyati."},
+      {n:11, w:'METODIKA', r:13, c:14, d:'V', q:"Ta'lim berish usullari tizimi."},
+      {n:6, w:'KREATIVLIK', r:22, c:25, d:'H', q:"Yangi usullarni qo'llashga intilish."}
+    ]},
+
+  { id:13, title:"Pedagogik muloqot – o'qituvchining ijodiy faoliyati sifatida", sub:"Ijodkor fikrla – yangi yechim yarat!",
+    words:[
+      {n:1, w:'MULOQOT', r:4, c:13, d:'H', q:"O'zaro fikr almashish jarayoni."},
+      {n:20, w:'RUHIYIQLIM', r:3, c:14, d:'V', q:"O'quvchi bilan psixologik yaqinlik holati."},
+      {n:19, w:'MADANIYAT', r:4, c:13, d:'V', q:"Muloqot samaradorligini belgilovchi omil."},
+      {n:18, w:'MODELLASHTIRISH', r:3, c:16, d:'V', q:"Muloqotni rejalashtirish bosqichi."},
+      {n:17, w:'TINGLASH', r:4, c:19, d:'V', q:"O'quvchining fikrini eshitish jarayoni."},
+      {n:16, w:'HAMKORLIK', r:0, c:18, d:'V', q:"Pedagogik muloqotning asosiy maqsadi."},
+      {n:15, w:'NUTQ', r:1, c:17, d:'V', q:"Axborot almashish vositasi."},
+      {n:12, w:'LIBERAL', r:4, c:15, d:'V', q:"Erkinlikka asoslangan boshqaruv usuli."},
+      {n:10, w:'ALOQA', r:9, c:19, d:'H', q:"Axborot uzatish jarayoni."},
+      {n:9, w:'MOTIVATSIYA', r:13, c:13, d:'H', q:"O'quvchini faollashtirish vositasi."},
+      {n:8, w:'ISHONCH', r:15, c:16, d:'H', q:"Suhbat davomida ishonch hosil qilish holati."},
+      {n:7, w:'KOMMUNIKATSIYA', r:16, c:6, d:'H', q:"Muloqot orqali ta'sir ko'rsatish jarayoni."},
+      {n:5, w:'DEMOKRATIK', r:14, c:11, d:'H', q:"Tenglikka asoslangan boshqaruv usuli."},
+      {n:14, w:'TAVOZE', r:6, c:21, d:'V', q:"Muloqot odobining muhim elementi."},
+      {n:13, w:'PEDAGOGIKTASIR', r:8, c:6, d:'V', q:"O'quvchilarga ta'sir ko'rsatish qobiliyati."},
+      {n:11, w:'AVTORITAR', r:2, c:23, d:'V', q:"Qattiq nazoratga asoslangan boshqaruv usuli."},
+      {n:6, w:'MUNOSABAT', r:13, c:3, d:'H', q:"O'qituvchi va o'quvchi o'rtasidagi aloqa."},
+      {n:4, w:'PERSEPTIV', r:21, c:4, d:'H', q:"Suhbatdoshni tushunishga qaratilgan muloqot turi."},
+      {n:3, w:'INTERAKTIV', r:20, c:6, d:'H', q:"O'zaro ta'sirga asoslangan muloqot turi."},
+      {n:2, w:'KOMMUNIKATIV', r:15, c:0, d:'H', q:"Aloqa o'rnatishga oid tushuncha."}
+    ]},
+
+  { id:14, title:"Bo'lajak o'qituvchilar ijodkorligini rivojlantirishda pedagogik texnologiyalarning o'rni", sub:"Ijodkor fikrla – yangi yechim yarat!",
+    words:[
+      {n:1, w:'INERSIYA', r:7, c:9, d:'H', q:"Eski qarashlarga bog'lanib qolish holati."},
+      {n:20, w:'KREATIVLIK', r:6, c:12, d:'V', q:"Zamonaviy ta'limning muhim talabi."},
+      {n:19, w:'NATIJA', r:7, c:10, d:'V', q:"Pedagogik faoliyat samaradorligi ko'rsatkichi."},
+      {n:18, w:'MOTIVATSIYA', r:4, c:9, d:'V', q:"O'quvchining ijodiy salohiyatini rivojlantiruvchi omil."},
+      {n:17, w:'TADQIQOT', r:6, c:16, d:'V', q:"Talabalarni izlanishga undovchi faoliyat."},
+      {n:16, w:'KLASTERLASH', r:4, c:13, d:'V', q:"Fikrlarni guruhlash usuli."},
+      {n:15, w:'MUSTAQIL', r:1, c:14, d:'V', q:"O'z kuchi bilan bajariladigan faoliyat."},
+      {n:13, w:'BALIQSKELETI', r:0, c:11, d:'V', q:"Sabab va oqibatlarni aniqlash usuli."},
+      {n:10, w:'INNOVATSIYA', r:13, c:0, d:'H', q:"Ta'lim jarayonidagi yangilik."},
+      {n:9, w:'KOMPETENSIYA', r:15, c:12, d:'H', q:"O'quv faoliyatining natijasi."},
+      {n:8, w:'BRAINSTORMING', r:0, c:11, d:'H', q:"Yangi g'oyalarni ishlab chiqish usuli."},
+      {n:7, w:'INTERAKTIVLIK', r:10, c:16, d:'H', q:"O'quvchilarni faol ishtirokga jalb etuvchi usul."},
+      {n:6, w:'MUAMMOLIOQITISH', r:3, c:1, d:'H', q:"Muammolarni hal qilishga qaratilgan ta'lim turi."},
+      {n:5, w:'LOYIHA', r:14, c:4, d:'H', q:"Maqsadli amaliy faoliyat."},
+      {n:2, w:'TEXNOLOGIYA', r:6, c:16, d:'H', q:"Faoliyatni tashkil etish usullari tizimi."},
+      {n:14, w:'INNOVATSION', r:6, c:7, d:'V', q:"Yangilikka asoslangan faoliyat."},
+      {n:12, w:'MUAMMOLI', r:8, c:21, d:'V', q:"Muammo yechishga asoslangan ta'lim."},
+      {n:11, w:'INTERAKTIV', r:5, c:0, d:'V', q:"Faol muloqotga asoslangan ta'lim turi."},
+      {n:4, w:'KLASTER', r:14, c:20, d:'H', q:"Fikrlarni tarmoqlash usuli."},
+      {n:3, w:'IJODKORLIK', r:13, c:19, d:'H', q:"Yangi g'oyalar yaratish qobiliyati."}
+    ]}
+
+];
+
+// ============================================================
+// ENGINE
+// ============================================================
+function buildGrid(words) {
+  let maxR = 0, maxC = 0;
+  words.forEach(w => {
+    if (w.d==='H') { maxR=Math.max(maxR,w.r); maxC=Math.max(maxC,w.c+w.w.length-1); }
+    else           { maxC=Math.max(maxC,w.c); maxR=Math.max(maxR,w.r+w.w.length-1); }
+  });
+  const rows=maxR+1, cols=maxC+1;
+  const g = Array.from({length:rows}, ()=>
+    Array.from({length:cols}, ()=>({ch:'',num:0,on:false}))
+  );
+  words.forEach(w => {
+    for(let i=0;i<w.w.length;i++){
+      const r=w.d==='H'?w.r:w.r+i, c=w.d==='H'?w.c+i:w.c;
+      if(r<rows&&c<cols){ g[r][c].ch=w.w[i]; g[r][c].on=true; }
+    }
+    const sr=w.r, sc=w.c;
+    if(!g[sr][sc].num) g[sr][sc].num=w.n;
+  });
+  return {g,rows,cols};
+}
+
+function renderCW(cw, containerId) {
+  const {g,rows,cols} = buildGrid(cw.words);
+  let html = `<div class="cw-outer"><div class="cw-grid" id="grid_${cw.id}" style="grid-template-columns:repeat(${cols},auto);">`;
+  for(let r=0;r<rows;r++){
+    for(let c=0;c<cols;c++){
+      const cell=g[r][c];
+      if(!cell.on){ html+=`<div class="cw-cell empty"></div>`; continue; }
+      html+=`<div class="cw-cell" id="cc_${cw.id}_${r}_${c}" data-ans="${cell.ch}">
+        ${cell.num?`<span class="cw-num">${cell.num}</span>`:''}
+        <input type="text" maxlength="1" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false"
+          onkeydown="return onKey(event,${cw.id},${r},${c})"
+          onfocus="onFoc(${cw.id},${r},${c})"
+          oninput="onInp(this,${cw.id},${r},${c})"/>
+      </div>`;
+    }
+  }
+  html+=`</div></div>`;
+
+  // Savollar
+  const ac=cw.words.filter(w=>w.d==='H').sort((a,b)=>a.n-b.n);
+  const dn=cw.words.filter(w=>w.d==='V').sort((a,b)=>a.n-b.n);
+  html+=`<div class="clues-grid">`;
+  if(ac.length){
+    html+=`<div class="clues-section"><h4>→ Gorizontal</h4>`;
+    ac.forEach(w=>{ html+=`<div class="clue-row" id="cl_${cw.id}_H_${w.n}" onclick="hiW(${cw.id},${w.n},'H')"><span class="clue-num">${w.n}.</span><span>${w.q}</span></div>`; });
+    html+=`</div>`;
+  }
+  if(dn.length){
+    html+=`<div class="clues-section"><h4>↓ Vertikal</h4>`;
+    dn.forEach(w=>{ html+=`<div class="clue-row" id="cl_${cw.id}_V_${w.n}" onclick="hiW(${cw.id},${w.n},'V')"><span class="clue-num">${w.n}.</span><span>${w.q}</span></div>`; });
+    html+=`</div>`;
+  }
+  html+=`</div>`;
+  html+=`<div style="margin-top:1rem;display:flex;gap:0.75rem;flex-wrap:wrap;">
+    <button class="btn-primary" onclick="chkCW(${cw.id})" style="min-height:44px;">✓ Tekshirish</button>
+    <button class="btn-secondary" onclick="clrCW(${cw.id})" style="min-height:44px;">Tozalash</button>
+    <button class="btn-secondary" onclick="hintCW(${cw.id})" style="min-height:44px;">💡 Ko'rsatma</button>
+  </div>
+  <div class="kross-result" id="res_${cw.id}"></div>`;
+  document.getElementById(containerId).innerHTML=html;
+}
+
+// ---- Input / Focus ----
+// ============================================================
+// KROSSVORD KLAVIATURA ENGINE
+// ============================================================
+
+function getCWdir(cwId, r, c) {
+  // Aktiv savoldan yo'nalishni aniqlaymiz
+  const activeClue = document.querySelector('[id^="cl_' + cwId + '_"].active');
+  if (activeClue) {
+    const parts = activeClue.id.split('_');
+    return parts[parts.length - 2]; // 'H' yoki 'V'
+  }
+  // Default: gorizontal
+  const cw = CWS.find(x => x.id === cwId);
+  if (!cw) return 'H';
+  const hasH = cw.words.some(w => w.d === 'H' && wordContains(w, r, c));
+  return hasH ? 'H' : 'V';
+}
+
+function wordContains(w, r, c) {
+  for (let i = 0; i < w.w.length; i++) {
+    const wr = w.d === 'H' ? w.r : w.r + i;
+    const wc = w.d === 'H' ? w.c + i : w.c;
+    if (wr === r && wc === c) return true;
+  }
+  return false;
+}
+
+function focusCell(cwId, r, c) {
+  const el = document.getElementById('cc_' + cwId + '_' + r + '_' + c);
+  if (el) { const inp = el.querySelector('input'); if (inp) inp.focus(); }
+}
+
+function onInp(inp, cwId, r, c) {
+  const val = inp.value.slice(-1).toUpperCase();
+  inp.value = val;
+  if (val) {
+    autoSave(cwId);
+    const dir = getCWdir(cwId, r, c);
+    setTimeout(function() {
+      if (dir === 'H') focusCell(cwId, r, c + 1);
+      else              focusCell(cwId, r + 1, c);
+    }, 10);
+  }
+}
+
+function onKey(e, cwId, r, c) {
+  const k = e.key;
+
+  // O'q tugmalar
+  if (k === 'ArrowRight') { e.preventDefault(); focusCell(cwId, r, c+1); return false; }
+  if (k === 'ArrowLeft')  { e.preventDefault(); focusCell(cwId, r, c-1); return false; }
+  if (k === 'ArrowDown')  { e.preventDefault(); focusCell(cwId, r+1, c); return false; }
+  if (k === 'ArrowUp')    { e.preventDefault(); focusCell(cwId, r-1, c); return false; }
+
+  // Backspace: o'chir va orqaga
+  if (k === 'Backspace') {
+    const inp = e.target;
+    if (inp.value === '') {
+      e.preventDefault();
+      const dir = getCWdir(cwId, r, c);
+      if (dir === 'H') focusCell(cwId, r, c-1);
+      else              focusCell(cwId, r-1, c);
+    }
+    // inp.value bo'sh emas -> oddiy backspace ishlaydi, keyin onInp qayta chaqiriladi
+    return true;
+  }
+
+  // Tab
+  if (k === 'Tab') {
+    e.preventDefault();
+    const dir = getCWdir(cwId, r, c);
+    if (dir === 'H') focusCell(cwId, r, c+1);
+    else              focusCell(cwId, r+1, c);
+    return false;
+  }
+
+  // Harf: keydown da ishlaymiz
+  if (k.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
+    e.preventDefault();
+    const inp = e.target;
+    inp.value = k.toUpperCase();
+    autoSave(cwId);
+    // setTimeout bilan focus - DOM yangilanishiga vaqt beramiz
+    const dir = getCWdir(cwId, r, c);
+    setTimeout(function() {
+      if (dir === 'H') focusCell(cwId, r, c+1);
+      else              focusCell(cwId, r+1, c);
+    }, 0);
+    return false;
+  }
+
+  return true;
+}
+
+function onFoc(cwId,r,c){
+  const cw=CWS.find(x=>x.id===cwId); if(!cw) return;
+
+  // Bu katakka tegishli so'zlar
+  const myWords = cw.words.filter(w=>{
+    for(let i=0;i<w.w.length;i++){
+      const wr=w.d==='H'?w.r:w.r+i, wc=w.d==='H'?w.c+i:w.c;
+      if(wr===r&&wc===c) return true;
+    }
+    return false;
+  });
+  if(!myWords.length) return;
+
+  // Aktiv clue dan yo'nalishni aniqlaymiz
+  const activeClue = document.querySelector(`[id^="cl_${cwId}_"].active`);
+  let chosenWord = null;
+
+  if(activeClue){
+    const parts = activeClue.id.split('_');
+    const dir = parts[parts.length-2];
+    const num = parseInt(parts[parts.length-1]);
+    // Shu so'z hali ham bu katakka tegishlimi?
+    chosenWord = myWords.find(w=>w.d===dir && w.n===num);
+    if(!chosenWord){
+      // Yo'nalish mos kelsa
+      chosenWord = myWords.find(w=>w.d===dir) || myWords[0];
+    }
+  } else {
+    // Gorizontal ustuvorlik
+    chosenWord = myWords.find(w=>w.d==='H') || myWords[0];
+  }
+
+  hiW(cwId, chosenWord.n, chosenWord.d);
+}
+
+function hiW(cwId,num,dir){
+  const cw=CWS.find(x=>x.id===cwId); if(!cw) return;
+  const wrd=cw.words.find(w=>w.n===num&&w.d===dir); if(!wrd) return;
+  document.querySelectorAll(`#grid_${cwId} .cw-cell`).forEach(e=>e.classList.remove('hi'));
+  document.querySelectorAll(`[id^="cl_${cwId}_"]`).forEach(e=>e.classList.remove('active'));
+  for(let i=0;i<wrd.w.length;i++){
+    const r=wrd.d==='H'?wrd.r:wrd.r+i, c=wrd.d==='H'?wrd.c+i:wrd.c;
+    const el=document.getElementById(`cc_${cwId}_${r}_${c}`);
+    if(el) el.classList.add('hi');
+  }
+  const cl=document.getElementById(`cl_${cwId}_${dir}_${num}`);
+  if(cl){ cl.classList.add('active'); cl.scrollIntoView({behavior:'smooth',block:'nearest'}); }
+  // Focus faqat savolga bosish orqali - onKey/onInp tomonidan boshqariladi
+  // Birinchi marta savolga bosilganda focus beramiz
+  if (document.activeElement && !document.activeElement.closest('#grid_' + cwId)) {
+    const fe=document.getElementById('cc_'+cwId+'_'+wrd.r+'_'+wrd.c);
+    if(fe){const fi=fe.querySelector('input');if(fi)fi.focus();}
+  }
+}
+
+// ---- Check ----
+function chkCW(cwId){
+  const cw=CWS.find(x=>x.id===cwId); if(!cw) return;
+  let ok=0,tot=0;
+  cw.words.forEach(w=>{
+    for(let i=0;i<w.w.length;i++){
+      const r=w.d==='H'?w.r:w.r+i, c=w.d==='H'?w.c+i:w.c;
+      const el=document.getElementById(`cc_${cwId}_${r}_${c}`); if(!el) continue;
+      tot++;
+      const inp=el.querySelector('input'), val=inp?inp.value.trim().toUpperCase():'';
+      if(val===w.w[i].toUpperCase()){ el.classList.add('ok');  el.classList.remove('err'); ok++; }
+      else if(val){ el.classList.add('err'); el.classList.remove('ok'); }
+    }
+  });
+  const pct=tot?Math.round(ok/tot*100):0;
+  const re=document.getElementById(`res_${cwId}`);
+  re.classList.add('show');
+  if(ok===tot){
+    re.className='kross-result show ok';
+    re.innerHTML=`🎉 Tabriklaymiz! Krossvord to'liq to'g'ri! (${ok}/${tot} harf)`;
+    sendResult(cwId,ok,tot);
+  } else {
+    re.className='kross-result show bad';
+    re.innerHTML=`✅ To'g'ri: ${ok}/${tot} harf (${pct}%) — xatolar qizil belgilandi.`;
+    if(pct>=50) sendResult(cwId,ok,tot);
+  }
+}
+
+function clrCW(cwId){
+  document.querySelectorAll(`#grid_${cwId} input`).forEach(i=>i.value='');
+  document.querySelectorAll(`#grid_${cwId} .cw-cell`).forEach(e=>e.classList.remove('ok','err','hi'));
+  const re=document.getElementById(`res_${cwId}`);
+  if(re){re.classList.remove('show');re.textContent='';}
+}
+
+function hintCW(cwId){
+  const cw=CWS.find(x=>x.id===cwId); if(!cw) return;
+  for(const w of cw.words){
+    for(let i=0;i<w.w.length;i++){
+      const r=w.d==='H'?w.r:w.r+i, c=w.d==='H'?w.c+i:w.c;
+      const el=document.getElementById(`cc_${cwId}_${r}_${c}`); if(!el) continue;
+      const inp=el.querySelector('input');
+      if(inp&&!inp.value.trim()){
+        inp.value=w.w[i]; inp.style.color='var(--teal-dark)';
+        el.classList.add('ok'); showToast('💡 Bir harf ko\'rsatildi!'); return;
+      }
+    }
+  }
+  showToast('Barcha kataklar to\'ldirilgan!');
+}
+
+// ---- Save / Load ----
+function autoSave(cwId){
+  const d={};
+  document.querySelectorAll(`#grid_${cwId} input`).forEach(inp=>{
+    const id=inp.closest('.cw-cell').id; if(inp.value) d[id]=inp.value;
+  });
+  try{localStorage.setItem(`kross_${cwId}`,JSON.stringify(d));}catch(e){}
+}
+function loadSaved(cwId){
+  try{
+    const s=JSON.parse(localStorage.getItem(`kross_${cwId}`)||'{}');
+    Object.entries(s).forEach(([id,v])=>{
+      const el=document.getElementById(id); if(el){const i=el.querySelector('input');if(i)i.value=v;}
+    });
+  }catch(e){}
+}
+
+// ---- Send result ----
+async function sendResult(cwId,ok,tot){
+  const u=JSON.parse(localStorage.getItem('kp_user')||'{}');
+  const name=u.name||"Noma'lum", phone=u.telefon||'—';
+  const cw=CWS.find(x=>x.id===cwId);
+  const pct=tot?Math.round(ok/tot*100):0;
+  const msg=`🎲 *Krossvord natijasi*\n\n👤 *Talaba:* ${name}\n📱 *Telefon:* ${phone}\n\n📋 *Krossvord ${cwId}:* ${cw?cw.title:''}\n✅ To'g'ri: ${ok}/${tot} harf\n🏆 *Ball: ${pct}%*\n📅 ${new Date().toLocaleString('uz-UZ')}`;
+  try{ await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:TG_CHAT,text:msg,parse_mode:'Markdown'})}); }catch(e){}
+  if(!SHEET_URL.includes('YOUR_')){
+    try{ await fetch(`${SHEET_URL}?action=saveKrossResult&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}&correct=${ok}&total=${tot}&time=—`); }catch(e){}
+  }
+}
+
+// ---- Init ----
+document.addEventListener('DOMContentLoaded',()=>{
+  const tabsEl=document.getElementById('krossTabs');
+  const contEl=document.getElementById('krossContainer');
+  CWS.forEach((cw,idx)=>{
+    const btn=document.createElement('button');
+    btn.className='kross-tab'+(idx===0?' active':'');
+    btn.textContent=String(idx+1);
+    btn.title=cw.title;
+    btn.onclick=()=>{
+      document.querySelectorAll('.kross-tab').forEach((t,i)=>t.classList.toggle('active',i===idx));
+      document.querySelectorAll('.kross-wrap').forEach((w,i)=>w.classList.toggle('active',i===idx));
+      if(!document.getElementById(`grid_${cw.id}`)){
+        renderCW(cw,`cwb_${cw.id}`); loadSaved(cw.id);
+      }
+    };
+    tabsEl.appendChild(btn);
+    const wrap=document.createElement('div');
+    wrap.className='kross-wrap'+(idx===0?' active':'');
+    wrap.innerHTML=`<div class="kross-card">
+      <div class="kross-title">🎲 ${cw.title}</div>
+      <div class="kross-subtitle">${cw.sub}</div>
+      <div id="cwb_${cw.id}"></div>
+    </div>`;
+    contEl.appendChild(wrap);
+  });
+  renderCW(CWS[0],`cwb_${CWS[0].id}`); loadSaved(CWS[0].id);
+});
+</script>
+</body>
+</html>

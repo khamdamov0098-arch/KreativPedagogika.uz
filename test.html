@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+  <title>Test topshiriqlari — KreativPedagogika.uz</title>
+  <link rel="icon" href="logo.png"/>
+  <link rel="stylesheet" href="shared.css"/>
+</head>
+<body>
+<div class="toast" id="toast"></div>
+<header>
+  <div class="header-inner">
+    <a class="logo" href="index.html"><img src="logo.png" alt="KreativPedagogika"><div><div class="logo-text">Kreativ<span>Pedagogika</span></div><span class="logo-sub">Ijodiy yondashuv, samarali ta'lim</span></div></a>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    <nav class="header-nav">
+      <a href="index.html">Bosh sahifa</a>
+      <div class="dropdown"><span class="dd-btn">O'quv materiallari</span><div class="dropdown-menu">
+        <a href="fan-dasturi.html"><span class="dm-icon">📋</span>Fan dasturi</a>
+        <a href="sillabusi.html"><span class="dm-icon">📋</span>Fan sillabusi</a>
+        <a href="maruzalar.html"><span class="dm-icon">📚</span>Ma'ruza matnlari</a>
+        <a href="amaliy.html"><span class="dm-icon">✍️</span>Amaliy mashg'ulotlar</a>
+        <a href="adabiyotlar.html"><span class="dm-icon">📖</span>Adabiyotlar</a>
+        <a href="taqdimotlar.html"><span class="dm-icon">📊</span>Taqdimotlar</a>
+      </div></div>
+      <div class="dropdown"><span class="dd-btn">Topshiriqlar</span><div class="dropdown-menu">
+        <a href="innovatsion-test.html"><span class="dm-icon">🎯</span>Innovatsion test</a>
+        <a href="test.html" class="active"><span class="dm-icon">🎯</span>Test topshiriqlari</a>
+        <a href="mustaqil-ish.html"><span class="dm-icon">📝</span>Mustaqil ish mavzulari</a>
+        <a href="topshiriqlar.html"><span class="dm-icon">📝</span>Topshiriqlar</a>
+        <a href="krossvord.html"><span class="dm-icon">🎲</span>Krossvordlar</a>
+      </div></div>
+      <a href="videodarslar.html">📹 Videodarslar</a>
+      <a href="muallif.html">👤 Muallif</a>
+    </nav>
+    <div id="navUserBlock"></div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">🏠 Bosh sahifa</a>
+    <div class="mobile-section-label">Topshiriqlar</div>
+    <a href="test.html" class="active">🎯 Test topshiriqlari</a>
+    <a href="mustaqil-ish.html">📝 Mustaqil ish mavzulari</a>
+    <a href="topshiriqlar.html">📝 Topshiriqlar</a>
+    <div id="mobileUserBlock"></div>
+  </div>
+</header>
+
+<div class="page-header">
+  <h1>🎯 Test topshiriqlari</h1>
+  <p>30 ta savol · 45 daqiqa · Natijalar Telegram guruhiga yuboriladi</p>
+</div>
+
+<main class="main" style="padding-top:2rem;padding-bottom:3rem;">
+  <div class="test-wrap">
+
+    <!-- START SCREEN -->
+    <div id="startScreen">
+      <div class="test-question-card" style="text-align:center;padding:3rem 2rem;">
+        <div style="font-size:3rem;margin-bottom:1rem;">🎯</div>
+        <h2 style="font-family:'Nunito',sans-serif;font-size:1.6rem;font-weight:900;color:var(--navy);margin-bottom:1rem;">Test haqida</h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:1.5rem 0;max-width:400px;margin-left:auto;margin-right:auto;">
+          <div class="test-result-item"><div class="test-result-item-num">30</div><div class="test-result-item-label">Savol</div></div>
+          <div class="test-result-item"><div class="test-result-item-num">45</div><div class="test-result-item-label">Daqiqa</div></div>
+          <div class="test-result-item"><div class="test-result-item-num">100</div><div class="test-result-item-label">Ball</div></div>
+        </div>
+        <div class="info-box" style="text-align:left;margin-bottom:1.5rem;">
+          📌 Savollar tasodifiy tartibda beriladi. Test tugagach, natijangiz Telegram guruhiga yuboriladi. Bir marta boshlash mumkin.
+        </div>
+        <div id="userInfo" style="margin-bottom:1.5rem;padding:1rem;background:rgba(42,191,171,0.06);border-radius:12px;border:1px solid rgba(42,191,171,0.2);display:none;">
+          <strong style="color:var(--navy);">Talaba:</strong> <span id="userName">—</span>
+        </div>
+        <button class="btn-primary" onclick="startTest()" style="width:100%;max-width:300px;font-size:1.1rem;min-height:54px;" id="startBtn">
+          Testni boshlash →
+        </span>
+        <div id="loadingMsg" style="display:none;margin-top:1rem;color:var(--gray);">Savollar yuklanmoqda...</div>
+      </div>
+    </div>
+
+    <!-- TEST SCREEN -->
+    <div id="testScreen" style="display:none;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem;">
+        <div style="font-size:0.95rem;color:var(--gray);font-weight:700;">
+          Savol: <span id="qCurrent">1</span> / <span id="qTotal">30</span>
+        </div>
+        <div class="test-timer" id="timer">⏱ 45:00</div>
+      </div>
+      <div class="test-progress" style="margin-bottom:1.5rem;">
+        <div class="test-progress-bar" id="progressBar" style="width:0%"></div>
+      </div>
+      <div class="test-question-card">
+        <div class="test-q-num" id="qNum">1-savol</div>
+        <div class="test-q-text" id="qText"></div>
+        <img id="qImg" class="test-q-img" src="" alt="" style="display:none;"/>
+        <div class="test-options" id="options"></div>
+      </div>
+      <div style="display:flex;gap:1rem;justify-content:flex-end;margin-top:1rem;">
+        <button class="btn-primary" onclick="nextQuestion()" id="nextBtn" style="min-height:48px;padding:0.75rem 2rem;">
+          Keyingi →
+        </span>
+      </div>
+    </div>
+
+    <!-- RESULT SCREEN -->
+    <div id="resultScreen" style="display:none;">
+      <div class="test-result-card">
+        <div style="font-size:3rem;margin-bottom:0.5rem;">🎉</div>
+        <div class="test-result-score" id="resScore">0</div>
+        <div class="test-result-label">ball / 100</div>
+        <div class="test-result-detail">
+          <div class="test-result-item"><div class="test-result-item-num" id="resCorrect">0</div><div class="test-result-item-label">To'g'ri</div></div>
+          <div class="test-result-item"><div class="test-result-item-num" id="resWrong">0</div><div class="test-result-item-label">Noto'g'ri</div></div>
+          <div class="test-result-item"><div class="test-result-item-num" id="resTime">0:00</div><div class="test-result-item-label">Vaqt</div></div>
+        </div>
+        <div id="telegramStatus" class="info-box" style="text-align:left;margin-bottom:1.5rem;">
+          📤 Natija Telegram guruhiga yuborilmoqda...
+        </div>
+        <a href="index.html" class="btn-secondary" style="margin-right:0.75rem;">Bosh sahifaga</a>
+        <button class="btn-primary" onclick="location.reload()">Qayta urinish</span>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer><div class="footer-logo"><img src="logo.png" alt="">KreativPedagogika</div><p class="footer-text">© 2026 KreativPedagogika.uz</p></footer>
+
+<script src="icons.js"></script>
+<script src="nav.js"></script>
+<script>
+// ============================================================
+// SOZLAMALAR — O'zgartiring
+// ============================================================
+const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbxk4yDLmR2jPx6vF54o1fZ0CQkeDknJpd4X_7tiP5Hr3dQGMNbcx_ywdpSWj1YLS7LMrw/exec';
+const TELEGRAM_BOT_TOKEN = '8868132773:AAHTHaqNYeIwPBKSNV9O2O-T6RBa6qY3CZI';
+const TELEGRAM_CHAT_ID   = '-1003970151424';
+const TEST_QUESTIONS_COUNT = 30;
+const TEST_TIME_MINUTES    = 45;
+// ============================================================
+
+let allQuestions = [];
+let testQuestions = [];
+let currentQ = 0;
+let answers = [];
+let timerInterval = null;
+let startTime = null;
+let secondsLeft = TEST_TIME_MINUTES * 60;
+let currentUser = null;
+
+// On load
+document.addEventListener('DOMContentLoaded', () => {
+  const raw = localStorage.getItem('kp_user');
+  if (raw) {
+    currentUser = JSON.parse(raw);
+    document.getElementById('userName').textContent = currentUser.name;
+    document.getElementById('userInfo').style.display = 'block';
+  }
+});
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+async function startTest() {
+  if (!currentUser) {
+    showToast("Avval tizimga kiring!", 'error');
+    setTimeout(() => { window.location.href = 'login.html?next=test.html'; }, 1500);
+    return;
+  }
+  document.getElementById('startBtn').disabled = true;
+  document.getElementById('loadingMsg').style.display = 'block';
+
+  // Google Apps Script CORS muammosini hal qilish uchun script tag usuli
+  try {
+    allQuestions = await loadViaScript(GOOGLE_SHEET_URL + '?action=getQuestions');
+  } catch(e) {
+    console.log('Sheet xatosi:', e);
+    allQuestions = getSampleQuestions();
+  }
+
+  if (allQuestions.length < TEST_QUESTIONS_COUNT) {
+    showToast("Savollar yetarli emas (" + allQuestions.length + " ta). " + TEST_QUESTIONS_COUNT + " ta kerak.", 'error');
+    document.getElementById('startBtn').disabled = false;
+    document.getElementById('loadingMsg').style.display = 'none';
+    return;
+  }
+
+  testQuestions = shuffle(allQuestions).slice(0, TEST_QUESTIONS_COUNT);
+  answers = new Array(TEST_QUESTIONS_COUNT).fill(null);
+  currentQ = 0;
+  startTime = Date.now();
+  secondsLeft = TEST_TIME_MINUTES * 60;
+
+  document.getElementById('qTotal').textContent = TEST_QUESTIONS_COUNT;
+  document.getElementById('startScreen').style.display = 'none';
+  document.getElementById('testScreen').style.display = 'block';
+
+  renderQuestion();
+  startTimer();
+}
+
+function renderQuestion() {
+  const q = testQuestions[currentQ];
+  document.getElementById('qNum').textContent = (currentQ + 1) + '-savol';
+  document.getElementById('qCurrent').textContent = currentQ + 1;
+  document.getElementById('qText').textContent = q.question;
+  document.getElementById('progressBar').style.width = ((currentQ + 1) / TEST_QUESTIONS_COUNT * 100) + '%';
+
+  const img = document.getElementById('qImg');
+  if (q.image) { img.src = q.image; img.style.display = 'block'; }
+  else { img.style.display = 'none'; }
+
+  // Variantlarni aralashtiramiz — shuffledOpts har savol uchun bir marta saqlanadi
+  if (!q.shuffledOpts) {
+    const origOpts = [q.a, q.b, q.c, q.d];
+    const correctText = origOpts[q.correct]; // To'g'ri javob matni
+    const indices = [0,1,2,3];
+    // Fisher-Yates shuffle
+    for (let i = indices.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [indices[i], indices[j]] = [indices[j], indices[i]];
+    }
+    q.shuffledOpts = indices.map(i => origOpts[i]);
+    q.shuffledCorrect = q.shuffledOpts.indexOf(correctText);
+  }
+
+  const opts = document.getElementById('options');
+  const letters = ['A', 'B', 'C', 'D'];
+  opts.innerHTML = q.shuffledOpts.map((opt, i) => `
+    <button class="test-option ${answers[currentQ] === i ? 'selected' : ''}" onclick="selectAnswer(${i})">
+      <span class="option-letter">${letters[i]}</span>
+      <span>${opt}</span>
+    </button>
+  `).join('');
+
+  document.getElementById('nextBtn').textContent = currentQ === TEST_QUESTIONS_COUNT - 1 ? "Testni yakunlash ✓" : "Keyingi →";
+}
+
+function selectAnswer(idx) {
+  answers[currentQ] = idx;
+  document.querySelectorAll('.test-option').forEach((btn, i) => {
+    btn.classList.toggle('selected', i === idx);
+  });
+}
+
+function nextQuestion() {
+  if (answers[currentQ] === null) {
+    showToast("Iltimos, javob tanlang!", 'error');
+    return;
+  }
+  if (currentQ < TEST_QUESTIONS_COUNT - 1) {
+    currentQ++;
+    renderQuestion();
+  } else {
+    finishTest();
+  }
+}
+
+function startTimer() {
+  timerInterval = setInterval(() => {
+    secondsLeft--;
+    const m = Math.floor(secondsLeft / 60);
+    const s = secondsLeft % 60;
+    const el = document.getElementById('timer');
+    el.textContent = '⏱ ' + m + ':' + String(s).padStart(2, '0');
+    if (secondsLeft <= 60) el.classList.add('urgent');
+    if (secondsLeft <= 0) finishTest();
+  }, 1000);
+}
+
+function finishTest() {
+  clearInterval(timerInterval);
+  const elapsed = Math.floor((Date.now() - startTime) / 1000);
+  const usedMin = Math.floor(elapsed / 60);
+  const usedSec = elapsed % 60;
+
+  let correct = 0;
+  testQuestions.forEach((q, i) => {
+    const correctIdx = q.shuffledCorrect !== undefined ? q.shuffledCorrect : q.correct;
+    if (answers[i] !== null && correctIdx == answers[i]) correct++;
+  });
+  const wrong = testQuestions.filter((q, i) => {
+    const correctIdx = q.shuffledCorrect !== undefined ? q.shuffledCorrect : q.correct;
+    return answers[i] !== null && correctIdx != answers[i];
+  }).length;
+  const score = Math.round(correct / TEST_QUESTIONS_COUNT * 100);
+
+  document.getElementById('testScreen').style.display = 'none';
+  document.getElementById('resultScreen').style.display = 'block';
+  document.getElementById('resScore').textContent = score;
+  document.getElementById('resCorrect').textContent = correct;
+  document.getElementById('resWrong').textContent = wrong;
+  document.getElementById('resTime').textContent = usedMin + ':' + String(usedSec).padStart(2, '0');
+
+  sendTelegram(score, correct, wrong, usedMin + ':' + String(usedSec).padStart(2, '0'));
+}
+
+async function sendTelegram(score, correct, wrong, time) {
+  const name = currentUser ? currentUser.name : 'Noma\'lum';
+  const phone = currentUser ? currentUser.telefon : '—';
+  const date = new Date().toLocaleString('uz-UZ');
+
+  const msg = `📊 *Test natijasi*\n\n👤 *Talaba:* ${name}\n📱 *Telefon:* ${phone}\n\n✅ To'g'ri: ${correct}/${TEST_QUESTIONS_COUNT}\n❌ Noto'g'ri: ${wrong}\n🏆 *Ball: ${score}/100*\n⏱ Vaqt: ${time}\n📅 Sana: ${date}`;
+
+  const statusEl = document.getElementById('telegramStatus');
+  try {
+    const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: msg, parse_mode: 'Markdown' })
+    });
+    const data = await res.json();
+    if (data.ok) {
+      statusEl.innerHTML = '✅ Natija Telegram guruhiga muvaffaqiyatli yuborildi!';
+      statusEl.style.background = 'rgba(34,197,94,0.08)';
+      statusEl.style.borderColor = 'rgba(34,197,94,0.3)';
+    } else {
+      statusEl.innerHTML = '⚠️ Telegram yuborishda xatolik. Bot token yoki guruh ID ni tekshiring.';
+    }
+  } catch(e) {
+    statusEl.innerHTML = '⚠️ Telegram bilan bog\'lanishda muammo.';
+  }
+
+  // Also send to Google Sheet
+  try {
+    await fetch(GOOGLE_SHEET_URL + '?action=saveResult&name=' + encodeURIComponent(name) + '&phone=' + encodeURIComponent(phone) + '&score=' + score + '&correct=' + correct + '&total=30&time=' + encodeURIComponent(time) + '&tur=Test', {redirect:'follow'});
+  } catch(e) {}
+}
+
+// Script tag orqali yuklash (CORS muammosini hal qiladi)
+function loadViaScript(url) {
+  return new Promise((resolve, reject) => {
+    const callbackName = 'kp_cb_' + Date.now();
+    const fullUrl = url + '&callback=' + callbackName;
+    
+    window[callbackName] = function(data) {
+      delete window[callbackName];
+      document.getElementById('jsonpScript')?.remove();
+      resolve(data.questions || []);
+    };
+    
+    const s = document.createElement('script');
+    s.id = 'jsonpScript';
+    s.src = fullUrl;
+    s.onerror = () => {
+      delete window[callbackName];
+      s.remove();
+      // JSONP ishlamasa oddiy fetch sinab ko'ramiz
+      fetch(url)
+        .then(r => r.json())
+        .then(d => resolve(d.questions || []))
+        .catch(() => resolve([]));
+    };
+    setTimeout(() => {
+      if (window[callbackName]) {
+        delete window[callbackName];
+        s.remove();
+        // Timeout bo'lsa fetch sinab ko'ramiz
+        fetch(url)
+          .then(r => r.json())
+          .then(d => resolve(d.questions || []))
+          .catch(() => resolve([]));
+      }
+    }, 8000);
+    document.head.appendChild(s);
+  });
+}
+
+// Sample questions (fallback when Google Sheet not configured)
+function getSampleQuestions() {
+  return Array.from({length: 100}, (_, i) => ({
+    question: `${i+1}-savol: Bu namuna savol. Google Sheet ulangandan keyin haqiqiy savollar ko'rinadi.`,
+    a: 'A variant javob', b: 'B variant javob',
+    c: 'C variant javob', d: 'D variant javob',
+    correct: 0, image: ''
+  }));
+}
+</script>
+</body>
+</html>
