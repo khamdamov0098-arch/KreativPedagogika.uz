@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pandoc \"D:\\\\Shoxrux\\\\auto play\\\\Sariboyev Nurali aka Jizzax Kreativpedagogika.uz\\\\12.Krasvord\\\\korsw.docx\" -o output.md)",
+      "Read(//c/Users/Admin/AppData/Roaming/Claude/local-agent-mode-sessions/skills-plugin/cb20e61a-d5ce-483f-8f75-66afe1b4bb36/7b149feb-0502-4183-be9c-38615699cb25/skills/docx/**)",
+      "Bash(python scripts/office/unpack.py \"D:\\\\Shoxrux\\\\auto play\\\\Sariboyev Nurali aka Jizzax Kreativpedagogika.uz\\\\12.Krasvord\\\\korsw.docx\" unpacked/)",
+      "PowerShell(python --version)",
+      "PowerShell(python3 --version)",
+      "PowerShell(cd \"C:\\\\Users\\\\Admin\\\\Desktop\\\\kreativpedagogika\"; node crossword_generator.js > cws_output.js 2>&1; Write-Host \"Exit: $LASTEXITCODE\")",
+      "PowerShell(cd \"C:\\\\Users\\\\Admin\\\\Desktop\\\\kreativpedagogika\"; node crossword_generator.js > cws_output.js; Write-Host \"Lines: $\\(\\(Get-Content cws_output.js\\).Count\\)\")"
+    ]
+  }
+}
