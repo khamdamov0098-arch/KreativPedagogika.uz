@@ -296,39 +296,22 @@ function finishTest() {
   document.getElementById('resWrong').textContent = wrong;
   document.getElementById('resTime').textContent = usedMin + ':' + String(usedSec).padStart(2, '0');
 
-  sendTelegram(score, correct, wrong, usedMin + ':' + String(usedSec).padStart(2, '0'));
+  saveResult(score, correct, wrong, usedMin + ':' + String(usedSec).padStart(2, '0'));
 }
 
-async function sendTelegram(score, correct, wrong, time) {
+async function saveResult(score, correct, wrong, time) {
   const name = currentUser ? currentUser.name : 'Noma\'lum';
   const phone = currentUser ? currentUser.telefon : '—';
-  const date = new Date().toLocaleString('uz-UZ');
-
-  const msg = `📊 *Test natijasi*\n\n👤 *Talaba:* ${name}\n📱 *Telefon:* ${phone}\n\n✅ To'g'ri: ${correct}/${TEST_QUESTIONS_COUNT}\n❌ Noto'g'ri: ${wrong}\n🏆 *Ball: ${score}/100*\n⏱ Vaqt: ${time}\n📅 Sana: ${date}`;
-
   const statusEl = document.getElementById('telegramStatus');
+  statusEl.innerHTML = '📤 Natija saqlanmoqda...';
   try {
-    const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: msg, parse_mode: 'Markdown' })
-    });
-    const data = await res.json();
-    if (data.ok) {
-      statusEl.innerHTML = '✅ Natija Telegram guruhiga muvaffaqiyatli yuborildi!';
-      statusEl.style.background = 'rgba(34,197,94,0.08)';
-      statusEl.style.borderColor = 'rgba(34,197,94,0.3)';
-    } else {
-      statusEl.innerHTML = '⚠️ Telegram yuborishda xatolik. Bot token yoki guruh ID ni tekshiring.';
-    }
+    await fetch(GOOGLE_SHEET_URL + '?action=saveResult&name=' + encodeURIComponent(name) + '&phone=' + encodeURIComponent(phone) + '&correct=' + correct + '&total=30&time=' + encodeURIComponent(time) + '&tur=Test', {redirect:'follow'});
+    statusEl.innerHTML = '✅ Natija muvaffaqiyatli saqlandi!';
+    statusEl.style.background = 'rgba(34,197,94,0.08)';
+    statusEl.style.borderColor = 'rgba(34,197,94,0.3)';
   } catch(e) {
-    statusEl.innerHTML = '⚠️ Telegram bilan bog\'lanishda muammo.';
+    statusEl.innerHTML = '⚠️ Natijani saqlashda xatolik. Internet aloqasini tekshiring.';
   }
-
-  // Also send to Google Sheet
-  try {
-    await fetch(GOOGLE_SHEET_URL + '?action=saveResult&name=' + encodeURIComponent(name) + '&phone=' + encodeURIComponent(phone) + '&score=' + score + '&correct=' + correct + '&total=30&time=' + encodeURIComponent(time) + '&tur=Test', {redirect:'follow'});
-  } catch(e) {}
 }
 
 // Script tag orqali yuklash (CORS muammosini hal qiladi)

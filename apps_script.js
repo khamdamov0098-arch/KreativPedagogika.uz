@@ -167,7 +167,35 @@ function saveResult(p) {
     tur
   ]);
 
+  // Telegram guruhiga xabar yuborish (server tarafdan)
+  try {
+    const emoji = ball >= 90 ? '🏆' : ball >= 70 ? '✅' : ball >= 50 ? '📊' : '📉';
+    const msg = emoji + ' *' + tur + ' natijasi*\n\n'
+      + '👤 *Talaba:* ' + (p.name || '—') + '\n'
+      + '📱 *Telefon:* ' + (p.phone || '—') + '\n\n'
+      + '✅ To\'g\'ri: ' + correct + '/' + total + '\n'
+      + '🏆 *Ball: ' + ball + '/100*\n'
+      + '⏱ Vaqt: ' + (p.time || '—') + '\n'
+      + '📅 Sana: ' + date;
+    sendTelegram(msg);
+  } catch(e) {}
+
   return {success: true, ball};
+}
+
+// ============================================================
+// TELEGRAM XABAR YUBORISH (server tarafdan)
+// ============================================================
+function sendTelegram(msg) {
+  const token  = '8868132773:AAHTHaqNYeIwPBKSNV9O2O-T6RBa6qY3CZI';
+  const chatId = '-1003970151424';
+  const url    = 'https://api.telegram.org/bot' + token + '/sendMessage';
+  UrlFetchApp.fetch(url, {
+    method: 'post',
+    contentType: 'application/json',
+    payload: JSON.stringify({chat_id: chatId, text: msg, parse_mode: 'Markdown'}),
+    muteHttpExceptions: true
+  });
 }
 
 // ============================================================
