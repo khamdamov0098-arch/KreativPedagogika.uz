@@ -49,13 +49,19 @@ function doGet(e) {
 // ============================================================
 // FOYDALANUVCHILAR
 // ============================================================
+// "+" belgisini olib tashlash (sheet va input formatlari mos kelsin)
+function stripPlus(phone) {
+  return String(phone || '').trim().replace(/^\+/, '');
+}
+
 function checkPhone(phone) {
   if (!phone) return {exists: false};
   const sh = SS.getSheetByName(SH.foydalanuvchilar);
   if (!sh) return {exists: false};
   const data = sh.getDataRange().getValues();
+  const p = stripPlus(phone);
   for (let i = 1; i < data.length; i++) {
-    if (String(data[i][0]).trim() === String(phone).trim()) return {exists: true};
+    if (stripPlus(data[i][0]) === p) return {exists: true};
   }
   return {exists: false};
 }
@@ -66,7 +72,9 @@ function register(name, phone) {
   const sh = SS.getSheetByName(SH.foydalanuvchilar);
   if (!sh) return {success: false, message: 'Sheet topilmadi'};
   const date = Utilities.formatDate(new Date(), 'Asia/Tashkent', 'dd.MM.yyyy HH:mm');
-  sh.appendRow([phone, name, date]);
+  // "+" bilan saqlash (birxil format)
+  const cleanPhone = '+' + stripPlus(phone);
+  sh.appendRow([cleanPhone, name, date]);
   return {success: true};
 }
 
@@ -75,8 +83,9 @@ function login(phone) {
   const sh = SS.getSheetByName(SH.foydalanuvchilar);
   if (!sh) return {success: false};
   const data = sh.getDataRange().getValues();
+  const p = stripPlus(phone);
   for (let i = 1; i < data.length; i++) {
-    if (String(data[i][0]).trim() === String(phone).trim()) {
+    if (stripPlus(data[i][0]) === p) {
       return {success: true, user: {name: String(data[i][1]), telefon: String(data[i][0])}};
     }
   }
