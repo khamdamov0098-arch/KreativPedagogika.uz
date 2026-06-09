@@ -45,6 +45,12 @@ document.addEventListener('click', function(e) {
 });
 window.toggleDropdown = toggleDropdown;
 
+function toggleMobileMenu() {
+  const mobileMenu = document.getElementById('mobileMenu');
+  if (mobileMenu) mobileMenu.classList.toggle('open');
+}
+window.toggleMobileMenu = toggleMobileMenu;
+
 document.addEventListener('DOMContentLoaded', function () {
   // Hamburger
   const hamburger = document.getElementById('hamburger');
@@ -99,13 +105,13 @@ function renderNavUser() {
   if (raw) {
     const u = JSON.parse(raw);
     const ini = navUserInitial(u.name);
-    if (navUser) navUser.innerHTML = `<div class="nav-user">
+    if (navUser) navUser.innerHTML = `<div class="nav-user" onclick="toggleMobileMenu()" style="cursor:pointer;" title="${u.name}">
       <div class="nav-user-avatar">${ini}</div>
       <div class="nav-user-info">
         <div class="nav-user-name">${u.name}</div>
         <div class="nav-user-group">${u.telefon||''}</div>
       </div>
-      <button class="btn-nav-logout" onclick="navLogout()">Chiqish</button>
+      <button class="btn-nav-logout" onclick="event.stopPropagation();navLogout()">Chiqish</button>
     </div>`;
     if (mobileUser) mobileUser.innerHTML = `<div style="padding:.75rem 1rem .5rem;display:flex;align-items:center;justify-content:space-between;gap:.75rem;">
       <div style="font-weight:800;color:var(--navy);font-size:.95rem;">${u.name}</div>
