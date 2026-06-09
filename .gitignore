@@ -1,0 +1,15 @@
+# Claude Code files
+.claude/
+CLAUDE.md
+
+# Dev/generator scripts
+crossword_generator.js
+cws_output.js
+
+# Nested repo
+KreativPedagogika.uz/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini

@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+  <title>Ma'ruza matnlari — KreativPedagogika.uz</title>
+  <link rel="icon" href="logo.png"/>
+  <link rel="stylesheet" href="shared.css"/>
+  <style>
+    .maruza-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1.5rem;
+    }
+    .maruza-card {
+      background: white;
+      border-radius: 18px;
+      border: 1.5px solid var(--border2);
+      box-shadow: 0 3px 16px rgba(27,43,107,0.08);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: transform 0.22s, box-shadow 0.22s;
+    }
+    .maruza-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 32px rgba(27,43,107,0.13);
+    }
+    .maruza-card-head {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+      padding: 1.25rem 1.35rem 1rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.85rem;
+    }
+    .maruza-num {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.15);
+      border: 1.5px solid rgba(255,255,255,0.25);
+      color: white;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .maruza-title {
+      color: white;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.12rem;
+      font-weight: 800;
+      line-height: 1.4;
+      padding-top: 2px;
+    }
+    .maruza-card-body {
+      padding: 1.1rem 1.35rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+    .maruza-reja {
+      font-size: 1.05rem;
+      color: var(--text-2);
+      line-height: 1.8;
+    }
+    .maruza-reja strong {
+      display: block;
+      font-size: 0.93rem;
+      font-weight: 800;
+      color: var(--navy);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.35rem;
+    }
+    .maruza-reja ol {
+      padding-left: 1.1rem;
+      margin: 0;
+    }
+    .maruza-reja ol li {
+      margin-bottom: 2px;
+    }
+    .tayanch {
+      background: rgba(42,191,171,0.07);
+      border: 1px solid rgba(42,191,171,0.2);
+      border-radius: 10px;
+      padding: 0.75rem 0.95rem;
+      font-size: 1rem;
+      color: var(--teal-dark);
+      line-height: 1.7;
+    }
+    .tayanch strong {
+      display: block;
+      font-weight: 800;
+      margin-bottom: 4px;
+      font-size: 0.93rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .maruza-card-foot {
+      padding: 0.9rem 1.35rem 1.1rem;
+      border-top: 1px solid var(--border2);
+      display: flex;
+      gap: 0.6rem;
+    }
+    .btn-maruza-view {
+      flex: 1;
+      background: linear-gradient(135deg, var(--navy), var(--navy-light));
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 0.7rem 1rem;
+      font-size: 1rem;
+      font-weight: 800;
+      font-family: 'Outfit', sans-serif;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: opacity 0.18s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn-maruza-view:hover { opacity: 0.9; }
+    .btn-maruza-dl {
+      background: rgba(42,191,171,0.1);
+      color: var(--teal-dark);
+      border: 1.5px solid rgba(42,191,171,0.25);
+      border-radius: 10px;
+      padding: 0.7rem 0.9rem;
+      font-size: 1rem;
+      font-weight: 800;
+      font-family: 'Outfit', sans-serif;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      text-decoration: none;
+      transition: all 0.18s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn-maruza-dl:hover { background: var(--teal); color: white; border-color: var(--teal); }
+
+    @media (max-width: 768px) {
+      .maruza-grid { grid-template-columns: 1fr; gap: 1rem; }
+    }
+    @media (max-width: 480px) {
+      .maruza-card-head { padding: 1rem 1.1rem 0.85rem; gap: 0.7rem; }
+      .maruza-card-body { padding: 0.9rem 1.1rem; }
+      .maruza-card-foot { padding: 0.75rem 1.1rem 0.9rem; }
+      .maruza-num { width: 38px; height: 38px; font-size: 1rem; border-radius: 10px; }
+      .maruza-title { font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="toast" id="toast"></div>
+<header>
+  <div class="header-inner">
+    <a class="logo" href="index.html">
+      <img src="logo.png" alt="KreativPedagogika">
+      <div>
+        <div class="logo-text">Kreativ<span>Pedagogika</span></div>
+        <span class="logo-sub">Ijodiy yondashuv, samarali ta'lim</span>
+      </div>
+    </a>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    <nav class="header-nav">
+      <a href="index.html">Bosh sahifa</a>
+      <div class="dropdown"><span class="dd-btn">O'quv materiallari</span><div class="dropdown-menu">
+        <a href="fan-dasturi.html"><span class="dm-icon">📋</span>Fan dasturi</a>
+        <a href="sillabusi.html"><span class="dm-icon">📋</span>Fan sillabusi</a>
+        <a href="maruzalar.html" class="active"><span class="dm-icon">📚</span>Ma'ruza matnlari</a>
+        <a href="amaliy.html"><span class="dm-icon">✍️</span>Amaliy mashg'ulotlar</a>
+        <a href="adabiyotlar.html"><span class="dm-icon">📖</span>Adabiyotlar</a>
+        <a href="taqdimotlar.html"><span class="dm-icon">📊</span>Taqdimotlar</a>
+      </div></div>
+      <div class="dropdown"><span class="dd-btn">Topshiriqlar</span><div class="dropdown-menu">
+        <a href="innovatsion-test.html"><span class="dm-icon">🎯</span>Innovatsion test</a>
+        <a href="test.html"><span class="dm-icon">🎯</span>Test topshiriqlari</a>
+        <a href="mustaqil-ish.html"><span class="dm-icon">📝</span>Mustaqil ish mavzulari</a>
+        <a href="topshiriqlar.html"><span class="dm-icon">📝</span>Topshiriqlar</a>
+        <a href="krossvord.html"><span class="dm-icon">🎲</span>Krossvordlar</a>
+      </div></div>
+      <a href="videodarslar.html">📹 Videodarslar</a>
+      <a href="muallif.html">👤 Muallif</a>
+    </nav>
+    <div id="navUserBlock"></div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">🏠 Bosh sahifa</a>
+    <div class="mobile-section-label">O'quv materiallari</div>
+    <a href="fan-dasturi.html">📋 Fan dasturi</a>
+    <a href="sillabusi.html">📋 Fan sillabusi</a>
+    <a href="maruzalar.html" class="active">📚 Ma'ruza matnlari</a>
+    <a href="amaliy.html">✍️ Amaliy mashg'ulotlar</a>
+    <a href="adabiyotlar.html">📖 Adabiyotlar</a>
+    <a href="taqdimotlar.html">📊 Taqdimotlar</a>
+    <div class="mobile-section-label">Topshiriqlar</div>
+    <a href="innovatsion-test.html">🎯 Innovatsion test</a>
+    <a href="test.html">🎯 Test topshiriqlari</a>
+    <a href="mustaqil-ish.html">📝 Mustaqil ish mavzulari</a>
+    <a href="topshiriqlar.html">📝 Topshiriqlar</a>
+    <a href="krossvord.html">🎲 Krossvordlar</a>
+    <div class="mobile-section-label">Boshqa</div>
+    <a href="videodarslar.html">📹 Videodarslar</a>
+    <a href="muallif.html">👤 Muallif haqida</a>
+    <div id="mobileUserBlock"></div>
+  </div>
+</header>
+
+<div class="page-header">
+  <h1>📚 Ma'ruza matnlari</h1>
+  <p>14 ta mavzu bo'yicha ma'ruza matnlari</p>
+</div>
+
+<main class="main" style="padding-top:2rem; padding-bottom:3rem;">
+  <div class="info-box" style="margin-bottom:1.75rem;">
+    📌 Har bir mavzu bo'yicha reja va tayanch tushunchalar keltirilgan. PDF faylni ko'rish yoki yuklab olish uchun tugmani bosing.
+  </div>
+  <div class="maruza-grid" id="maruzaGrid"></div>
+</main>
+
+<footer>
+  <div class="footer-logo"><img src="logo.png" alt="">KreativPedagogika</div>
+  <p class="footer-text">© 2026 KreativPedagogika.uz</p>
+</footer>
+
+<div class="modal-overlay" id="modalOverlay" onclick="closePDF(event)">
+  <div class="modal">
+    <div class="modal-head">
+      <span id="modalTitle">Ma'ruza</span>
+      <div class="modal-head-actions">
+        <a class="modal-dl-btn" id="modalDlBtn" href="#" download>⬇ Yuklab olish</a>
+        <button class="modal-close" onclick="closePDF(event)">✕</span>
+      </div>
+    </div>
+    <iframe id="modalFrame" src=""></iframe>
+  </div>
+</div>
+
+<script src="icons.js"></script>
+<script src="nav.js"></script>
+<script>
+const MARUZALAR = [
+  {
+    num: 1,
+    title: "Kreativ pedagogika fan sifatida",
+    reja: [
+      "Kreativ pedagogikaning asosiy tushunchalari.",
+      "Kreativ pedagogika fan va akademik fan sifatida.",
+      "Kreativ pedagogika fanining boshqa fanlar bilan aloqasi.",
+      "Kreativ pedagogika fanining ilmiy – tadqiqot metodlari."
+    ],
+    tayanch: "Kreativlik, kreativ pedagogika, ilmiy tadqiqot metodlari, dolzarblik, kreativ salohiyat, pedagog kadr, kasbiy faoliyat, nazariy tushunchalar"
+  },
+  {
+    num: 2,
+    title: "Kreativ ta'lim muhiti: mohiyati, xususiyatlari",
+    reja: [
+      "Kreativ ta'lim tabaqalanishi va davriyligi — \"Atrof-muhit\", \"Kreativ muhit\", \"Ta'lim muhiti\", \"Kreativ ta'lim muhiti\" tushunchalarining mohiyati.",
+      "Kreativ ta'lim muhitining asosiy talablari.",
+      "Kreativ muhitni shakllantirishning pedagogik shartlari."
+    ],
+    tayanch: "Kreativ ta'lim tabaqalanishi, atrof-muhit, kreativ muhit, ta'lim muhiti, kreativ ta'lim muhiti"
+  },
+  {
+    num: 3,
+    title: "Didaktik ta'minotni yaratishga kreativ yondashuv",
+    reja: [
+      "O'quv dasturlarini yaratishga kreativ yondashuv.",
+      "Nazariy va amaliy mashg'ulotlar uchun materiallar to'plash va ularni saralashda kreativ yondashuvning ahamiyati.",
+      "O'quv axborotlarni samarali izlash pedagogning kreativlik sifatlariga egaligini ko'rsatuvchi muhim holat ekanligi."
+    ],
+    tayanch: "Ta'lim va o'qitish nazariyasi, o'quv jarayonida o'qitish usullari, vositalari va shakllari, o'quv materiallarini tayyorlash va taqdim etishning ilmiy asoslari, ta'lim materiallarini innovatsion shaklda ishlab chiqish"
+  },
+  {
+    num: 4,
+    title: "Bo'lajak o'qituvchilarda kreativ tasavvurini rivojlanishi va pedagogikada ilmiy ijodkorlik",
+    reja: [
+      "Kreativ tasavvur tushunchasi.",
+      "Kreativ pedagogika fanining o'qitishning asosiy shakllari.",
+      "Ixtirochilik masalalarini yechish nazariyasi.",
+      "Kreativ tasavvurni rivojlantirish va yangi yechimlarni topish usullari.",
+      "Ilmiy ijod tushunchasi va usullari.",
+      "Bo'lajak o'qituvchilarda ilmiy ijodkorlik qobiliyatini shakllantirish mazmuni."
+    ],
+    tayanch: "Kreativ tasavvur, ixtirochilik masalalari, ilmiy ijod, ijodkorlik qobiliyati, kreativ shaxsning shakllanish bosqichlari, kreativ faoliyat, kreativ ishlanmalar"
+  },
+  {
+    num: 5,
+    title: "Kreativ kompetensiya modelining shakllanishi",
+    reja: [
+      "O'qituvchi modelining umumiy tavsifi.",
+      "O'qituvchining kreativ kompetensiyasini shakllantirishning modeli.",
+      "Kreativ tayyorgarlik — ijodiy yetuklikning tarkibiy qismi."
+    ],
+    tayanch: "O'qituvchi modeli, kreativ kompetensiya, kreativ tayyorgarlik, pedagogik madaniyat, pedagog ijodkorlik, pedagogik aql-idrok, kasbiy chuqur bilimga egalik, individual faoliyat uslubi, ijodiy tashabbusning rivojlanishi, insonparvarlikka yo'naltirilganlik, ijtimoiy faollik"
+  },
+  {
+    num: 6,
+    title: "O'qituvchining ta'lim jarayoniga kreativ yondashuvi",
+    reja: [
+      "Hozirgi zamon o'qituvchisining kreativ pedagogik faoliyati.",
+      "O'qituvchining ta'lim jarayonida kasbiy omilkorligi.",
+      "O'qituvchining ta'lim jarayonida faoliyati va darsga tayyorgarligi."
+    ],
+    tayanch: "Innovatsiya, kreativlik, interaktivlik, motivatsiya, tadqiqot, kooperatsiya, kasbiy omilkorlik, darsga tayyorgarlik"
+  },
+  {
+    num: 7,
+    title: "Kreativ topshiriqlar tizimi. Kreativ darsning innovatsion tuzilishi",
+    reja: [
+      "Kreativ shaxsni rivojlantirish modeli.",
+      "Maktab o'quvchilarining kreativ tafakkurini uzluksiz shakllantirish va kreativ qobiliyatlarini rivojlantirishning pedagogik tizimi.",
+      "Kreativ darsning tuzilishi bo'yicha ko'rsatmalar."
+    ],
+    tayanch: "Tadqiqot va analiz, ijtimoiy va madaniy yondashuvlar, problema yechimi, visuallashtirish va dizayn, kolaboratsiya va jamoa ishlari, kreativ metodlar va texnikalar"
+  },
+  {
+    num: 8,
+    title: "Pedagogik qobiliyatni shakllantirishda kreativ yondashuv",
+    reja: [
+      "Qobiliyatning pedagogik-psixologik tavsifi.",
+      "O'qituvchi pedagogik qobiliyatini rivojlantirishda kreativ funksiyalari.",
+      "Pedagogik qobiliyatning asosiy sifatlari va xususiyatlari."
+    ],
+    tayanch: "Pedagogik qobiliyat, ijodkorlik, o'qituvchi, o'qitish, rivojlantirish, innovatsiya, o'qitish usullari"
+  },
+  {
+    num: 9,
+    title: "Kasbiy kompetensiyalarni shakllantirishda kreativ yondashuv",
+    reja: [
+      "\"Kompetentlik\" va \"kasbiy kompetentlik\" tushunchalarining mohiyati.",
+      "Kasbiy kompetentlik sifatlari. Pedagogning kasbiy kompetentligini rivojlantirish.",
+      "Pedagogik kompetensiya tushunchasi.",
+      "Bo'lajak pedagoglarda pedagogik savodxonlikni oshirish tizimi.",
+      "Pedagogik kompetensiyalarni shakllantirishda ijodiy yondashuv."
+    ],
+    tayanch: "Kompetentlik, kasbiy kompetentlik, pedagogik savodxonlik"
+  },
+  {
+    num: 10,
+    title: "Kreativ kompetensiyaning mazmuni va tuzilishi",
+    reja: [
+      "Kreativ eruditsiya — ijodiy salohiyatning dastlabki komponenti.",
+      "Kreativ pedagogik faoliyat tajribasi — ijodiy salohiyatning asosiy komponenti.",
+      "Kreativ kompetensiyaning mezonlari va darajalari.",
+      "Pedagogning kreativ kompetensiyasini shakllantirishning tamoyillari va omillari."
+    ],
+    tayanch: "Kreativ eruditsiya, ijodiy salohiyat, kognitiv yondashuv, kreativ jarayon, muammolarni hal qilish, kreativ kompetensiyaning mezonlari"
+  },
+  {
+    num: 11,
+    title: "Ta'lim-tarbiya jarayonida o'quvchilarning ma'naviy kompetensiyalarini shakllantirishda kreativ yondashuv",
+    reja: [
+      "Ta'lim-tarbiya jarayonida o'quvchilarning ma'naviy kompetensiyalarini shakllantirishda kreativ yondashuv.",
+      "Shaxsiy sifatlar — insonni ijodkorlik, muvaffaqiyatga yetaklovchi fazilatlar."
+    ],
+    tayanch: "Ma'naviy kompetensiya, kreativ yondashuv, ta'limdagi innovatsiya, kognitiv rivojlanish, o'zini ifoda etish, muammolarni hal qilish"
+  },
+  {
+    num: 12,
+    title: "O'qituvchining kreativ salohiyatini rivojlantirish usullari",
+    reja: [
+      "Kreativ shaxsni rivojlantirish modeli.",
+      "O'qituvchining kreativ salohiyatini aniqlash mezonlari.",
+      "Pedagogik kreativ salohiyatining tarkibiy asoslari.",
+      "O'qituvchining ilmiy ijod usullari."
+    ],
+    tayanch: "Kreativ salohiyat, innovatsion yondashuv, yangi metodlar, kreativ fikrlash, pedagogik malaka, o'qituvchining o'zini o'zi rivojlantirish, ta'lim texnologiyalari, darsni tashkil etish, ijodiy yondashuv, o'qituvchining shaxsiy rivojlanishi"
+  },
+  {
+    num: 13,
+    title: "Pedagogik muloqot – o'qituvchining ijodiy faoliyati sifatida",
+    reja: [
+      "\"Muloqot\" atamasining falsafiy, ijtimoiy, psixologik va pedagogik mohiyati, muloqot birligi.",
+      "Pedagogik muloqot, uning o'ziga xos xususiyatlari.",
+      "Pedagogik muloqotni tashkil etish madaniyati va bosqichlari.",
+      "O'quv-tarbiya jarayonida pedagogik muloqot jarayonini boshqarish uslublari.",
+      "Muloqot jarayonida tashabbusni boshqarish va funksiyalari."
+    ],
+    tayanch: "Muomala kategoriyasi, muloqot, axloqiy me'yorlar, nutq dinamikasi, muloqot funksiyalari, kommunikativ aloqa, interaktiv muloqot, perseptiv muloqot, demokratik uslub, avtoritar uslub, liberal uslub, muloqotni boshqarish bosqichlari"
+  },
+  {
+    num: 14,
+    title: "Bo'lajak o'qituvchilarni ijodkorligini rivojlantirishda pedagogik texnologiyalarning o'rni",
+    reja: [
+      "Bo'lajak o'qituvchilarni ijodkorligini rivojlantirishda pedagogik texnologiyalardan foydalanish.",
+      "Bo'lajak o'qituvchilarni ijodkorligini rivojlantirishda pedagogik texnologiyalardan foydalanishning samarali yo'llari.",
+      "Pedagogik-psixologik inersiya turlari, hal qilish yo'llari."
+    ],
+    tayanch: "Inersiya, inersiya turlari, pedagogik texnologiyalar va ijodkorlik"
+  }
+];
+
+document.getElementById('maruzaGrid').innerHTML = MARUZALAR.map(m => `
+  <div class="maruza-card" id="m${m.num}">
+    <div class="maruza-card-head">
+      <div class="maruza-num">${m.num}</div>
+      <div class="maruza-title">${m.num}-Mavzu: ${m.title}</div>
+    </div>
+    <div class="maruza-card-body">
+      <div class="maruza-reja">
+        <strong>📋 Reja</strong>
+        <ol>${m.reja.map(r => `<li>${r}</li>`).join('')}</ol>
+      </div>
+      <div class="tayanch">
+        <strong>🔑 Tayanch tushunchalar</strong>
+        ${m.tayanch}
+      </div>
+    </div>
+    <div class="maruza-card-foot">
+      <button class="btn-maruza-view" onclick="openPDF('pdfs/maruza${m.num}.pdf','${m.num}-Mavzu: ${m.title.replace(/'/g,"\\'")}')">
+        👁 Ko'rish
+      </span>
+      <a class="btn-maruza-dl" href="pdfs/maruza${m.num}.pdf" download="maruza${m.num}.pdf">
+        ⬇
+      </a>
+    </div>
+  </div>
+`).join('');
+
+// Anchor scroll
+const hash = window.location.hash.replace('#','');
+if (hash) setTimeout(() => {
+  const el = document.getElementById('m' + hash);
+  if (el) el.scrollIntoView({ behavior:'smooth', block:'center' });
+}, 300);
+</script>
+</body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+  <title>Mustaqil ish mavzulari — KreativPedagogika.uz</title>
+  <link rel="icon" href="logo.png"/>
+  <link rel="stylesheet" href="shared.css"/>
+  <style>
+    .tasks-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .tasks-count {
+      background: linear-gradient(135deg, var(--navy), var(--teal));
+      color: white;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 0.9rem;
+      padding: 0.45rem 1.1rem;
+      border-radius: 20px;
+    }
+    .tasks-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .task-item {
+      background: white;
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.85rem;
+      box-shadow: 0 2px 8px rgba(27,43,107,0.06);
+      border: 1.5px solid var(--border2);
+      transition: border-color 0.18s, box-shadow 0.18s;
+    }
+    .task-item:hover {
+      border-color: var(--teal);
+      box-shadow: 0 4px 16px rgba(42,191,171,0.12);
+    }
+    .task-num {
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, var(--navy), var(--teal));
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 900;
+    }
+    .task-text {
+      font-size: 1rem;
+      color: var(--text);
+      line-height: 1.6;
+      padding-top: 3px;
+    }
+    @media (max-width: 480px) {
+      .task-item { padding: 0.85rem 1rem; gap: 0.7rem; }
+      .task-num { width: 30px; height: 30px; font-size: 0.75rem; border-radius: 8px; }
+      .task-text { font-size: 0.95rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="toast" id="toast"></div>
+<header>
+  <div class="header-inner">
+    <a class="logo" href="index.html">
+      <img src="logo.png" alt="KreativPedagogika">
+      <div>
+        <div class="logo-text">Kreativ<span>Pedagogika</span></div>
+        <span class="logo-sub">Ijodiy yondashuv, samarali ta'lim</span>
+      </div>
+    </a>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    <nav class="header-nav">
+      <a href="index.html">Bosh sahifa</a>
+      <div class="dropdown"><button class="dd-btn">O'quv materiallari</button><div class="dropdown-menu">
+        <a href="fan-dasturi.html"><span class="dm-icon">📋</span>Fan dasturi</a>
+        <a href="sillabusi.html"><span class="dm-icon">📋</span>Fan sillabusi</a>
+        <a href="maruzalar.html"><span class="dm-icon">📚</span>Ma'ruza matnlari</a>
+        <a href="amaliy.html"><span class="dm-icon">✍️</span>Amaliy mashg'ulotlar</a>
+        <a href="adabiyotlar.html"><span class="dm-icon">📖</span>Adabiyotlar</a>
+        <a href="taqdimotlar.html"><span class="dm-icon">📊</span>Taqdimotlar</a>
+      </div></div>
+      <div class="dropdown"><button class="dd-btn">Topshiriqlar</button><div class="dropdown-menu">
+        <a href="innovatsion-test.html"><span class="dm-icon">🎯</span>Innovatsion test</a>
+        <a href="test.html"><span class="dm-icon">🎯</span>Test topshiriqlari</a>
+        <a href="mustaqil-ish.html" class="active"><span class="dm-icon">📝</span>Mustaqil ish mavzulari</a>
+        <a href="topshiriqlar.html"><span class="dm-icon">📝</span>Topshiriqlar</a>
+        <a href="krossvord.html"><span class="dm-icon">🎲</span>Krossvordlar</a>
+      </div></div>
+      <a href="videodarslar.html">📹 Videodarslar</a>
+      <a href="muallif.html">👤 Muallif</a>
+    </nav>
+    <div id="navUserBlock"></div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">🏠 Bosh sahifa</a>
+    <div class="mobile-section-label">O'quv materiallari</div>
+    <a href="fan-dasturi.html">📋 Fan dasturi</a>
+    <a href="sillabusi.html">📋 Fan sillabusi</a>
+    <a href="maruzalar.html">📚 Ma'ruza matnlari</a>
+    <a href="amaliy.html">✍️ Amaliy mashg'ulotlar</a>
+    <a href="adabiyotlar.html">📖 Adabiyotlar</a>
+    <a href="taqdimotlar.html">📊 Taqdimotlar</a>
+    <div class="mobile-section-label">Topshiriqlar</div>
+    <a href="innovatsion-test.html">🎯 Innovatsion test</a>
+    <a href="test.html">🎯 Test topshiriqlari</a>
+    <a href="mustaqil-ish.html" class="active">📝 Mustaqil ish mavzulari</a>
+    <a href="topshiriqlar.html">📝 Topshiriqlar</a>
+    <a href="krossvord.html">🎲 Krossvordlar</a>
+    <div class="mobile-section-label">Boshqa</div>
+    <a href="videodarslar.html">📹 Videodarslar</a>
+    <a href="muallif.html">👤 Muallif haqida</a>
+    <div id="mobileUserBlock"></div>
+  </div>
+</header>
+
+<div class="page-header">
+  <h1>📝 Mustaqil ta'lim mavzulari</h1>
+  <p>60 ta mustaqil ish mavzusi</p>
+</div>
+
+<main class="main" style="padding-top:2rem; padding-bottom:3rem;">
+  <div class="tasks-header">
+    <div class="info-box" style="margin:0; flex:1;">
+      📌 Quyidagi mavzulardan birini tanlang va mustaqil ravishda ishlang.
+    </div>
+    <div class="tasks-count">Jami: 60 ta mavzu</div>
+  </div>
+  <div class="tasks-list" id="tasksList"></div>
+</main>
+
+<footer>
+  <div class="footer-logo"><img src="logo.png" alt="">KreativPedagogika</div>
+  <p class="footer-text">© 2026 KreativPedagogika.uz</p>
+</footer>
+
+<script src="icons.js"></script>
+<script src="nav.js"></script>
+<script>
+const MAVZULAR = [
+  "Kreativ pedagogika fanining ilmiy tadqiqot metodlari.",
+  "Kreativ pedagogika fanini o'qitish jarayoni yaxlit ta'lim sifatida.",
+  "Kreativ pedagogika fanini o'qitish jarayonining mohiyati va uning vazifalari.",
+  "Kreativ pedagogika fanini o'qitishda o'quvchilarning ijodiy faoliyati va uning tuzilishi.",
+  "Kreativ pedagogika fanining tamoyillari va mezonlari.",
+  "Kreativ ta'lim muhitining asosiy talablari.",
+  "Kreativ ta'lim muhitini shakllantirishning pedagogik shartlari.",
+  "Kreativ pedagogika fanini o'qitishda ta'lim turlari va shakllari tavsifi.",
+  "Kreativ pedagogika fanini o'qitishning asosiy shakllari.",
+  "Kreativ pedagogika fanini o'qitish metodlari.",
+  "Kreativ pedagogika fanini o'qitishning o'ziga xos xususiyatlari.",
+  "Kreativ pedagogika fanini o'qitish vositalari va ularning tasnifi.",
+  "Kreativ pedagogika fanini o'qitishda pedagogik texnologiyalardan foydalanish zarurati.",
+  "Kreativ pedagogika fanini o'qitishda axborot texnologiyalardan foydalanishning ahamiyati va zarurati.",
+  "Kreativ ta'lim olganlikni tashxis etishning mohiyati.",
+  "Kreativ pedagogika fanini o'qitishda ta'lim olganlik natijalarini tekshirish va baholash tamoyillari.",
+  "Bilim, ko'nikma va malakalarni baholash mezonlari.",
+  "O'rta sinflarda tarbiya fanini o'qitishda ijodiy tasavvurni shakllantirish.",
+  "Insoniylik va vatanparvarlik ruhida tarbiyalashda kreativ yondashuv.",
+  "O'quvchilarda xushyorlik, ogohlik, ezgulik, mehribonlik kabi sifatlarni tarbiyalash tizimini shakllantirish.",
+  "Bilimdan taraqqiyotga o'tish borasida kompetensiyalarini shakllantirish.",
+  "XXI asr ko'nikmalarini shakllantirishda kreativ yondashuv.",
+  "Zamonaviy maktab darsliklariga qo'yiladigan talablar.",
+  "O'rta va yuqori sinflarda tarbiya darsliklarining tahlili.",
+  "Tarbiya fanini o'qitishda muammoli ta'limning ahamiyati.",
+  "Muammoli va kreativ yondashuv asosida o'quvchilarning ijodiy kompetensiyalarini shakllantirish.",
+  "O'quv axborotlarni samarali izlash — pedagogning kreativlik sifatlariga egaligini ko'rsatuvchi muhim holat ekanligi.",
+  "Badiiy pedagogika imkoniyatlaridan foydalanishda kreativ yondashuv.",
+  "Badiiy pedagogika imkoniyatlaridan foydalanishda ijodiy kompetensiyalarni rivojlantirishning ahamiyati.",
+  "Teatr pedagogikasi imkoniyatlaridan foydalanishda kreativ yondashuv.",
+  "Ma'naviy-ma'rifiy tadbirlarni tashkil etishda pedagoglarda kreativlik sifatlarining namoyon bo'lishi.",
+  "O'quv mashg'ulotlari va ma'naviy-ma'rifiy tadbirlar tashkil etiladigan auditoriyani jihozlashga kreativ yondashuv.",
+  "Kreativ kompetensiyaning mezonlari va darajalari.",
+  "Pedagogning kreativ kompetensiyasini shakllantirishning tamoyillari va omillari.",
+  "O'qituvchining kreativ kompetensiyasini shakllantirishning modeli.",
+  "Kreativ tayyorgarlik — ijodiy yetuklikning tarkibiy qismi.",
+  "O'qituvchining ilmiy ijod usullari.",
+  "Mustaqil ravishda o'quv kurslari va mualliflik dasturlarini ishlab chiqish.",
+  "Ta'lim-tarbiya jarayonida o'quvchilarning ma'naviy kompetensiyalarini shakllantirishda kreativ yondashuv.",
+  "Pedagogning kasbiy kompetentligini rivojlantirish.",
+  "Pedagogik kompetensiyalarni shakllantirishda ijodiy yondashuv.",
+  "O'quv dasturlarini yaratishga kreativ yondashuv.",
+  "Kreativ yondashuv — o'quv manbalari (ma'ruza matni, o'quv darsligi, o'quv va metodik qo'llanma hamda o'quv-metodik majmualar)ni samarali yaratishning muhim omili.",
+  "Nazariy va amaliy mashg'ulotlar uchun materiallarni to'plash va ularni saralashda kreativ yondashuvning ahamiyati.",
+  "O'quv axborotlarni samarali izlash — pedagogning kreativlik sifatlariga ega ekanligini ko'rsatuvchi muhim holat ekanligi.",
+  "Kreativ yondashuv asosida nazariy va amaliy mashg'ulotlar uchun didaktik ishlanmalar tayyorlash.",
+  "O'quv jarayonining bosqichi va o'quv materialining mohiyatidan kelib chiqqan holda turli murakkablikdagi topshiriqlardan foydalanish — pedagog kreativligining muhim jihati.",
+  "O'quv topshiriqlarini ishlab chiqishga kreativ yondashuv.",
+  "Boshqaruv jarayonida sog'lom muhitni shakllantirish.",
+  "Ijodiy muhitni shakllantirish mexanizmlari.",
+  "O'qituvchining kasbiy faoliyatida kreativ muloqot tizimi.",
+  "Shaxsni har tomonlama kamol topishini faollashtirish.",
+  "O'qituvchi pedagogik qobiliyatini rivojlantirishda kreativ funksiyalari.",
+  "O'qituvchi shaxsining fikr almashish bilan bog'liq kreativ xususiyatlari.",
+  "Pedagogik kreativ ta'sir ko'rsatish — kommunikativ qobiliyatning asosiy usuli sifatida.",
+  "O'qituvchining kommunikativ qobiliyatida kreativ va tanqidiy ta'sir o'tkazish.",
+  "Hozirgi zamon o'qituvchisining kreativ pedagogik faoliyati.",
+  "O'qituvchining ta'lim jarayonida kasbiy omilkorligi.",
+  "O'qituvchining ta'lim jarayonidagi faoliyati va darsga tayyorgarligi.",
+  "Nazariy va amaliy mashg'ulotlar uchun materiallarni to'plash va ularni saralashda kreativ yondashuvning ahamiyati."
+];
+
+document.getElementById('tasksList').innerHTML = MAVZULAR.map((m, i) => `
+  <div class="task-item">
+    <div class="task-num">${i + 1}</div>
+    <div class="task-text">${m}</div>
+  </div>
+`).join('');
+</script>
+</body>
+</html>

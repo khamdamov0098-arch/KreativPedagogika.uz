@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+  <title>Muallif haqida — KreativPedagogika.uz</title>
+  <link rel="icon" href="logo.png"/>
+  <link rel="stylesheet" href="shared.css"/>
+  <style>
+    .muallif-wrap {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    /* Sarlavha karta */
+    .muallif-hero {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 60%, #1a5470 100%);
+      border-radius: 24px;
+      padding: 2.5rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .muallif-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 80% 30%, rgba(42,191,171,0.2) 0%, transparent 55%);
+    }
+    .muallif-photo {
+      width: 130px;
+      height: 130px;
+      border-radius: 20px;
+      object-fit: cover;
+      object-position: top center;
+      box-shadow: 0 0 0 5px rgba(42,191,171,0.3), 0 8px 24px rgba(0,0,0,0.25);
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+    .muallif-hero-text {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      min-width: 0;
+    }
+    .muallif-hero-name {
+      font-family: 'Nunito', sans-serif;
+      font-size: clamp(1.3rem, 4vw, 1.75rem);
+      font-weight: 900;
+      color: white;
+      margin-bottom: 0.35rem;
+      line-height: 1.2;
+    }
+    .muallif-hero-pos {
+      color: var(--teal-light);
+      font-weight: 700;
+      font-size: 1.02rem;
+      margin-bottom: 0.9rem;
+      line-height: 1.5;
+    }
+    .muallif-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+    .muallif-tag {
+      background: rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.9);
+      font-size: 0.93rem;
+      font-weight: 700;
+      padding: 0.28rem 0.75rem;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.18);
+      letter-spacing: 0.02em;
+    }
+
+    /* Statistika */
+    .muallif-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .muallif-stat {
+      background: white;
+      border-radius: 16px;
+      padding: 1.25rem 1rem;
+      text-align: center;
+      box-shadow: 0 3px 12px rgba(27,43,107,0.08);
+      border: 1.5px solid var(--border2);
+    }
+    .muallif-stat-num {
+      font-family: 'Nunito', sans-serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--teal-dark);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .muallif-stat-label {
+      font-size: 0.93rem;
+      color: var(--gray);
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    /* Ma'lumot bo'limlari */
+    .muallif-sections {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+    .muallif-section {
+      background: white;
+      border-radius: 18px;
+      padding: 1.5rem;
+      box-shadow: 0 3px 12px rgba(27,43,107,0.07);
+      border: 1.5px solid var(--border2);
+    }
+    .muallif-section-full {
+      grid-column: 1 / -1;
+    }
+    .muallif-section h3 {
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 900;
+      color: var(--navy);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .muallif-section h3::before {
+      content: '';
+      display: block;
+      width: 4px;
+      height: 18px;
+      background: var(--teal);
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .info-table tr {
+      border-bottom: 1px solid var(--border2);
+    }
+    .info-table tr:last-child { border-bottom: none; }
+    .info-table td {
+      padding: 0.7rem 0;
+      font-size: 1rem;
+      line-height: 1.5;
+      vertical-align: top;
+    }
+    .info-table td:first-child {
+      color: var(--gray);
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+      padding-right: 1rem;
+      min-width: 110px;
+    }
+    .info-table td:last-child {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* Ilmiy ishlar */
+    .ilmiy-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+    .ilmiy-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.7rem;
+      font-size: 1rem;
+      color: var(--text-2);
+      line-height: 1.55;
+    }
+    .ilmiy-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 900;
+      margin-top: 1px;
+    }
+
+    /* Kontakt */
+    .kontakt-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .kontakt-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: var(--bg);
+      border: 1.5px solid var(--border2);
+      border-radius: 12px;
+      padding: 0.75rem 1.1rem;
+      text-decoration: none;
+      color: var(--navy);
+      font-size: 1rem;
+      font-weight: 700;
+      transition: all 0.18s;
+    }
+    .kontakt-item:hover {
+      border-color: var(--teal);
+      background: rgba(42,191,171,0.06);
+      color: var(--teal-dark);
+    }
+    .kontakt-icon {
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 768px) {
+      .muallif-hero { gap: 1.5rem; padding: 1.75rem 1.25rem; }
+      .muallif-photo { width: 100px; height: 100px; border-radius: 16px; }
+      .muallif-stats { grid-template-columns: repeat(2, 1fr); }
+      .muallif-sections { grid-template-columns: 1fr; }
+      .muallif-section-full { grid-column: 1; }
+    }
+    @media (max-width: 480px) {
+      .muallif-hero { flex-direction: column; align-items: flex-start; gap: 1.25rem; }
+      .muallif-photo { width: 90px; height: 90px; }
+      .muallif-hero-name { font-size: 1.25rem; }
+      .muallif-stat-num { font-size: 1.5rem; }
+      .info-table td:first-child { min-width: 90px; font-size: 0.72rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="toast" id="toast"></div>
+<header>
+  <div class="header-inner">
+    <a class="logo" href="index.html">
+      <img src="logo.png" alt="KreativPedagogika">
+      <div>
+        <div class="logo-text">Kreativ<span>Pedagogika</span></div>
+        <span class="logo-sub">Ijodiy yondashuv, samarali ta'lim</span>
+      </div>
+    </a>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    <nav class="header-nav">
+      <a href="index.html">Bosh sahifa</a>
+      <div class="dropdown"><span class="dd-btn">O'quv materiallari</span><div class="dropdown-menu">
+        <a href="fan-dasturi.html"><span class="dm-icon">📋</span>Fan dasturi</a>
+        <a href="sillabusi.html"><span class="dm-icon">📋</span>Fan sillabusi</a>
+        <a href="maruzalar.html"><span class="dm-icon">📚</span>Ma'ruza matnlari</a>
+        <a href="amaliy.html"><span class="dm-icon">✍️</span>Amaliy mashg'ulotlar</a>
+        <a href="adabiyotlar.html"><span class="dm-icon">📖</span>Adabiyotlar</a>
+        <a href="taqdimotlar.html"><span class="dm-icon">📊</span>Taqdimotlar</a>
+      </div></div>
+      <div class="dropdown"><span class="dd-btn">Topshiriqlar</span><div class="dropdown-menu">
+        <a href="innovatsion-test.html"><span class="dm-icon">🎯</span>Innovatsion test</a>
+        <a href="test.html"><span class="dm-icon">🎯</span>Test topshiriqlari</a>
+        <a href="mustaqil-ish.html"><span class="dm-icon">📝</span>Mustaqil ish mavzulari</a>
+        <a href="topshiriqlar.html"><span class="dm-icon">📝</span>Topshiriqlar</a>
+        <a href="krossvord.html"><span class="dm-icon">🎲</span>Krossvordlar</a>
+      </div></div>
+      <a href="videodarslar.html">📹 Videodarslar</a>
+      <a href="muallif.html" class="active">👤 Muallif</a>
+    </nav>
+    <div id="navUserBlock"></div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">🏠 Bosh sahifa</a>
+    <div class="mobile-section-label">O'quv materiallari</div>
+    <a href="fan-dasturi.html">📋 Fan dasturi</a>
+    <a href="sillabusi.html">📋 Fan sillabusi</a>
+    <a href="maruzalar.html">📚 Ma'ruza matnlari</a>
+    <a href="amaliy.html">✍️ Amaliy mashg'ulotlar</a>
+    <a href="adabiyotlar.html">📖 Adabiyotlar</a>
+    <a href="taqdimotlar.html">📊 Taqdimotlar</a>
+    <div class="mobile-section-label">Topshiriqlar</div>
+    <a href="innovatsion-test.html">🎯 Innovatsion test</a>
+    <a href="test.html">🎯 Test topshiriqlari</a>
+    <a href="mustaqil-ish.html">📝 Mustaqil ish mavzulari</a>
+    <a href="topshiriqlar.html">📝 Topshiriqlar</a>
+    <a href="krossvord.html">🎲 Krossvordlar</a>
+    <div class="mobile-section-label">Boshqa</div>
+    <a href="videodarslar.html">📹 Videodarslar</a>
+    <a href="muallif.html" class="active">👤 Muallif haqida</a>
+    <div id="mobileUserBlock"></div>
+  </div>
+</header>
+
+<div class="page-header">
+  <h1>👤 Muallif haqida</h1>
+  <p>Platforma muallifi va pedagogik faoliyati</p>
+</div>
+
+<main class="main" style="padding-top:2rem; padding-bottom:3rem;">
+  <div class="muallif-wrap">
+
+    <!-- Sarlavha -->
+    <div class="muallif-hero">
+      <img class="muallif-photo" src="muallif.jpg" alt="Sariboyev Nurali Abdunazarovich"/>
+      <div class="muallif-hero-text">
+        <div class="muallif-hero-name">Sariboyev Nurali Abdunazarovich</div>
+        <div class="muallif-hero-pos">
+          Guliston davlat pedagogika instituti<br>
+          Pedagogika va psixologiya kafedrasi o'qituvchisi
+        </div>
+        <div class="muallif-tags">
+          <span class="muallif-tag">Pedagogika va psixologiya</span>
+          <span class="muallif-tag">13.00.02 ixtisosligi</span>
+          <span class="muallif-tag">Magistr — GulDU, 2023</span>
+          <span class="muallif-tag">Kreativ pedagogika</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Statistika -->
+    <div class="muallif-stats">
+      <div class="muallif-stat">
+        <div class="muallif-stat-num">20</div>
+        <div class="muallif-stat-label">Yillik umumiy ish staji</div>
+      </div>
+      <div class="muallif-stat">
+        <div class="muallif-stat-num">18</div>
+        <div class="muallif-stat-label">Yillik pedagogik staj</div>
+      </div>
+      <div class="muallif-stat">
+        <div class="muallif-stat-num">4+</div>
+        <div class="muallif-stat-label">OAK jurnallarida maqola</div>
+      </div>
+      <div class="muallif-stat">
+        <div class="muallif-stat-num">6</div>
+        <div class="muallif-stat-label">Ilmiy tezislar</div>
+      </div>
+    </div>
+
+    <!-- Asosiy ma'lumotlar -->
+    <div class="muallif-sections">
+
+      <div class="muallif-section">
+        <h3>Shaxsiy ma'lumotlar</h3>
+        <table class="info-table">
+          <tr>
+            <td>Ism-familiya</td>
+            <td>Sariboyev Nurali Abdunazarovich</td>
+          </tr>
+          <tr>
+            <td>Ma'lumoti</td>
+            <td>Oliy (Magistratura)</td>
+          </tr>
+          <tr>
+            <td>Tamomlagan</td>
+            <td>Guliston davlat universiteti, 2023 yil</td>
+          </tr>
+          <tr>
+            <td>Mutaxassislik</td>
+            <td>Pedagogika va psixologiya</td>
+          </tr>
+          <tr>
+            <td>Ixtisoslik</td>
+            <td>13.00.02 — Ta'lim va tarbiya nazariyasi va metodikasi (pedagogika fanlari)</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="muallif-section">
+        <h3>Kasbiy faoliyat</h3>
+        <table class="info-table">
+          <tr>
+            <td>Ish joyi</td>
+            <td>Guliston davlat pedagogika instituti</td>
+          </tr>
+          <tr>
+            <td>Kafedra</td>
+            <td>Pedagogika va psixologiya kafedrasi</td>
+          </tr>
+          <tr>
+            <td>Lavozim</td>
+            <td>O'qituvchi</td>
+          </tr>
+          <tr>
+            <td>Umumiy staj</td>
+            <td>20 yil</td>
+          </tr>
+          <tr>
+            <td>Ped. staj</td>
+            <td>18 yil</td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- Ilmiy ishlar -->
+      <div class="muallif-section muallif-section-full">
+        <h3>Ilmiy va uslubiy ishlar</h3>
+        <div class="ilmiy-list">
+          <div class="ilmiy-item">
+            <div class="ilmiy-dot">1</div>
+            <div>Hammuallif sifatida <strong>1 ta darslik</strong> nashr etilgan — «Kreativ pedagogika» fani bo'yicha.</div>
+          </div>
+          <div class="ilmiy-item">
+            <div class="ilmiy-dot">4+</div>
+            <div><strong>4 tadan ortiq OAK jurnallarida</strong> ilmiy maqolalar muallifi.</div>
+          </div>
+          <div class="ilmiy-item">
+            <div class="ilmiy-dot">6</div>
+            <div><strong>6 ta ilmiy tezis</strong> muallifi — xalqaro va respublika ilmiy-amaliy konferensiyalarda e'lon qilingan.</div>
+          </div>
+          <div class="ilmiy-item">
+            <div class="ilmiy-dot">🎓</div>
+            <div>Ixtisoslik sohasi: <strong>13.00.02 — Ta'lim va tarbiya nazariyasi va metodikasi</strong> (pedagogika fanlari) bo'yicha ilmiy izlanishlar olib bormoqda.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Taqdimotlar -->
+      <div class="muallif-section muallif-section-full">
+        <h3>Ushbu platforma uchun qilingan ishlar</h3>
+        <div class="ilmiy-list">
+          <div class="ilmiy-item">
+            <div class="ilmiy-dot">📊</div>
+            <div><strong>7 ta taqdimot</strong> muallifi — kreativ pedagogika fanining asosiy mavzulari bo'yicha.</div>
+          </div>
+          <div class="ilmiy-item">
+            <div class="ilmiy-dot">📚</div>
+            <div><strong>14 ta ma'ruza matni</strong>, <strong>15 ta amaliy mashg'ulot</strong> materiallari va <strong>60 ta mustaqil ish mavzusi</strong> ishlab chiqilgan.</div>
+          </div>
+          <div class="ilmiy-item">
+            <div class="ilmiy-dot">🎯</div>
+            <div>Talabalar uchun <strong>test topshiriqlari tizimi</strong> va <strong>innovatsion ta'lim usullari</strong> joriy etilgan.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Kontakt -->
+      <div class="muallif-section muallif-section-full">
+        <h3>Bog'lanish</h3>
+        <div class="kontakt-grid">
+          <a class="kontakt-item" href="tel:+998946258484">
+            <span class="kontakt-icon">📞</span>
+            <span>+998 94 625 84 84</span>
+          </a>
+          <a class="kontakt-item" href="mailto:nuralisariboyev@gmail.com">
+            <span class="kontakt-icon">✉️</span>
+            <span>nuralisariboyev@gmail.com</span>
+          </a>
+          <a class="kontakt-item" href="https://t.me/SNA_84" target="_blank" rel="noopener">
+            <span class="kontakt-icon">✈️</span>
+            <span>@SNA_84 — Telegram</span>
+          </a>
+          <div class="kontakt-item">
+            <span class="kontakt-icon">🏛️</span>
+            <span>Guliston davlat pedagogika instituti</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-logo"><img src="logo.png" alt="">KreativPedagogika</div>
+  <p class="footer-text">© 2026 KreativPedagogika.uz</p>
+</footer>
+
+<script src="icons.js"></script>
+<script src="nav.js"></script>
+</body>
+</html>

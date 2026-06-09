@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+  <title>KreativPedagogika.uz — Ijodiy yondashuv, samarali ta'lim</title>
+  <meta name="description" content="KreativPedagogika.uz — ta'lim platformasi. Fan dasturi, ma'ruzalar, testlar, videodarslar va ko'p narsa."/>
+  <link rel="icon" href="logo.png"/>
+  <link rel="stylesheet" href="shared.css"/>
+</head>
+<body>
+<div class="toast" id="toast"></div>
+<header>
+  <div class="header-inner">
+    <a class="logo" href="index.html">
+      <img src="logo.png" alt="KreativPedagogika">
+      <div>
+        <div class="logo-text">Kreativ<span>Pedagogika</span></div>
+        <span class="logo-sub">Ijodiy yondashuv, samarali ta'lim</span>
+      </div>
+    </a>
+    <div class="hamburger" id="hamburger" aria-label="Menyu">
+      <span></span><span></span><span></span>
+    </div>
+    <nav class="header-nav">
+      <a href="index.html" class="active">Bosh sahifa</a>
+      <div class="dropdown"><span class="dd-btn">O'quv materiallari</span>
+        <div class="dropdown-menu">
+          <a href="fan-dasturi.html"><span class="dm-icon">📋</span>Fan dasturi</a>
+          <a href="sillabusi.html"><span class="dm-icon">📋</span>Fan sillabusi</a>
+          <a href="maruzalar.html"><span class="dm-icon">📚</span>Ma'ruza matnlari</a>
+          <a href="amaliy.html"><span class="dm-icon">✍️</span>Amaliy mashg'ulotlar</a>
+          <a href="adabiyotlar.html"><span class="dm-icon">📖</span>Adabiyotlar</a>
+          <a href="taqdimotlar.html"><span class="dm-icon">📊</span>Taqdimotlar</a>
+        </div>
+      </div>
+      <div class="dropdown"><span class="dd-btn">Topshiriqlar</span>
+        <div class="dropdown-menu">
+          <a href="innovatsion-test.html"><span class="dm-icon">🎯</span>Innovatsion test</a>
+          <a href="test.html"><span class="dm-icon">🎯</span>Test topshiriqlari</a>
+          <a href="mustaqil-ish.html"><span class="dm-icon">📝</span>Mustaqil ish mavzulari</a>
+          <a href="topshiriqlar.html"><span class="dm-icon">📝</span>Topshiriqlar</a>
+          <a href="krossvord.html"><span class="dm-icon">🎲</span>Krossvordlar</a>
+        </div>
+      </div>
+      <a href="videodarslar.html">📹 Videodarslar</a>
+      <a href="muallif.html">👤 Muallif</a>
+    </nav>
+    <div id="navUserBlock"></div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html" class="active">🏠 Bosh sahifa</a>
+    <div class="mobile-section-label">O'quv materiallari</div>
+    <a href="fan-dasturi.html">📋 Fan dasturi</a>
+    <a href="sillabusi.html">📋 Fan sillabusi</a>
+    <a href="maruzalar.html">📚 Ma'ruza matnlari</a>
+    <a href="amaliy.html">✍️ Amaliy mashg'ulotlar</a>
+    <a href="adabiyotlar.html">📖 Adabiyotlar</a>
+    <a href="taqdimotlar.html">📊 Taqdimotlar</a>
+    <div class="mobile-section-label">Topshiriqlar</div>
+    <a href="innovatsion-test.html">🎯 Innovatsion test</a>
+    <a href="test.html">🎯 Test topshiriqlari</a>
+    <a href="mustaqil-ish.html">📝 Mustaqil ish mavzulari</a>
+    <a href="topshiriqlar.html">📝 Topshiriqlar</a>
+    <a href="krossvord.html">🎲 Krossvordlar</a>
+    <div class="mobile-section-label">Boshqa</div>
+    <a href="videodarslar.html">📹 Videodarslar</a>
+    <a href="muallif.html">👤 Muallif haqida</a>
+    <div id="mobileUserBlock"></div>
+  </div>
+</header>
+
+<!-- HERO SLIDER -->
+<div class="hero-slider" id="heroSlider">
+  <div class="hero-slide active" style="background-image:url('Boshsahifa.png')"></div>
+  <div class="hero-slide" style="background-image:url('Boshsahifa2.png')"></div>
+  <div class="hero-slide" style="background-image:url('Boshsahifa3.png')"></div>
+  <div class="hero-slide" style="background-image:url('Boshsahifa4.png')"></div>
+  <div class="hero-slider-overlay">
+    <div class="hero-slider-inner">
+      <div class="hero-slider-content">
+        <div class="hero-badge">🎓 Ta'lim platformasi</div>
+        <h1>Ijodiy yondashuv —<br><span>Samarali ta'lim</span></h1>
+        <p>Fan dasturi, ma'ruza matnlari, amaliy mashg'ulotlar, testlar va videodarslar — barchasi bir joyda. Zamonaviy pedagogika usullari bilan o'qing.</p>
+        <div class="hero-btns">
+          <a href="register.html" class="btn-primary" id="heroPrimaryBtn">O'qishni boshlash →</a>
+          <a href="login.html" class="btn-secondary" id="heroLoginBtn">Kirish</a>
+        </div>
+      </div>
+      <div class="hero-stat-card">
+        <h3>📊 Platforma ma'lumotlari</h3>
+        <div class="stat-grid">
+          <div class="stat-item"><div class="stat-num">14</div><div class="stat-label">Ma'ruza mavzusi</div></div>
+          <div class="stat-item"><div class="stat-num">100</div><div class="stat-label">Test savoli</div></div>
+          <div class="stat-item"><div class="stat-num">7</div><div class="stat-label">Videodars</div></div>
+          <div class="stat-item"><div class="stat-num">60</div><div class="stat-label">Mustaqil mavzu</div></div>
+        </div>
+        <div class="topic-list">
+          <div class="topic-item">📋 Fan dasturi va sillabusi</div>
+          <div class="topic-item">📚 14 ta ma'ruza matni (PDF)</div>
+          <div class="topic-item">🎯 Test — 30 savol, 45 daqiqa</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-dots">
+    <button class="hero-dot active" onclick="goSlide(0)"></span>
+    <button class="hero-dot" onclick="goSlide(1)"></span>
+    <button class="hero-dot" onclick="goSlide(2)"></span>
+    <button class="hero-dot" onclick="goSlide(3)"></span>
+  </div>
+  <button class="hero-arrow hero-arrow-prev" onclick="changeSlide(-1)">&#8249;</span>
+  <button class="hero-arrow hero-arrow-next" onclick="changeSlide(1)">&#8250;</span>
+</div>
+<style>
+.hero-slider {
+  position: relative; width: 100%; height: clamp(420px, 60vw, 620px);
+  overflow: hidden;
+}
+.hero-slide {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center center;
+  background-repeat: no-repeat;
+  opacity: 0; transition: opacity 0.8s ease; z-index: 1;
+}
+.hero-slide.active { opacity: 1; z-index: 2; }
+.hero-slider-overlay {
+  position: absolute; inset: 0; z-index: 5;
+  background: linear-gradient(135deg, rgba(15,29,77,0.75) 0%, rgba(27,43,107,0.45) 50%, rgba(0,0,0,0.1) 100%);
+  display: flex; align-items: center;
+  padding: 0 clamp(1.5rem, 4vw, 4rem);
+}
+.hero-slider-content { max-width: 620px; }
+.hero-slider-content h1 {
+  font-family: 'Nunito', sans-serif;
+  font-size: clamp(1.8rem, 5vw, 3.2rem);
+  font-weight: 900; line-height: 1.15;
+  color: white; margin-bottom: 1rem;
+}
+.hero-slider-content h1 span { color: var(--teal-light); }
+.hero-slider-content p {
+  color: rgba(255,255,255,0.88); font-size: clamp(0.97rem, 2.5vw, 1.1rem);
+  line-height: 1.75; margin-bottom: 1.75rem;
+}
+.hero-btns { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+.hero-btns .btn-secondary { border-color: rgba(255,255,255,0.35); color: white; }
+.hero-btns .btn-secondary:hover { background: white; color: var(--navy); }
+.hero-slider-inner {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 2rem;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.hero-stat-card {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 18px;
+  padding: 1.5rem;
+  backdrop-filter: blur(12px);
+}
+.hero-stat-card h3 {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem;
+  font-weight: 900;
+  color: var(--teal-light);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+@media (max-width: 1024px) {
+  .hero-slider-inner { grid-template-columns: 1fr; }
+  .hero-stat-card { display: none; }
+}
+.hero-dots {
+  position: absolute; bottom: 1.25rem; left: 50%;
+  transform: translateX(-50%); display: flex; gap: 8px; z-index: 10;
+}
+.hero-dot {
+  width: 10px; height: 10px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.7);
+  background: transparent; cursor: pointer; transition: all 0.25s; padding: 0;
+}
+.hero-dot.active { background: white; border-color: white; transform: scale(1.2); }
+.hero-arrow {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  background: rgba(255,255,255,0.18); border: 1.5px solid rgba(255,255,255,0.3);
+  color: white; font-size: 2rem; line-height: 1;
+  width: 48px; height: 48px; border-radius: 50%; cursor: pointer; z-index: 10;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s; backdrop-filter: blur(4px);
+  -webkit-tap-highlight-color: transparent;
+}
+.hero-arrow:hover { background: rgba(255,255,255,0.35); }
+.hero-arrow-prev { left: 1.25rem; }
+.hero-arrow-next { right: 1.25rem; }
+@media (max-width: 768px) {
+  .hero-slider { height: clamp(320px, 70vw, 480px); }
+  .hero-slider-overlay { padding: 0 1.25rem; align-items: flex-end; padding-bottom: 3.5rem; }
+  .hero-slider-content h1 { font-size: clamp(1.5rem, 6vw, 2rem); }
+  .hero-arrow { width: 38px; height: 38px; font-size: 1.5rem; }
+  .hero-btns .btn-primary, .hero-btns .btn-secondary { flex: 1; text-align: center; justify-content: center; }
+}
+@media (max-width: 480px) {
+  .hero-slider-overlay { padding: 0 1rem; padding-bottom: 3rem; }
+  .hero-arrow { display: none; }
+}
+</style>
+<script>
+let sliderIdx = 0;
+const slides = document.querySelectorAll('.hero-slide');
+const dots   = document.querySelectorAll('.hero-dot');
+let sliderTimer = setInterval(() => changeSlide(1), 4500);
+
+function goSlide(n) {
+  slides[sliderIdx].classList.remove('active');
+  dots[sliderIdx].classList.remove('active');
+  sliderIdx = n;
+  slides[sliderIdx].classList.add('active');
+  dots[sliderIdx].classList.add('active');
+  resetTimer();
+}
+function changeSlide(dir) {
+  goSlide((sliderIdx + dir + slides.length) % slides.length);
+}
+function resetTimer() {
+  clearInterval(sliderTimer);
+  sliderTimer = setInterval(() => changeSlide(1), 4500);
+}
+// Swipe support
+(function(){
+  const el = document.getElementById('heroSlider');
+  let sx = 0;
+  el.addEventListener('touchstart', e => { sx = e.changedTouches[0].clientX; }, {passive:true});
+  el.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - sx;
+    if (Math.abs(dx) > 40) changeSlide(dx < 0 ? 1 : -1);
+  }, {passive:true});
+})();
+</script>
+
+<!-- Bo'limlar -->
+<section style="background:var(--bg);">
+  <div class="section-inner">
+    <div class="stages-grid">
+      <a href="maruzalar.html" class="stage-card" style="text-decoration:none;color:inherit;">
+        <div class="stage-card-top">
+          <span class="stage-num">14</span>
+          <span class="stage-icon" aria-hidden="true">📚</span>
+        </div>
+        <h3>Ma'ruza matnlari</h3>
+        <p>14 ta mavzu bo'yicha PDF ko'rinishidagi ma'ruza matnlari. Qulay PDF ko'rish imkoniyati.</p>
+      </a>
+      <a href="amaliy.html" class="stage-card" style="text-decoration:none;color:inherit;">
+        <div class="stage-card-top">
+          <span class="stage-num">15</span>
+          <span class="stage-icon" aria-hidden="true">✍️</span>
+        </div>
+        <h3>Amaliy mashg'ulotlar</h3>
+        <p>15 ta mavzu bo'yicha amaliy mashg'ulotlar matni. PDF formatda yuklab olish mumkin.</p>
+      </a>
+      <a href="test.html" class="stage-card" style="text-decoration:none;color:inherit;">
+        <div class="stage-card-top">
+          <span class="stage-num">30</span>
+          <span class="stage-icon" aria-hidden="true">🎯</span>
+        </div>
+        <h3>Test topshiriqlari</h3>
+        <p>100 ta savoldan tasodifiy 30 ta test, 45 daqiqa vaqt. Natijalar Telegram guruhiga yuboriladi.</p>
+      </a>
+      <a href="videodarslar.html" class="stage-card" style="text-decoration:none;color:inherit;">
+        <div class="stage-card-top">
+          <span class="stage-num">6</span>
+          <span class="stage-icon" aria-hidden="true">📹</span>
+        </div>
+        <h3>Videodarslar</h3>
+        <p>6 ta YouTube videodars. Mavzu bo'yicha qo'shimcha tushuntirishlar va mashqlar.</p>
+      </a>
+      <a href="krossvord.html" class="stage-card" style="text-decoration:none;color:inherit;">
+        <div class="stage-card-top">
+          <span class="stage-num">🎲</span>
+          <span class="stage-icon" aria-hidden="true">🎲</span>
+        </div>
+        <h3>Krossvordlar</h3>
+        <p>Interaktiv krossvordlar. Bilimlarni o'yin ko'rinishida mustahkamlang.</p>
+      </a>
+      <a href="muallif.html" class="stage-card" style="text-decoration:none;color:inherit;">
+        <div class="stage-card-top">
+          <span class="stage-num">👤</span>
+          <span class="stage-icon" aria-hidden="true">👤</span>
+        </div>
+        <h3>Muallif haqida</h3>
+        <p>Platforma muallifi, ilmiy ishlari va pedagogik tajribasi haqida batafsil ma'lumot.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Tezkor o'tish -->
+<section style="background:var(--bg2);">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-tag">Tezkor o'tish</div>
+      <h2 class="section-title">Ma'ruza mavzulari</h2>
+      <p class="section-desc">14 ta mavzu bo'yicha ma'ruza matnlari PDF formatda</p>
+    </div>
+    <div class="topics-grid">
+      <a class="topic-card" href="maruzalar.html#1"><div class="topic-num">1</div><div class="topic-info"><h4>Kreativ pedagogika fan sifatida</h4><p>4 ta reja bandlari</p></div></a>
+      <a class="topic-card" href="maruzalar.html#2"><div class="topic-num">2</div><div class="topic-info"><h4>Kreativ ta'lim muhiti: mohiyati, xususiyatlari</h4><p>3 ta reja bandlari</p></div></a>
+      <a class="topic-card" href="maruzalar.html#3"><div class="topic-num">3</div><div class="topic-info"><h4>Didaktik ta'minotni yaratishga kreativ yondashuv</h4><p>3 ta reja bandlari</p></div></a>
+      <a class="topic-card" href="maruzalar.html#4"><div class="topic-num">4</div><div class="topic-info"><h4>Kreativ tasavvurni rivojlanishi va ilmiy ijodkorlik</h4><p>6 ta reja bandlari</p></div></a>
+      <a class="topic-card" href="maruzalar.html#5"><div class="topic-num">5</div><div class="topic-info"><h4>Kreativ kompetensiya modelining shakllanishi</h4><p>3 ta reja bandlari</p></div></a>
+      <a class="topic-card" href="maruzalar.html#6"><div class="topic-num">6</div><div class="topic-info"><h4>O'qituvchining ta'lim jarayoniga kreativ yondashuvi</h4><p>3 ta reja bandlari</p></div></a>
+      <a class="topic-card" href="maruzalar.html#7"><div class="topic-num">7</div><div class="topic-info"><h4>Kreativ topshiriqlar tizimi. Kreativ darsning innovatsion tuzilishi</h4><p>3 ta reja bandlari</p></div></a>
+      <a class="topic-card" href="maruzalar.html#8"><div class="topic-num">8</div><div class="topic-info"><h4>Pedagogik qobiliyatni shakllantirishda kreativ yondashuv</h4><p>3 ta reja bandlari</p></div></a>
+      <a class="topic-card" href="maruzalar.html#9"><div class="topic-num">9</div><div class="topic-info"><h4>Kasbiy kompetensiyalarni shakllantirishda kreativ yondashuv</h4><p>5 ta reja bandlari</p></div></a>
+      <a class="topic-card" href="maruzalar.html#10"><div class="topic-num">10</div><div class="topic-info"><h4>Kreativ kompetensiyaning mazmuni va tuzilishi</h4><p>4 ta reja bandlari</p></div></a>
+      <a class="topic-card" href="maruzalar.html#11"><div class="topic-num">11</div><div class="topic-info"><h4>Ma'naviy kompetensiyalarni shakllantirishda kreativ yondashuv</h4><p>2 ta reja bandlari</p></div></a>
+      <a class="topic-card" href="maruzalar.html#12"><div class="topic-num">12</div><div class="topic-info"><h4>O'qituvchining kreativ salohiyatini rivojlantirish usullari</h4><p>4 ta reja bandlari</p></div></a>
+      <a class="topic-card" href="maruzalar.html#13"><div class="topic-num">13</div><div class="topic-info"><h4>Pedagogik muloqot – o'qituvchining ijodiy faoliyati sifatida</h4><p>5 ta reja bandlari</p></div></a>
+      <a class="topic-card" href="maruzalar.html#14"><div class="topic-num">14</div><div class="topic-info"><h4>Bo'lajak o'qituvchilarda pedagogik texnologiyalarning o'rni</h4><p>3 ta reja bandlari</p></div></a>
+    </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Leaderboard -->
+<section style="background:var(--white);">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-tag">🏆 Reyting</div>
+      <h2 class="section-title">Top 10 — Reyting</h2>
+      <p class="section-desc">Test topshirig'i natijalari bo'yicha reyting</p>
+    </div>
+    <div class="lb-wrap" id="lbWrap">
+      <div class="lb-loading" id="lbLoading">
+        <div class="lb-spinner"></div>
+        <p>Ma'lumotlar yuklanmoqda...</p>
+      </div>
+      <div id="lbTable" style="display:none;">
+        <!-- Header -->
+        <div class="lb-head">
+          <div class="lb-col-rank">#</div>
+          <div class="lb-col-name">Ism Familiya</div>
+          <div class="lb-col-score">O'rtacha</div>
+          <div class="lb-col-pct">Foiz</div>
+          <div class="lb-col-date">Sana</div>
+        </div>
+        <div id="lbRows"></div>
+      </div>
+      <div id="lbEmpty" style="display:none;" class="lb-empty-msg">
+        <div style="font-size:2.5rem;margin-bottom:0.75rem;">📋</div>
+        <p>Hali natijalar yo'q. Test topshiring!</p>
+        <a href="test.html" class="btn-primary" style="margin-top:1rem;display:inline-flex;">Testga o'tish →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.lb-wrap {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(27,43,107,0.09);
+  border: 1.5px solid var(--border2);
+  max-width: 860px;
+  margin: 0 auto;
+}
+.lb-head {
+  display: grid;
+  grid-template-columns: 56px 1fr 100px 90px 110px;
+  background: linear-gradient(135deg, #0f1d4d, #1B2B6B);
+  padding: 1rem 1.5rem;
+  gap: 1rem;
+}
+.lb-head > div {
+  color: rgba(255,255,255,0.75);
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+.lb-row {
+  display: grid;
+  grid-template-columns: 56px 1fr 100px 90px 110px;
+  padding: 0.95rem 1.5rem;
+  gap: 1rem;
+  align-items: center;
+  border-bottom: 1px solid var(--border2);
+  transition: background 0.15s;
+}
+.lb-row:last-child { border-bottom: none; }
+.lb-row:hover { background: rgba(42,191,171,0.04); }
+.lb-row.top1 { background: linear-gradient(135deg, rgba(245,197,26,0.07), rgba(245,197,26,0.02)); }
+.lb-row.top2 { background: linear-gradient(135deg, rgba(180,180,180,0.07), rgba(180,180,180,0.02)); }
+.lb-row.top3 { background: linear-gradient(135deg, rgba(180,100,30,0.07), rgba(180,100,30,0.02)); }
+
+.lb-rank-badge {
+  width: 36px; height: 36px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 900;
+}
+.rank-1 .lb-rank-badge { background: linear-gradient(135deg,#f5c51a,#e6a800); color: white; font-size: 1.2rem; }
+.rank-2 .lb-rank-badge { background: linear-gradient(135deg,#b0b8c8,#8a96a8); color: white; font-size: 1.2rem; }
+.rank-3 .lb-rank-badge { background: linear-gradient(135deg,#cd7f32,#a0632a); color: white; font-size: 1.2rem; }
+.rank-other .lb-rank-badge { background: var(--bg2); color: var(--navy); }
+
+.lb-name-text {
+  font-weight: 700; color: var(--navy); font-size: 1rem; line-height: 1.3;
+}
+.lb-name-phone { font-size: 0.85rem; color: var(--gray); margin-top: 2px; }
+
+.lb-score-val {
+  font-family: 'Nunito', sans-serif; font-weight: 900;
+  font-size: 1rem; color: var(--navy);
+}
+
+.lb-pct-bar {
+  display: flex; flex-direction: column; gap: 3px;
+}
+.lb-pct-val {
+  font-family: 'Nunito', sans-serif; font-weight: 900;
+  font-size: 0.95rem;
+}
+.pct-high { color: #16a34a; }
+.pct-mid  { color: var(--teal-dark); }
+.pct-low  { color: var(--yellow); }
+.lb-bar {
+  height: 4px; border-radius: 2px; background: var(--bg2); overflow: hidden;
+}
+.lb-bar-fill { height: 100%; border-radius: 2px; transition: width 0.6s ease; }
+.fill-high { background: linear-gradient(90deg,#22c55e,#16a34a); }
+.fill-mid  { background: linear-gradient(90deg,var(--teal),var(--teal-dark)); }
+.fill-low  { background: linear-gradient(90deg,var(--yellow),#d97706); }
+
+.lb-date-val { font-size: 0.9rem; color: var(--gray); }
+
+.lb-loading {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 3rem; color: var(--gray); gap: 1rem; font-size: 0.95rem;
+}
+.lb-spinner {
+  width: 36px; height: 36px; border: 3px solid var(--border2);
+  border-top-color: var(--teal); border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.lb-empty-msg {
+  text-align: center; padding: 3rem; color: var(--gray); font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+  .lb-head { grid-template-columns: 44px 1fr 80px 70px; }
+  .lb-row  { grid-template-columns: 44px 1fr 80px 70px; }
+  .lb-col-date, .lb-date-val { display: none; }
+  .lb-head { padding: 0.85rem 1rem; }
+  .lb-row  { padding: 0.85rem 1rem; }
+}
+@media (max-width: 480px) {
+  .lb-head { grid-template-columns: 40px 1fr 75px; }
+  .lb-row  { grid-template-columns: 40px 1fr 75px; }
+  .lb-col-score, .lb-score-val { display: none; }
+  .lb-rank-badge { width: 30px; height: 30px; font-size: 0.9rem; }
+}
+</style>
+
+<script>
+(function loadLeaderboard() {
+  const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxk4yDLmR2jPx6vF54o1fZ0CQkeDknJpd4X_7tiP5Hr3dQGMNbcx_ywdpSWj1YLS7LMrw/exec';
+  const TG_TOKEN  = '8868132773:AAHTHaqNYeIwPBKSNV9O2O-T6RBa6qY3CZI';
+  const TG_CHAT   = '-1003970151424';
+
+  // Telegram getUpdates orqali natijalarni olamiz
+  // Yoki Google Sheet dan — ikkalasini sinab ko'ramiz
+
+  // Demo data — Google Sheet ulanganda haqiqiy data keladi
+  const DEMO = []; // Sheet ulanganda avtomatik to'ldiriladi
+
+  function fmtDate(s) {
+    if (!s) return '—';
+    try {
+      const d = new Date(s);
+      if (!isNaN(d.getTime())) {
+        return d.toLocaleDateString('ru-RU', {day:'2-digit', month:'2-digit', year:'numeric'});
+      }
+    } catch(e) {}
+    const m = s.match(/(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{2,4})/);
+    if (m) return m[1].padStart(2,'0') + '.' + m[2].padStart(2,'0') + '.' + m[3];
+    return s.slice(0, 10);
+  }
+
+  async function loadData() {
+    if (!SHEET_URL.includes('YOUR_')) {
+      try {
+        const res = await fetch(SHEET_URL + '?action=getLeaderboard');
+        const data = await res.json();
+        if (data.results && data.results.length > 0) {
+          return data.results.map(r => ({
+            name:    r.name,
+            score:   r.test,
+            testRaw: r.testRaw || '—',
+            total:   100,
+            date:    r.date || '—',
+            detail:  r.testRaw || (r.test + '%')
+          }));
+        }
+      } catch(e) {}
+    }
+    return DEMO;
+  }
+
+  function rankIcon(i) {
+    if (i === 0) return '🥇';
+    if (i === 1) return '🥈';
+    if (i === 2) return '🥉';
+    return i + 1;
+  }
+  function rankClass(i) {
+    if (i === 0) return 'rank-1';
+    if (i === 1) return 'rank-2';
+    if (i === 2) return 'rank-3';
+    return 'rank-other';
+  }
+  function pctClass(pct) {
+    if (pct >= 80) return 'pct-high';
+    if (pct >= 60) return 'pct-mid';
+    return 'pct-low';
+  }
+  function fillClass(pct) {
+    if (pct >= 80) return 'fill-high';
+    if (pct >= 60) return 'fill-mid';
+    return 'fill-low';
+  }
+
+  loadData().then(results => {
+    document.getElementById('lbLoading').style.display = 'none';
+
+    if (!results || results.length === 0) {
+      document.getElementById('lbEmpty').style.display = 'block';
+      return;
+    }
+
+    document.getElementById('lbTable').style.display = 'block';
+
+    const sorted = [...results].sort((a,b) => b.score - a.score).slice(0, 10);
+
+    document.getElementById('lbRows').innerHTML = sorted.map((r, i) => {
+      const pct = r.score;
+      const rowCls = i < 3 ? `top${i+1}` : '';
+      return `
+        <div class="lb-row ${rowCls} ${rankClass(i)}">
+          <div>
+            <div class="lb-rank-badge">${rankIcon(i)}</div>
+          </div>
+          <div>
+            <div class="lb-name-text">${r.name}</div>
+          </div>
+          <div>
+            <div class="lb-score-val">${r.testRaw || r.score + '%'}</div>
+          </div>
+          <div>
+            <div class="lb-pct-bar">
+              <div class="lb-pct-val ${pctClass(pct)}">${pct}%</div>
+              <div class="lb-bar"><div class="lb-bar-fill ${fillClass(pct)}" style="width:${pct}%"></div></div>
+            </div>
+          </div>
+          <div>
+            <div class="lb-date-val">${r.date || '—'}</div>
+          </div>
+        </div>`;
+    }).join('');
+  });
+})();
+</script>
+<footer>
+  <div class="footer-logo">
+    <img src="logo.png" alt="KreativPedagogika">
+    KreativPedagogika
+  </div>
+  <p class="footer-text">© 2026 KreativPedagogika.uz — Ijodiy yondashuv, samarali ta'lim</p>
+</footer>
+
+<div class="modal-overlay" id="modalOverlay" onclick="closePDF(event)">
+  <div class="modal">
+    <div class="modal-head">
+      <span id="modalTitle">Hujjat</span>
+      <div class="modal-head-actions">
+        <a class="modal-dl-btn" id="modalDlBtn" href="#" download>⬇ Yuklab olish</a>
+        <button class="modal-close" onclick="closePDF(event)">✕</span>
+      </div>
+    </div>
+    <iframe id="modalFrame" src=""></iframe>
+  </div>
+</div>
+
+<script src="icons.js"></script>
+<script src="nav.js"></script>
+</body>
+</html>
