@@ -316,14 +316,14 @@
 
     <!-- Sarlavha -->
     <div class="muallif-hero">
-      <img class="muallif-photo" src="muallif.jpg" alt="Sariboyev Nurali Abdunazarovich"/>
+      <img class="muallif-photo" id="muallifPhoto" src="muallif1.jpg" alt="Sariboyev Nurali Abdunazarovich"/>
       <div class="muallif-hero-text">
-        <div class="muallif-hero-name">Sariboyev Nurali Abdunazarovich</div>
-        <div class="muallif-hero-pos">
+        <div class="muallif-hero-name" id="muallifName">Sariboyev Nurali Abdunazarovich</div>
+        <div class="muallif-hero-pos" id="muallifPos">
           Guliston davlat pedagogika instituti<br>
           Pedagogika va psixologiya kafedrasi o'qituvchisi
         </div>
-        <div class="muallif-tags">
+        <div class="muallif-tags" id="muallifTags">
           <span class="muallif-tag">Pedagogika va psixologiya</span>
           <span class="muallif-tag">13.00.02 ixtisosligi</span>
           <span class="muallif-tag">Magistr — GulDU, 2023</span>
@@ -335,19 +335,19 @@
     <!-- Statistika -->
     <div class="muallif-stats">
       <div class="muallif-stat">
-        <div class="muallif-stat-num">20</div>
+        <div class="muallif-stat-num" id="statStajUmumiy">20</div>
         <div class="muallif-stat-label">Yillik umumiy ish staji</div>
       </div>
       <div class="muallif-stat">
-        <div class="muallif-stat-num">18</div>
+        <div class="muallif-stat-num" id="statStajPed">18</div>
         <div class="muallif-stat-label">Yillik pedagogik staj</div>
       </div>
       <div class="muallif-stat">
-        <div class="muallif-stat-num">4+</div>
+        <div class="muallif-stat-num" id="statMaqola">4+</div>
         <div class="muallif-stat-label">OAK jurnallarida maqola</div>
       </div>
       <div class="muallif-stat">
-        <div class="muallif-stat-num">6</div>
+        <div class="muallif-stat-num" id="statTezis">6</div>
         <div class="muallif-stat-label">Ilmiy tezislar</div>
       </div>
     </div>
@@ -452,22 +452,22 @@
       <!-- Kontakt -->
       <div class="muallif-section muallif-section-full">
         <h3>Bog'lanish</h3>
-        <div class="kontakt-grid">
-          <a class="kontakt-item" href="tel:+998946258484">
+        <div class="kontakt-grid" id="kontaktGrid">
+          <a class="kontakt-item" id="kontaktTel" href="tel:+998946258484">
             <span class="kontakt-icon">📞</span>
             <span>+998 94 625 84 84</span>
           </a>
-          <a class="kontakt-item" href="mailto:nuralisariboyev@gmail.com">
+          <a class="kontakt-item" id="kontaktEmail" href="mailto:nuralisariboyev@gmail.com">
             <span class="kontakt-icon">✉️</span>
             <span>nuralisariboyev@gmail.com</span>
           </a>
-          <a class="kontakt-item" href="https://t.me/SNA_84" target="_blank" rel="noopener">
+          <a class="kontakt-item" id="kontaktTelegram" href="https://t.me/SNA_84" target="_blank" rel="noopener">
             <span class="kontakt-icon">✈️</span>
             <span>@SNA_84 — Telegram</span>
           </a>
           <div class="kontakt-item">
             <span class="kontakt-icon">🏛️</span>
-            <span>Guliston davlat pedagogika instituti</span>
+            <span id="kontaktIshJoyi">Guliston davlat pedagogika instituti</span>
           </div>
         </div>
       </div>
@@ -483,5 +483,41 @@
 
 <script src="icons.js"></script>
 <script src="nav.js"></script>
+<script>
+fetch('muallif.json').then(r => r.json()).then(d => {
+  if (d.photo)    { document.getElementById('muallifPhoto').src = d.photo; }
+  if (d.name)     { document.getElementById('muallifName').textContent = d.name; }
+  if (d.position) { document.getElementById('muallifPos').textContent = d.position; }
+  if (d.tags)     {
+    document.getElementById('muallifTags').innerHTML =
+      d.tags.map(t => `<span class="muallif-tag">${t}</span>`).join('');
+  }
+  if (d.stats) {
+    if (d.stats.staj_umumiy)   document.getElementById('statStajUmumiy').textContent = d.stats.staj_umumiy;
+    if (d.stats.staj_pedagogik) document.getElementById('statStajPed').textContent = d.stats.staj_pedagogik;
+    if (d.stats.maqolalar)     document.getElementById('statMaqola').textContent = d.stats.maqolalar;
+    if (d.stats.tezislar)      document.getElementById('statTezis').textContent = d.stats.tezislar;
+  }
+  if (d.kontakt) {
+    const k = d.kontakt;
+    if (k.telefon) {
+      const el = document.getElementById('kontaktTel');
+      el.href = 'tel:' + k.telefon;
+      el.querySelector('span:last-child').textContent = k.telefon;
+    }
+    if (k.email) {
+      const el = document.getElementById('kontaktEmail');
+      el.href = 'mailto:' + k.email;
+      el.querySelector('span:last-child').textContent = k.email;
+    }
+    if (k.telegram) {
+      const el = document.getElementById('kontaktTelegram');
+      el.href = k.telegram;
+      const handle = k.telegram.replace('https://t.me/', '@');
+      el.querySelector('span:last-child').textContent = handle + ' — Telegram';
+    }
+  }
+}).catch(() => {});
+</script>
 </body>
 </html>
