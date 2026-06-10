@@ -4,28 +4,26 @@ backend:
 
 locale: uz
 
+# PDF va rasmlar shu papkada saqlanadi
 media_folder: "pdfs"
 public_folder: "/pdfs"
 
 collections:
 
-  # ============================================================
-  # MUALLIF MA'LUMOTLARI
-  # ============================================================
+  # Muallif ma'lumotlari — forma orqali tahrirlash
   - name: "muallif"
-    label: "Muallif ma'lumotlari"
+    label: "👤 Muallif ma'lumotlari"
     files:
       - label: "Muallif haqida"
         name: "muallif"
         file: "muallif.json"
         fields:
           - { label: "Ism familya", name: "name", widget: "string" }
-          - { label: "Lavozim (to'liq)", name: "position", widget: "string" }
-          - label: "Rasm"
+          - { label: "Lavozim", name: "position", widget: "string" }
+          - label: "Rasm (muallif.jpg yoki muallif1.jpg)"
             name: "photo"
-            widget: "image"
-            media_folder: "/"
-            public_folder: "/"
+            widget: "string"
+            hint: "Fayl nomini kiriting: muallif1.jpg"
           - label: "Teglar"
             name: "tags"
             widget: "list"
@@ -42,57 +40,6 @@ collections:
             name: "kontakt"
             widget: "object"
             fields:
-              - { label: "Telefon", name: "telefon", widget: "string" }
+              - { label: "Telefon (+998...)", name: "telefon", widget: "string" }
               - { label: "Email", name: "email", widget: "string" }
-              - { label: "Telegram URL", name: "telegram", widget: "string" }
-
-  # ============================================================
-  # PDF FAYLLAR
-  # ============================================================
-  - name: "maruzalar"
-    label: "Ma'ruzalar (PDF)"
-    label_singular: "Ma'ruza"
-    folder: "pdfs/maruzalar"
-    create: true
-    media_folder: ""
-    public_folder: ""
-    identifier_field: "title"
-    fields:
-      - { label: "Nomi", name: "title", widget: "string" }
-      - { label: "PDF fayl", name: "file", widget: "file", media_folder: "/pdfs/maruzalar", public_folder: "/pdfs/maruzalar" }
-
-  - name: "amaliy"
-    label: "Amaliy mashg'ulotlar (PDF)"
-    label_singular: "Amaliy"
-    folder: "pdfs/amaliy"
-    create: true
-    media_folder: ""
-    public_folder: ""
-    identifier_field: "title"
-    fields:
-      - { label: "Nomi", name: "title", widget: "string" }
-      - { label: "PDF fayl", name: "file", widget: "file", media_folder: "/pdfs/amaliy", public_folder: "/pdfs/amaliy" }
-
-  - name: "adabiyotlar"
-    label: "Adabiyotlar (PDF)"
-    label_singular: "Kitob"
-    folder: "pdfs/adabiyotlar"
-    create: true
-    media_folder: ""
-    public_folder: ""
-    identifier_field: "title"
-    fields:
-      - { label: "Nomi", name: "title", widget: "string" }
-      - { label: "PDF fayl", name: "file", widget: "file", media_folder: "/pdfs/adabiyotlar", public_folder: "/pdfs/adabiyotlar" }
-
-  - name: "taqdimotlar"
-    label: "Taqdimotlar (PDF)"
-    label_singular: "Taqdimot"
-    folder: "pdfs/taqdimotlar"
-    create: true
-    media_folder: ""
-    public_folder: ""
-    identifier_field: "title"
-    fields:
-      - { label: "Nomi", name: "title", widget: "string" }
-      - { label: "PDF fayl", name: "file", widget: "file", media_folder: "/pdfs/taqdimotlar", public_folder: "/pdfs/taqdimotlar" }
+              - { label: "Telegram (https://t.me/...)", name: "telegram", widget: "string" }
