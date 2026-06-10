@@ -483,41 +483,5 @@
 
 <script src="icons.js"></script>
 <script src="nav.js"></script>
-<script>
-fetch('muallif.json').then(r => r.json()).then(d => {
-  if (d.photo)    { document.getElementById('muallifPhoto').src = d.photo; }
-  if (d.name)     { document.getElementById('muallifName').textContent = d.name; }
-  if (d.position) { document.getElementById('muallifPos').textContent = d.position; }
-  if (d.tags)     {
-    document.getElementById('muallifTags').innerHTML =
-      d.tags.map(t => `<span class="muallif-tag">${t}</span>`).join('');
-  }
-  if (d.stats) {
-    if (d.stats.staj_umumiy)   document.getElementById('statStajUmumiy').textContent = d.stats.staj_umumiy;
-    if (d.stats.staj_pedagogik) document.getElementById('statStajPed').textContent = d.stats.staj_pedagogik;
-    if (d.stats.maqolalar)     document.getElementById('statMaqola').textContent = d.stats.maqolalar;
-    if (d.stats.tezislar)      document.getElementById('statTezis').textContent = d.stats.tezislar;
-  }
-  if (d.kontakt) {
-    const k = d.kontakt;
-    if (k.telefon) {
-      const el = document.getElementById('kontaktTel');
-      el.href = 'tel:' + k.telefon;
-      el.querySelector('span:last-child').textContent = k.telefon;
-    }
-    if (k.email) {
-      const el = document.getElementById('kontaktEmail');
-      el.href = 'mailto:' + k.email;
-      el.querySelector('span:last-child').textContent = k.email;
-    }
-    if (k.telegram) {
-      const el = document.getElementById('kontaktTelegram');
-      el.href = k.telegram;
-      const handle = k.telegram.replace('https://t.me/', '@');
-      el.querySelector('span:last-child').textContent = handle + ' — Telegram';
-    }
-  }
-}).catch(() => {});
-</script>
 </body>
 </html>
