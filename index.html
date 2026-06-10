@@ -3,8 +3,44 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
-  <title>KreativPedagogika.uz — Ijodiy yondashuv, samarali ta'lim</title>
-  <meta name="description" content="KreativPedagogika.uz — ta'lim platformasi. Fan dasturi, ma'ruzalar, testlar, videodarslar va ko'p narsa."/>
+  <title>Kreativ Pedagogika — Ijodiy ta'lim platformasi | KreativPedagogika.uz</title>
+  <meta name="description" content="Kreativ pedagogika — Guliston DPI o'qituvchilari va talabalari uchun ijodiy ta'lim platformasi. Fan dasturi, ma'ruzalar, testlar, krossvordlar, videodarslar va boshqa o'quv materiallari."/>
+  <meta name="keywords" content="kreativ pedagogika, ijodiy ta'lim, pedagogika, fan dasturi, ma'ruzalar, testlar, Guliston DPI, pedagogika kafedrasi, ta'lim platformasi, o'zbekiston ta'lim"/>
+  <meta name="author" content="Sariboyev Nurali Abdunazarovich"/>
+  <meta name="robots" content="index, follow"/>
+  <link rel="canonical" href="https://kreativpedagogika.uz/"/>
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://kreativpedagogika.uz/"/>
+  <meta property="og:title" content="Kreativ Pedagogika — Ijodiy ta'lim platformasi"/>
+  <meta property="og:description" content="Guliston DPI o'qituvchilari va talabalari uchun kreativ pedagogika bo'yicha o'quv materiallari, testlar, krossvordlar va videodarslar."/>
+  <meta property="og:image" content="https://kreativpedagogika.uz/logo.png"/>
+  <meta property="og:locale" content="uz_UZ"/>
+  <meta property="og:site_name" content="KreativPedagogika.uz"/>
+
+  <!-- Schema.org structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "EducationalOrganization",
+    "name": "Kreativ Pedagogika",
+    "url": "https://kreativpedagogika.uz",
+    "logo": "https://kreativpedagogika.uz/logo.png",
+    "description": "Kreativ pedagogika bo'yicha o'quv materiallari, testlar va resurslar",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Guliston",
+      "addressCountry": "UZ"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+998946258484",
+      "contactType": "academic"
+    }
+  }
+  </script>
+
   <meta name="google-site-verification" content="_jZaQ6G1tmOG6gT1dbyxuXWdGHEoW6tLbc1lqwqC4PM"/>
   <link rel="icon" href="logo.png"/>
   <link rel="stylesheet" href="shared.css"/>
@@ -598,5 +634,17 @@ function resetTimer() {
 
 <script src="icons.js"></script>
 <script src="nav.js"></script>
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<script>
+  if (window.netlifyIdentity) {
+    window.netlifyIdentity.on('init', user => {
+      if (!user) {
+        window.netlifyIdentity.on('login', () => {
+          document.location.href = '/admin/';
+        });
+      }
+    });
+  }
+</script>
 </body>
 </html>
